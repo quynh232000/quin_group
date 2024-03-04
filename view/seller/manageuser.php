@@ -93,12 +93,12 @@
                                         </div>
                                     </div>
                                     <div class="item-action">
-                                        <a href="?mod=admin&act=manageuser&type=edit&userid=<?= $value['id'] ?>"
+                                        <a href="?mod=seller&act=manageuser&type=edit&userid=<?= $value['id'] ?>"
                                             class="action modify">
                                             <i class="fa-solid fa-pen-to-square"></i>
                                             <span>Sửa</span>
                                         </a>
-                                        <a href="?mod=admin&act=manageuser&type=delete&userid=<?= $value['id'] ?>" class="action delete-btn" user-id='${item?.id}'>
+                                        <a href="?mod=seller&act=manageuser&type=delete&userid=<?= $value['id'] ?>" class="action delete-btn" user-id='${item?.id}'>
                                             <i class="fa-solid fa-trash"></i>
                                             <span>Xóa</span>
                                         </a>
@@ -128,7 +128,7 @@
     ?>
     modal-detail-user">
     <div class="modal-wrapper">
-        <a href="?mod=admin&act=manageuser" class="m-close">
+        <a href="?mod=seller&act=manageuser" class="m-close">
             <i class="fa-solid fa-xmark"></i>
         </a>
         <div class="m-title">Chỉnh sửa hồ sơ</div>
