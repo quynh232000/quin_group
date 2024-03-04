@@ -11,8 +11,8 @@ if (isset($mod)) {
         case 'profile':
             include_once 'controller/profile.php';
             break;
-        case 'admin':
-            include_once 'controller/admin.php';
+        case 'seller':
+            include_once 'controller/seller.php';
             break;
         case 'request':
             include_once 'controller/request.php';

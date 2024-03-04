@@ -95,7 +95,7 @@
         </div>
         <div class="dash-content">
             <div class="dash-content-row">
-                <a href="?mod=admin&act=manageproduct" class="dash-content-item">
+                <a href="?mod=seller&act=manageproduct" class="dash-content-item">
                     <div class="dash-content-count">
                         <?php
                         if (isset($resultData)) {
@@ -105,7 +105,7 @@
                     </div>
                     <div class="dash-content-title">Tổng sản phẩm</div>
                 </a>
-                <a href="?mod=admin&act=manageproduct&type=sold" class="dash-content-item">
+                <a href="?mod=seller&act=manageproduct&type=sold" class="dash-content-item">
                     <div class="dash-content-count">
                         <?php
                         if (isset($resultData)) {
@@ -115,7 +115,7 @@
                     </div>
                     <div class="dash-content-title">Sản phẩm đã bán</div>
                 </a>
-                <a href="?mod=admin&act=manageproduct&type=out" class="dash-content-item">
+                <a href="?mod=seller&act=manageproduct&type=out" class="dash-content-item">
                     <div class="dash-content-count">
                         <?php
                         if (isset($resultData)) {
@@ -125,7 +125,7 @@
                     </div>
                     <div class="dash-content-title">Sản phẩm hết hàng</div>
                 </a>
-                <a href="?mod=admin&act=manageproduct&type=hidden" class="dash-content-item">
+                <a href="?mod=seller&act=manageproduct&type=hidden" class="dash-content-item">
                     <div class="dash-content-count">
                         <?php
                         if (isset($resultData)) {
@@ -137,7 +137,7 @@
                 </a>
             </div>
             <div class="dash-content-row">
-                <a href="?mod=admin&act=manageorders" class="dash-content-item">
+                <a href="?mod=seller&act=manageorders" class="dash-content-item">
                     <div class="dash-content-count">
                         <?php
                         if (isset($resultData)) {
@@ -147,7 +147,7 @@
                     </div>
                     <div class="dash-content-title">Tổng đơn hàng</div>
                 </a>
-                <a href="?mod=admin&act=manageorders&type=new" class="dash-content-item">
+                <a href="?mod=seller&act=manageorders&type=new" class="dash-content-item">
                     <div class="dash-content-count">
                         <?php
                         if (isset($resultData)) {
@@ -157,7 +157,7 @@
                     </div>
                     <div class="dash-content-title">Đơn hàng mới</div>
                 </a>
-                <a href="?mod=admin&act=manageorders&type=confirmed" class="dash-content-item">
+                <a href="?mod=seller&act=manageorders&type=confirmed" class="dash-content-item">
                     <div class="dash-content-count">
                         <?php
                         if (isset($resultData)) {
@@ -167,7 +167,7 @@
                     </div>
                     <div class="dash-content-title">Đơn hàng đã giao</div>
                 </a>
-                <a href="?mod=admin&act=manageorders&type=cancel" class="dash-content-item">
+                <a href="?mod=seller&act=manageorders&type=cancel" class="dash-content-item">
                     <div class="dash-content-count">
                         <?php
                         if (isset($resultData)) {

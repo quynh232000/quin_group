@@ -76,7 +76,7 @@ if (empty($viewTitle)) {
                             <i class="fa-solid fa-house"></i>
                             Trang chủ
                         </a>
-                        <a href="?mod=admin&act=dashboard" class="sidebar-item">
+                        <a href="?mod=seller&act=dashboard" class="sidebar-item">
                             <i class="fa-solid fa-cart-plus"></i>
                             Quản trị
                         </a>
@@ -140,7 +140,7 @@ if (empty($viewTitle)) {
                                 Thông báo
                             </div>
                         </a>
-                        <a href="?mod=admin&act=dashboard" class="header-top-item">
+                        <a href="?mod=seller&act=dashboard" class="header-top-item">
                             <div class="header-top-item-body">
                                 <i class="fa-regular fa-circle-question"></i>
 

@@ -79,7 +79,7 @@
                         echo $allProduct->total; ?> Sản phẩm
                 </div>
                 <!-- btn create -->
-                <a href="?mod=admin&act=addproduct" class="btn-add-pro">
+                <a href="?mod=seller&act=addproduct" class="btn-add-pro">
                     +Tạo sản phẩm
                     <div class="star-1">
                         <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1"
@@ -162,7 +162,7 @@
                 </a>
 
                 <!-- btn create -->
-                <!-- <a href="?mod=admin&act=addproduct" class="show-pro-add-btn">
+                <!-- <a href="?mod=seller&act=addproduct" class="show-pro-add-btn">
                     + Tạo sản phẩm
                 </a> -->
             </div>
@@ -194,7 +194,7 @@
                     </span>
                 </div>
                 <div class="p-pagination-right">
-                    <a href="?mod=admin&act=manageproduct&page=<?= isset($_GET['page']) ? $_GET['page'] > 1 ? $_GET['page'] - 1 : 1 : 1 ?>"
+                    <a href="?mod=seller&act=manageproduct&page=<?= isset($_GET['page']) ? $_GET['page'] > 1 ? $_GET['page'] - 1 : 1 : 1 ?>"
                         class="<?php if (!isset($_GET['page']) || $_GET['page'] == 1)
                             echo "disabled"; ?> p-pagination-item previous-page">
                         Trước
@@ -209,14 +209,14 @@
                                     $active = "active";
                                 }
                             }
-                            echo '<a href="?mod=admin&act=manageproduct&page=' . $i . '" class="p-pagination-item ' . $active . '">' . $i . '</a>';
+                            echo '<a href="?mod=seller&act=manageproduct&page=' . $i . '" class="p-pagination-item ' . $active . '">' . $i . '</a>';
                         }
                     } else {
                         echo "";
                     }
                     ?>
 
-                    <a href="?mod=admin&act=manageproduct&page=<?php
+                    <a href="?mod=seller&act=manageproduct&page=<?php
                     if (isset($_GET['page']) && ($_GET['page'] < ceil($allProduct->total / 10))) {
                         echo $_GET['page'] + 1;
                     } else {
@@ -322,11 +322,11 @@
                                         <!-- <i class="fa-regular fa-circle-xmark"></i> -->
                                     </div>
                                     <div class="shop-pro-action">
-                                        <a href="?mod=admin&act=addproduct&type=edit&idPro=<?= $value['id'] ?>"
+                                        <a href="?mod=seller&act=addproduct&type=edit&idPro=<?= $value['id'] ?>"
                                             class="shop-pro-edit" title="Edit">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                         </a>
-                                        <a href="?mod=admin&act=manageproduct&type=delete&idPro=<?= $value['id'] ?>"
+                                        <a href="?mod=seller&act=manageproduct&type=delete&idPro=<?= $value['id'] ?>"
                                             class="shop-pro-delete delete-product" title="Delete">
                                             <i class="fa-regular fa-trash-can"></i>
                                         </a>
@@ -352,7 +352,7 @@
     $(function () {
         $("#spanLink").click(function () {
             console.log("okok")
-            $.ajax('?mod=admin&act=manageproduct&do=swap');
+            $.ajax('?mod=seller&act=manageproduct&do=swap');
         });
     });
 </script>

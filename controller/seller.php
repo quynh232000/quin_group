@@ -19,7 +19,7 @@ if (isset($act)) {
             $viewTitle = 'Dashboard';
             include_once 'view/inc/headerAdmin.php';
             include_once 'view/inc/sidebarAdmin.php';
-            include_once 'view/admin/dashboard.php';
+            include_once 'view/seller/dashboard.php';
             include_once 'view/inc/footer.php';
             break;
         case 'addproduct':
@@ -62,7 +62,7 @@ if (isset($act)) {
             }
             include_once 'view/inc/headerAdmin.php';
             include_once 'view/inc/sidebarAdmin.php';
-            include_once 'view/admin/addproduct.php';
+            include_once 'view/seller/addproduct.php';
             include_once 'view/inc/footer.php';
             break;
         case 'manageproduct':
@@ -100,7 +100,7 @@ if (isset($act)) {
                 // </script>';
             }
             include_once 'view/inc/sidebarAdmin.php';
-            include_once 'view/admin/manageproduct.php';
+            include_once 'view/seller/manageproduct.php';
             include_once 'view/inc/footer.php';
             break;
         case 'managecategory':
@@ -141,7 +141,7 @@ if (isset($act)) {
             $allCategory = $cate->getAllCate();
             include_once 'view/inc/headerAdmin.php';
             include_once 'view/inc/sidebarAdmin.php';
-            include_once 'view/admin/managecategory.php';
+            include_once 'view/seller/managecategory.php';
             include_once 'view/inc/footer.php';
             break;
         case 'manageorders':
@@ -154,7 +154,7 @@ if (isset($act)) {
             $viewTitle = 'Manage orders';
             include_once 'view/inc/headerAdmin.php';
             include_once 'view/inc/sidebarAdmin.php';
-            include_once 'view/admin/manageorders.php';
+            include_once 'view/seller/manageorders.php';
             include_once 'view/inc/footer.php';
             break;
         case 'detailorder':
@@ -174,7 +174,7 @@ if (isset($act)) {
             $viewTitle = 'Manage orders';
             include_once 'view/inc/headerAdmin.php';
             include_once 'view/inc/sidebarAdmin.php';
-            include_once 'view/admin/orderdetail.php';
+            include_once 'view/seller/orderdetail.php';
             include_once 'view/inc/footer.php';
             break;
         case 'manageuser':
@@ -228,7 +228,7 @@ if (isset($act)) {
             $viewTitle = 'Quản lý user';
             include_once 'view/inc/headerAdmin.php';
             include_once 'view/inc/sidebarAdmin.php';
-            include_once 'view/admin/manageuser.php';
+            include_once 'view/seller/manageuser.php';
             include_once 'view/inc/footer.php';
             break;
         default:
