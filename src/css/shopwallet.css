@@ -1,0 +1,321 @@
+.s-balance-info img{
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.shop-wallet{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 0 0 6px var(--box-shadows);
+    border-radius: 0 0 12p 12px;
+    padding: 24px 20px;
+    background-color: white;
+    border-radius: 12px;
+    
+}
+.shop-title{
+    margin: 0;
+    padding-bottom: 0;
+}
+.s-wallet-tab{
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 24px;
+    box-shadow: 0 1px 6px var(--box-shadows);
+}
+.s-wallet-tab-item{
+    font-weight: 600;
+    transition: .3s ease;
+}
+.s-wallet-tab-item.active{
+    color: var(--primary);
+}
+.s-wallet-tab-item:hover{
+    cursor: pointer;
+    color: var(--primary);
+}
+.s-balance-title{
+    font-weight: 400;
+    color: var(--text-color);
+}
+.s-balance-item{
+    display: grid;
+    padding: 8px 0;
+    grid-template-columns: 40% 30% 30%;
+    align-items: center;
+}
+.s-balance-nav .s-balance-item{
+    padding: 16px 0;
+    /* border-bottom: 1px solid var(--boder-color); */
+}
+.s-balance-type,.s-balance-available{
+    text-align: center;
+}
+.s-balance-info{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 1.4rem;
+}
+.s-balance-list .s-balance-available{
+    font-size: 1.4rem;
+}
+.s-balance-type{
+    display: flex;
+    gap:12px ;
+    justify-content: flex-end;
+}
+.s-balance-btn{
+    border-radius: 12px;
+    padding: 12px 20px;
+    text-transform: uppercase;
+    transition: .3s ease;
+}
+.s-balance-btn:first-child{
+    background-color:rgba(222, 239, 255, 1) ;
+    color: var(--primary);
+}
+.s-balance-btn:last-child{
+    background-color:rgba(255, 245, 215, 1);
+    color: var(--bg-yellow);
+}
+.s-balance-btn:hover{
+    opacity: .8;
+    cursor: pointer;
+}
+.s-balance-add-token{
+    display: flex;
+    justify-content: center;
+   padding: 20px;
+}
+.s-balance-add-btn{
+    background-color: var(--bg-yellow);
+    color: var(--white);
+    border-radius: 50px;
+    transition: .3s ease;
+    padding: 14px 44px;
+}
+.s-balance-add-btn:hover{
+    opacity: .8;
+    cursor: pointer;
+}
+@media screen and (max-width:560px) {
+    .s-wallet-tab{
+        gap: 0px;
+        justify-content: space-between;
+    }
+}
+/* deposit */
+.select-item-wrapper img{
+    width: 24px; 
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.select-item-wrapper{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.cus-select-select{
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+.cus-select-select i{
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.s-deposit{
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    padding: 0 10%;
+}
+.cus-select-dropdown{
+    width: 100%;
+}
+.cus-select-dropdown .cus-select-select{
+    padding: 12px 10px;
+}
+.s-deposit-note{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.s-deposit-note-item{
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+.s-withdraw-btn-body{
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+.s-withdraw-btn{
+    background-color: var(--bg-yellow);
+    color: var(--white);
+    border-radius: 20px;
+    padding: 14px 66px;
+    transition: .3s ease;
+    cursor: pointer;
+}
+.s-withdraw-btn:hover{
+    opacity: .8;
+}
+.s-deposit-qr-img{
+    width: 200px;
+    height: 200px;
+    border: 1px solid var(--boder-color);
+    padding: 10px;
+}
+.s-deposit-qr-img img{
+    width: 100%;
+    object-fit: cover;
+}
+.s-deposit-qr-body{
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    align-items: center;
+}
+.s-deposit-qr-code{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    background-color: var(--primary-hover);
+    padding: 8px 20px;
+}
+.s-deposit-qr-code span{
+    font-weight: 600;
+    
+}
+.s-deposit-qr-btn{
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    transition: .3s ease;
+    color: var(--primary);
+}
+.s-deposit-qr-btn:hover{
+    cursor: pointer;
+    color: gray;
+}
+.s-wallet-content{
+    margin: 20px 0;
+}
+@media screen and (max-width:560px) {
+    .s-deposit{
+        padding: 0;
+    }
+    .shop-title{
+        padding: 0;
+    }
+}
+.s-deposit-select input{
+    width: 100%;
+    border: 1px solid #eee;
+    padding: 12px 10px;
+    border-radius: 4px;
+}
+.s-withdraw-note-item{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.s-withdraw-note-title{
+    font-weight: 600;
+}
+.s-withdraw-note-item p{
+    margin: 0;
+    padding: 0;
+    color: var(--primary);
+    
+}
+/* transaction */
+.s-transaction-nav .s-transaction-item{
+    padding: 14px 0;
+}
+.s-transaction-item{
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--boder-color);
+    padding: 8px 0;
+}
+.s-transaction-left{
+    display: grid;
+    width: 45%;
+    align-items: center;
+    grid-template-columns: 20% 40% 40%;
+}
+.s-transaction-right{
+    display: grid;
+    width: 55%;
+    grid-template-columns: 15% 15% 20% 40% 10%;
+
+}.s-transaction-list{
+    font-size: 1.2rem;
+}
+.s-transaction-title{
+    font-weight: 500;
+}
+.s-transaction-detail{
+    display: flex;
+    text-align: right;
+    justify-content: flex-end;
+}
+.s-transaction-list .s-transaction-wallet{
+    text-transform: uppercase;
+}
+.s-transaction-list .s-transaction-status{
+    background-color: var(--primary);
+    color: var(--white);
+    padding: 5px 6px;
+    border-radius: 20px;
+    width: fit-content;
+}
+.s-transaction-list .s-transaction-code{
+    color: var(--primary);
+}
+
+@media screen and (max-width:560px) {
+    .s-transaction{
+        overflow-x: scroll;
+    }
+    .s-transaction-wrapper{
+        width: 860px;
+    }
+    .s-transaction::-webkit-scrollbar-track
+    {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        background-color: #F5F5F5;
+        border-radius: 10px;
+    }
+
+    .s-transaction::-webkit-scrollbar
+    {
+        width: 10px;
+        background-color: #F5F5F5;
+    }
+
+    .s-transaction::-webkit-scrollbar-thumb
+    {
+        background-color: #3366FF;
+        border-radius: 10px;
+        background-image: -webkit-linear-gradient(0deg,
+                                                rgba(255, 255, 255, 0.5) 25%,
+                                                transparent 25%,
+                                                transparent 50%,
+                                                rgba(255, 255, 255, 0.5) 50%,
+                                                rgba(255, 255, 255, 0.5) 75%,
+                                                transparent 75%,
+                                                transparent)
+    }
+
+}
