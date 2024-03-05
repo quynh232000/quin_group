@@ -7,8 +7,6 @@ use PHPMailer\PHPMailer\Exception;
 include_once 'lib/phpmailer/src/Exception.php';
 include_once 'lib/phpmailer/src/PHPMailer.php';
 include_once 'lib/phpmailer/src/SMTP.php';
-
-// Session::checkLogin();
 include_once "lib/database.php";
 include_once "lib/database.php";
 include_once "helpers/format.php";
@@ -28,21 +26,14 @@ class Adminlogin
         $this->fm = new Format();
         $this->tool = new Tool();
     }
-    public function login_admin($adminUser, $adminPass,$redirect ="")
+    public function login_admin($email, $password,$redirect ="")
     {
-        $adminUser = $this->fm->validation($adminUser);
-        $adminPass = $this->fm->validation($adminPass);
-
-
-
-        if (empty($adminUser) || empty($adminPass)) {
-
-
-
+        
+        if (empty($email) || empty($email)) {
             $alert = "Vui lòng nhập đầy đủ thông tin!";
             return ["status" => false, "message" => $alert, "result" => [], "redirect" => ""];
         } else {
-            $query = "SELECT * FROM user WHERE userName ='$adminUser' AND pass = '$adminPass' LIMIT 1";
+            $query = "SELECT * FROM user WHERE email ='$email' AND password = '$password' LIMIT 1";
             $user = $this->db->select($query);
             $result = $user->fetch();
 
@@ -50,13 +41,13 @@ class Adminlogin
 
                 $value = $result;
                 Session::set('isLogin', true);
+
                 Session::set('id', $value['id']);
-                Session::set('userName', $value['userName']);
-                Session::set('fullName', $value['fullName']);
+                Session::set('full_name', $value['full_name']);
                 Session::set('email', $value['email']);
                 Session::set('avatar', $value['avatar']);
-                Session::set('phone', $value['phone']);
                 Session::set('role', $value['role']);
+                Session::set('phone', $value['phone']);
                 return ["status" => true, "message" => "Đăng nhập thành công!", "result" => [], "redirect" => $redirect];
             } else {
                 $alert = "Tên đăng nhập hoặc tài khoản không đúng!";
@@ -64,12 +55,12 @@ class Adminlogin
             }
         }
     }
-    public function register_admin($userName, $fullName, $email, $phone, $password, $confirmPassword)
+    public function register_admin( $fullName, $email, $phone, $password, $confirmPassword)
     {
 
 
-        if (empty($userName)) {
-            $alert = "Tên đăng nhập không được để trống!";
+        if (empty($fullName)) {
+            $alert = "Họ và tên không được để trống!";
             return ["status" => false, "message" => $alert, "result" => []];
         }
         if (empty($email)) {
@@ -96,16 +87,15 @@ class Adminlogin
             return ["status" => false, "message" => 'Password phải từ 8 kí tự chở lên!', "result" => []];
 
         }
-        $checkUser = $this->db->select("select * from user where userName = '$userName';");
+        $checkUser = $this->db->select("select * from user where email = '$email';");
         if (count($checkUser->fetchAll()) > 0) {
-            return ["status" => false, "message" => "Tên đăng nhập đã tồn tại!", "result" => []];
+            return ["status" => false, "message" => "Email đã tồn tại!", "result" => []];
         }
         $avatar = '5EA63482-44B3-40C9-B3A8-1479DB08CCD4.jpg';
         $id = $this->tool->GUID();
         $pass = md5($password);
-        $query = "INSERT INTO user (id,userName,fullName,email,phone,pass,avatar) VALUE
+        $query = "INSERT INTO user (id,full_name,email,phone,password,avatar) VALUE
                ( '$id',
-                '$userName',
                  '$fullName',
                 '$email',
                 '$phone',
@@ -113,7 +103,18 @@ class Adminlogin
                 '$avatar')
             ";
         $this->db->insert($query);
-        return ["status" => true, "message" => "Đăng kí thành công!", "result" => [], "redirect" => "?mod=profile&act=login"];
+
+                Session::set('isLogin', true);
+
+                Session::set('id',$id);
+                Session::set('full_name', $fullName);
+                Session::set('email', $email);
+                Session::set('avatar', $avatar);
+                Session::set('role','member');
+                Session::set('phone', $phone);
+        // $this->login_admin($email,$password,"/");
+        // return ["status" => true, "message" => "Đăng kí thành công!", "result" => [], "redirect" => "?mod=profile&act=login"];
+        return ["status" => true, "message" => "Đăng kí thành công!", "result" => [], "redirect" => "./"];
 
     }
     public function updateProfile($fullName, $image, $phone, $email)

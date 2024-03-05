@@ -146,7 +146,7 @@ if (empty($viewTitle)) {
 
                             </div>
                             <div class="header-top-item-title">
-                                Quản trị
+                                Người bán hàng
                             </div>
                         </a>
                         <a href="./shopowner" class="header-top-item">
@@ -228,7 +228,7 @@ if (empty($viewTitle)) {
                                     } -->
                                 <a href="?mod=profile&act=profile" class="header-search-info">
                                     <div class="fullname">Hi,
-                                        <?php echo Session::get("fullName") ?>
+                                        <?php echo Session::get("full_name") ?>
                                     </div>
                                     <div class="header-search-text-s">
                                         Hồ sơ

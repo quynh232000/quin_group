@@ -2,8 +2,11 @@
 // session_start();
 include_once "./lib/session.php";
 // session_start();
-Session::checkSession();
-Session::checkPermission("admin");
+// Session::checkSession();
+include_once 'model/seller.php';
+
+$class_seller = new Seller();
+$class_seller->check_seller();
 include_once 'model/category.php';
 include_once 'model/product.php';
 include_once 'model/user.php';
@@ -27,6 +30,8 @@ if (isset($act)) {
             $classPro = new Product();
             $cate = new Category();
             $allCategory = $cate->getAllCate();
+            // echo ($allCategory);
+            // return;
             if (isset($_POST['btn-create-product']) && $_POST['btn-create-product']) {
                 $type = isset($_GET['type']) ? $_GET['type'] : "create";
                 $id = isset($_GET['idPro']) ? $_GET['idPro'] : "";
@@ -73,9 +78,9 @@ if (isset($act)) {
             if (isset($_GET['page']) && $_GET['page']) {
                 $page = $_GET['page'];
             }
-            $allProduct = $classPro->getAllProduct($page);
+            $allProduct = $classPro->getAllProduct($page, 20, "", Session::get('id'));
             $cate = new Category();
-            $allCategory = $cate->getAllCate();
+            // $allCategory = $cate->getAllCate();
             // ddelete product
             if ((isset($_GET['type']) && isset($_GET['idPro'])) && ($_GET['type']) && $_GET['idPro']) {
                 $type = $_GET['type'];
@@ -159,16 +164,16 @@ if (isset($act)) {
             break;
         case 'detailorder':
             $classOrder = new Order();
-            
+
             $resultOrder = $classOrder->getAllInvoince();
-            if(isset($_GET['id']) && $_GET['id']){
+            if (isset($_GET['id']) && $_GET['id']) {
                 $getInvoiceDetail = $classOrder->getOrderDetail($_GET['id']);
-                if($getInvoiceDetail->status ==true){
+                if ($getInvoiceDetail->status == true) {
                     $data = $getInvoiceDetail->result;
-                }else{
+                } else {
                     header('location: ?mod=admin&act=manageorders');
                 }
-            }else{
+            } else {
                 header('location: ?mod=admin&act=manageorders');
             }
             $viewTitle = 'Manage orders';
@@ -186,15 +191,15 @@ if (isset($act)) {
                 $_GET['type'] != ""
             ) {
                 $type = $_GET['type'];
-                if($type== 'edit'){
+                if ($type == 'edit') {
                     $userInfo = $classUser->getUserById($_GET['userid']);
 
-                }else if($type == 'delete'){
+                } else if ($type == 'delete') {
                     $deleteUser = $classUser->deleteUser($_GET['userid']);
                     if (isset($deleteUser)) {
-                        if ($deleteUser->status ==true) {
-                            echo '<div id="toast" mes-type="success" mes-title="Thành công!" mes-text="' .'Xóa tài khoản thành công' . '"></div>';
-                            
+                        if ($deleteUser->status == true) {
+                            echo '<div id="toast" mes-type="success" mes-title="Thành công!" mes-text="' . 'Xóa tài khoản thành công' . '"></div>';
+
                         } else {
                             echo '<div id="toast" mes-type="error" mes-title="Thất bại!" mes-text="' . 'Bạn không có quyền với hàng động này!' . '"></div>';
                         }

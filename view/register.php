@@ -37,7 +37,7 @@
       <form class="form-register" id="register-form" method="POST" action="">
         <h1>Đăng kí</h1>
         <!-- invalidate -->
-        <div class="form-group">
+        <!-- <div class="form-group">
           <div class="form-wrapper">
             <label for="userName">Tên đăng nhập</label>
             <div class="form-body">
@@ -47,19 +47,7 @@
             </div>
             <div class="form-msg"></div>
           </div>
-        </div>
-        <div class="form-group">
-          <div class="form-wrapper">
-            <label for="Full name">Họ tên</label>
-            <div class="form-body">
-              <i class="fa-solid fa-user"></i>
-              <input type="text" class="form-control" id="Full name" value="<?=$_POST['fullname'] ??"" ?>" rules="required" name="fullname"
-                placeholder="Họ tên..." />
-            </div>
-            <div class="form-msg"></div>
-          </div>
-        </div>
-
+        </div> -->
         <div class="form-group">
           <div class="form-wrapper">
             <label for="email">Email</label>
@@ -71,6 +59,19 @@
             <div class="form-msg"></div>
           </div>
         </div>
+        <div class="form-group">
+          <div class="form-wrapper">
+            <label for="full_name">Họ và tên</label>
+            <div class="form-body">
+              <i class="fa-solid fa-user"></i>
+              <input type="text" class="form-control" id="full_name" value="<?=$_POST['full_name'] ??"" ?>" rules="required" name="full_name"
+                placeholder="Họ và tên..." />
+            </div>
+            <div class="form-msg"></div>
+          </div>
+        </div>
+
+        
         <div class="form-group">
           <div class="form-wrapper">
             <label for="phone">Số điện thoại</label>
