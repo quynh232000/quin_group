@@ -262,7 +262,7 @@
                         </div>
                     </div>
                     <div class="shop-pro-list">
-                        <?php if (isset($allProduct) && isset($allProduct->status) && is_array($allProduct->result) > 0) {
+                        <?php if (isset($allProduct) && isset($allProduct->status) && count($allProduct->result) > 0) {
 
                             foreach ($allProduct->result as $key => $value) { ?>
                                 <!-- item -->
@@ -277,11 +277,11 @@
                                         <!-- input -->
                                         <div class="shop-pro-info-wrapper">
                                             <div class="shop-pro-info-img">
-                                                <img src="assest/upload/<?= $value['image'] ?>" alt="">
+                                                <img src="assest/upload/<?= $value['image_cover'] ?>" alt="">
                                             </div>
                                             <div class="shop-pro-info-right">
                                                 <div class="shop-pro-info-name">
-                                                    <?= $value['namePro'] ?>
+                                                    <?= $value['name'] ?>
                                                 </div>
                                                 <div class="shop-pro-info-sku">
                                                     SKU: <span>
@@ -314,12 +314,19 @@
                                         <?= $value['quantity'] ?>
                                     </div>
                                     <div class="shop-pro-balance">
-                                        <?= $value['price'] * $value['sold'] ?>
+                                        <?= $value['price'] * $value['quantity_sold'] ?>
                                     </div>
                                     <div class="shop-pro-status" title="Waiting">
-                                        <i class="fa-regular fa-clock"></i>
-                                        <!-- <i class="fa-regular fa-circle-check"></i> -->
-                                        <!-- <i class="fa-regular fa-circle-xmark"></i> -->
+                                        <?php 
+                                        if($value['status']=='new'){
+                                            echo '<i  title="Pedding" class="fa-regular fa-clock"></i>';
+                                        }elseif($value['status']=='actived'){
+                                            echo '<i title="Actived" class="fa-regular fa-circle-check"></i>';
+                                        }else{
+                                            echo '<i title="Rejected" class="fa-regular fa-circle-xmark"></i>';
+                                        }
+                                        ?>
+                                        
                                     </div>
                                     <div class="shop-pro-action">
                                         <a href="?mod=seller&act=addproduct&type=edit&idPro=<?= $value['id'] ?>"
@@ -334,7 +341,7 @@
                                 </div>
                             <?php }
                         } else {
-                            echo '<div class="no-data">No product found!</div>';
+                            echo '<div class="no-data">Không tìm thấy sản phẩm nào!</div>';
                         }
                         ?>
 

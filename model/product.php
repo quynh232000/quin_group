@@ -21,12 +21,12 @@ class Product
     public function updateProduct(
         $name = '',
         $description = '',
-        $categoryId = '',
+        $category_id = '',
         $quantity = '',
         $origin = '',
         $brand = '',
         $price = '',
-        $salePercent = '',
+        $percent_sale = '',
         $image = '',
         $listImage = '',
         $unit = '',
@@ -37,14 +37,14 @@ class Product
 
         if ($type == 'edit' && $id != '') {
             $queryUpdate = '';
-            $queryUpdate .= "p.namePro = '$name',";
+            $queryUpdate .= "p.name = '$name',";
             $queryUpdate .= "p.description = '$description',";
-            $queryUpdate .= "p.categoryId = '$categoryId',";
+            $queryUpdate .= "p.category_id = '$category_id',";
             $queryUpdate .= "p.quantity = '$quantity',";
             $queryUpdate .= "p.origin = '$origin',";
             $queryUpdate .= "p.brand = '$brand',";
             $queryUpdate .= "p.price = '$price',";
-            $queryUpdate .= "p.salePercent = '$salePercent',";
+            $queryUpdate .= "p.percent_sale = '$percent_sale',";
             $queryUpdate .= "p.price = '$price',";
             // upload img
             $fileResult = $this->tool->uploadFile($image);
@@ -64,20 +64,20 @@ class Product
             // create
             $slug = $this->tool->slug($name, '-');
             $fileResult = $this->tool->uploadFile($image);
-            $query = "INSERT INTO product (product.namePro, product.description, product.categoryId,product.status,
+            $query = "INSERT INTO product (product.name, product.description, product.category_id,product.status,
             product.quantity,product.brand,product.image,origin,price,
-            salePercent,slug,unit,createdAt,sold) VALUES
+            percent_sale,slug,unit,created_at,sold) VALUES
                 (
                     '$name',
                     '$description',
-                    '$categoryId',
+                    '$category_id',
                     'active',
                     '$quantity',
                     '$brand',
                     '$fileResult',
                     '$origin',
                     '$price',
-                    '$salePercent',
+                    '$percent_sale',
                     '$slug',
                     '$unit',
                     NOW(),
@@ -111,7 +111,7 @@ class Product
                 }
             }
             $querylistImg = rtrim($querylistImg, ",");
-            $queryImg = "INSERT into listimage (productId,imagePro,createdAt) values
+            $queryImg = "INSERT into listimage (productId,imagePro,created_at) values
                 $querylistImg ";
             $resulltListImage = $this->db->insert($queryImg);
             if ($resulltListImage == false) {
@@ -121,22 +121,25 @@ class Product
             }
         }
     }
-    public function getAllProduct($page = 1, $limit = 10, $type = "")
+    public function getAllProduct($page = 1, $limit = 10, $type = "",$user_id = null)
     {
         if ($type) {
-            $type = "WHERE pr.status = '$type'";
+            $type = " AND pr.status = '$type'";
         }
-        $getTotal = $this->db->select("SELECT COUNT(*) AS total from product AS pr $type");
+        if ($user_id) {
+            $user_id = " AND pr.user_id = '$user_id'";
+        }
+        $getTotal = $this->db->select("SELECT COUNT(*) AS total from product AS pr WHERE 1  $type $user_id");
         $total = $getTotal->fetchAll()[0];
         $total = $total == false ? 0 : $total['total'];
         if ($page < 1) {
             $page = 1;
         }
         $currentPage = ($page - 1) * $limit;
-        $query = "SELECT pr.*, cate.nameCate as nameCategory from product as pr 
-            INNER JOIN category as cate on pr.categoryId = cate.id 
-            $type
-            ORDER BY pr.createdAt DESC 
+        $query = "SELECT pr.*, cate.name as nameCategory from product as pr 
+            INNER JOIN category as cate on pr.category_id = cate.id 
+            $type $user_id
+            ORDER BY pr.created_at DESC 
             limit $currentPage,$limit
         ";
         $result = $this->db->select($query);
@@ -147,7 +150,7 @@ class Product
             return "something wrong from server!";
         }
     }
-    public function filterProduct($key = "", $value = "", $limit = 20, $page = 1)
+    public function filterProduct($key = "", $value = "", $limit = 20, $page = 1,$user_id = null)
     {
         if ($limit == "all") {
             $limit = "0,18446744073709551615";
@@ -160,28 +163,28 @@ class Product
         $total = 0;
         switch ($key) {
             case 'random':
-                $query = "SELECT pr.id, pr.brand, pr.namePro ,pr.categoryId, pr.quantity , pr.image, pr.origin, pr.price, pr.salePercent, pr.slug,
-                 cate.nameCate as nameCategory from product as pr INNER JOIN category as cate on pr.categoryId = cate.id  ORDER BY RAND() LIMIT $limit";
+                $query = "SELECT pr.id, pr.brand, pr.name ,pr.category_id, pr.quantity , pr.image_cover, pr.origin, pr.price, pr.percent_sale, pr.slug,
+                 cate.name as nameCategory from product as pr INNER JOIN category as cate on pr.category_id = cate.id  ORDER BY RAND() LIMIT $limit";
                 break;
             case 'detail':
                 $query = "SELECT pr.*,
-                 cate.nameCate as nameCategory from product as pr INNER JOIN category as cate on pr.categoryId = cate.id  WHERE pr.id = $value";
+                 cate.name as nameCategory from product as pr INNER JOIN category as cate on pr.category_id = cate.id  WHERE pr.id = $value";
 
                 break;
             case 'category':
 
-                $sqlTotal = $this->db->select("SELECT count(*) from product where categoryId = '$value'");
+                $sqlTotal = $this->db->select("SELECT count(*) from product where category_id = '$value'");
                 $total = $sqlTotal->fetchColumn();
 
-                $query = "SELECT pr.id, pr.brand, pr.namePro ,pr.categoryId, pr.quantity, pr.image, pr.origin, pr.price, pr.salePercent, pr.slug,
-                 cate.nameCate as nameCategory from product as pr INNER JOIN category as cate on pr.categoryId = cate.id  WHERE pr.categoryId = $value  limit $currentPage,$limit";
+                $query = "SELECT pr.id, pr.brand, pr.name ,pr.category_id, pr.quantity, pr.image_cover, pr.origin, pr.price, pr.percent_sale, pr.slug,
+                 cate.name as nameCategory from product as pr INNER JOIN category as cate on pr.category_id = cate.id  WHERE pr.category_id = $value  limit $currentPage,$limit";
                 break;
 
             default:
                 $sqlTotal = $this->db->select("SELECT count(*) from product ");
                 $total = $sqlTotal->fetchColumn();
-                $query = "SELECT pr.id, pr.brand, pr.namePro ,pr.categoryId, pr.quantity, pr.image, pr.origin, pr.price, pr.salePercent, pr.slug,
-                 cate.nameCate as nameCategory from product as pr INNER JOIN category as cate on pr.categoryId = cate.id  ORDER BY pr.createdAt limit $currentPage,$limit";
+                $query = "SELECT pr.id, pr.brand, pr.name ,pr.category_id, pr.quantity, pr.image_cover, pr.origin, pr.price, pr.percent_sale, pr.slug,
+                 cate.name as nameCategory from product as pr INNER JOIN category as cate on pr.category_id = cate.id  ORDER BY pr.created_at limit $currentPage,$limit";
                 break;
         }
         // ================================
@@ -227,10 +230,10 @@ class Product
     }
     public function seachProduct($value = "")
     {
-        $resultSql = $this->db->select("SELECT p.id, p.namePro, p.brand,p.image FROM product AS p 
-                WHERE p.namePro 
+        $resultSql = $this->db->select("SELECT p.id, p.name, p.brand,p.image FROM product AS p 
+                WHERE p.name 
                 LIKE '%$value%'
-                ORDER BY p.createdAt
+                ORDER BY p.created_at
                 LIMIT 10
         ");
         if ($resultSql == false) {

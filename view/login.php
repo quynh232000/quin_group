@@ -28,12 +28,12 @@
         <!-- invalidate -->
         <div class="form-group">
           <div class="form-wrapper">
-            <label for="userName">Tên đăng nhập</label>
+            <label for="email">Email</label>
 
             <div class="form-body">
               <i class="fa-solid fa-user"></i>
-              <input type="text" class="form-control" id="userName" value="<?=$_POST['adminUser'] ??"" ?>" name="adminUser" rules="required"
-                placeholder="Tên đăng nhập..." />
+              <input type="text" class="form-control" id="email" value="<?=$_POST['email'] ??"" ?>" name="email" rules="required"
+                placeholder="Email..." />
             </div>
             <div class="form-msg"></div>
           </div>
@@ -44,7 +44,7 @@
             <label for="password">Mật khẩu</label>
             <div class="form-body">
               <i class="fa-solid fa-lock"></i>
-              <input type="password" class="form-control"  value="<?=$_POST['adminPass']??"" ?>" id="password" name="adminPass" rules="required|min:6"
+              <input type="password" class="form-control"  value="<?=$_POST['password']??"" ?>" id="password" name="password" rules="required|min:6"
                 placeholder="Mật khẩu..." />
             </div>
             <div class="form-msg"></div>

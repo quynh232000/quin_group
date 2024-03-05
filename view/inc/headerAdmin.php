@@ -186,14 +186,14 @@
             <div class="header-body">
                 <div class="wrapper">
                     <a href="<?php 
-                    if($mod =="admin" && $act=="dashboard"){
+                    if($mod =="seller" && $act=="dashboard"){
                         echo "./";
                     }else{
-                        echo "?mod=admin&act=dashboard";
+                        echo "?mod=seller&act=dashboard";
                     }
                     ?>" class="header-logo">
                         <img src="assest/images/UNIDI_LOGO-FINAL 2.svg" alt="">
-                        <div class="shop-header-name">ADMIN</div>
+                        <div class="shop-header-name">SELLER</div>
                     </a>
                     <div class="header-search-body">
                         <div class="header-search">
@@ -225,7 +225,7 @@
                                
                                 <span>Hi, 
                                     <?php
-                                        echo Session::get("fullName") ;
+                                        echo Session::get("full_name") ;
                                     ?>    
                                 </span>
                                 <div class="header-search-text-s">
@@ -242,7 +242,7 @@
                                         echo Session::destroy();
                                     }
                                     ?>
-                                    <a href="?mod=admin&act=dashboard&action=logout" class="account-more-item">
+                                    <a href="?mod=seller&act=dashboard&action=logout" class="account-more-item">
                                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
                                         <span>Đăng xuất</span>
                                     </a>
