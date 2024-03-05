@@ -2,8 +2,11 @@
 // session_start();
 include_once "./lib/session.php";
 // session_start();
-Session::checkSession();
-Session::checkPermission("admin");
+// Session::checkSession();
+include_once 'model/seller.php';
+
+$class_seller = new Seller();
+$class_seller->check_seller();
 include_once 'model/category.php';
 include_once 'model/product.php';
 include_once 'model/user.php';
@@ -19,7 +22,7 @@ if (isset($act)) {
             $viewTitle = 'Dashboard';
             include_once 'view/inc/headerAdmin.php';
             include_once 'view/inc/sidebarAdmin.php';
-            include_once 'view/admin/dashboard.php';
+            include_once 'view/seller/dashboard.php';
             include_once 'view/inc/footer.php';
             break;
         case 'addproduct':
@@ -27,6 +30,8 @@ if (isset($act)) {
             $classPro = new Product();
             $cate = new Category();
             $allCategory = $cate->getAllCate();
+            // echo ($allCategory);
+            // return;
             if (isset($_POST['btn-create-product']) && $_POST['btn-create-product']) {
                 $type = isset($_GET['type']) ? $_GET['type'] : "create";
                 $id = isset($_GET['idPro']) ? $_GET['idPro'] : "";
@@ -62,7 +67,7 @@ if (isset($act)) {
             }
             include_once 'view/inc/headerAdmin.php';
             include_once 'view/inc/sidebarAdmin.php';
-            include_once 'view/admin/addproduct.php';
+            include_once 'view/seller/addproduct.php';
             include_once 'view/inc/footer.php';
             break;
         case 'manageproduct':
@@ -73,9 +78,9 @@ if (isset($act)) {
             if (isset($_GET['page']) && $_GET['page']) {
                 $page = $_GET['page'];
             }
-            $allProduct = $classPro->getAllProduct($page);
+            $allProduct = $classPro->getAllProduct($page, 20, "", Session::get('id'));
             $cate = new Category();
-            $allCategory = $cate->getAllCate();
+            // $allCategory = $cate->getAllCate();
             // ddelete product
             if ((isset($_GET['type']) && isset($_GET['idPro'])) && ($_GET['type']) && $_GET['idPro']) {
                 $type = $_GET['type'];
@@ -100,7 +105,7 @@ if (isset($act)) {
                 // </script>';
             }
             include_once 'view/inc/sidebarAdmin.php';
-            include_once 'view/admin/manageproduct.php';
+            include_once 'view/seller/manageproduct.php';
             include_once 'view/inc/footer.php';
             break;
         case 'managecategory':
@@ -141,7 +146,7 @@ if (isset($act)) {
             $allCategory = $cate->getAllCate();
             include_once 'view/inc/headerAdmin.php';
             include_once 'view/inc/sidebarAdmin.php';
-            include_once 'view/admin/managecategory.php';
+            include_once 'view/seller/managecategory.php';
             include_once 'view/inc/footer.php';
             break;
         case 'manageorders':
@@ -154,27 +159,27 @@ if (isset($act)) {
             $viewTitle = 'Manage orders';
             include_once 'view/inc/headerAdmin.php';
             include_once 'view/inc/sidebarAdmin.php';
-            include_once 'view/admin/manageorders.php';
+            include_once 'view/seller/manageorders.php';
             include_once 'view/inc/footer.php';
             break;
         case 'detailorder':
             $classOrder = new Order();
-            
+
             $resultOrder = $classOrder->getAllInvoince();
-            if(isset($_GET['id']) && $_GET['id']){
+            if (isset($_GET['id']) && $_GET['id']) {
                 $getInvoiceDetail = $classOrder->getOrderDetail($_GET['id']);
-                if($getInvoiceDetail->status ==true){
+                if ($getInvoiceDetail->status == true) {
                     $data = $getInvoiceDetail->result;
-                }else{
+                } else {
                     header('location: ?mod=admin&act=manageorders');
                 }
-            }else{
+            } else {
                 header('location: ?mod=admin&act=manageorders');
             }
             $viewTitle = 'Manage orders';
             include_once 'view/inc/headerAdmin.php';
             include_once 'view/inc/sidebarAdmin.php';
-            include_once 'view/admin/orderdetail.php';
+            include_once 'view/seller/orderdetail.php';
             include_once 'view/inc/footer.php';
             break;
         case 'manageuser':
@@ -186,15 +191,15 @@ if (isset($act)) {
                 $_GET['type'] != ""
             ) {
                 $type = $_GET['type'];
-                if($type== 'edit'){
+                if ($type == 'edit') {
                     $userInfo = $classUser->getUserById($_GET['userid']);
 
-                }else if($type == 'delete'){
+                } else if ($type == 'delete') {
                     $deleteUser = $classUser->deleteUser($_GET['userid']);
                     if (isset($deleteUser)) {
-                        if ($deleteUser->status ==true) {
-                            echo '<div id="toast" mes-type="success" mes-title="Thành công!" mes-text="' .'Xóa tài khoản thành công' . '"></div>';
-                            
+                        if ($deleteUser->status == true) {
+                            echo '<div id="toast" mes-type="success" mes-title="Thành công!" mes-text="' . 'Xóa tài khoản thành công' . '"></div>';
+
                         } else {
                             echo '<div id="toast" mes-type="error" mes-title="Thất bại!" mes-text="' . 'Bạn không có quyền với hàng động này!' . '"></div>';
                         }
@@ -228,7 +233,7 @@ if (isset($act)) {
             $viewTitle = 'Quản lý user';
             include_once 'view/inc/headerAdmin.php';
             include_once 'view/inc/sidebarAdmin.php';
-            include_once 'view/admin/manageuser.php';
+            include_once 'view/seller/manageuser.php';
             include_once 'view/inc/footer.php';
             break;
         default:

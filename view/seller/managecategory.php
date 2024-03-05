@@ -186,8 +186,8 @@
                                            <div class="cate-right">
                                             <div class="cate-name">(' . $value["count"] . ') ' . $value["nameCate"] . '</div>
                                             <div class="cate-action" >
-                                                <a href="?mod=admin&act=managecategory&type=edit&idCate=' . $value["id"] . '" class="cate-action-item" title="Sửa"><i class="fa-regular fa-pen-to-square"></i></a>
-                                                <a href="?mod=admin&act=managecategory&type=delete&idCate=' . $value["id"] . '" class="cate-action-item" title="Xóa"><i class="fa-solid fa-trash-can"></i></a>
+                                                <a href="?mod=seller&act=managecategory&type=edit&idCate=' . $value["id"] . '" class="cate-action-item" title="Sửa"><i class="fa-regular fa-pen-to-square"></i></a>
+                                                <a href="?mod=seller&act=managecategory&type=delete&idCate=' . $value["id"] . '" class="cate-action-item" title="Xóa"><i class="fa-solid fa-trash-can"></i></a>
                                                
                                             </div>
                                            </div>

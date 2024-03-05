@@ -102,7 +102,7 @@
                                     <div class="s-orders-input">
                                         <input type="checkbox" class="order-input-check" orderid ="<?=$value['id'] ?>" >
                                         <div class="s-orders-view">
-                                            <a href="?mod=admin&act=detailorder&id=<?=$value['id'] ?>" class="s-orders-view-wrapper">
+                                            <a href="?mod=seller&act=detailorder&id=<?=$value['id'] ?>" class="s-orders-view-wrapper">
                                                 <i class="fa-solid fa-eye"></i>
                                                 <span>View</span>
                                             </a>

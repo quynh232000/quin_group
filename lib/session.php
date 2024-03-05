@@ -51,7 +51,7 @@
         }
         public static function destroy(){
             self::init();
-            
+            // unset()
             session_destroy();
             return  "<script>location.href = '?mod=profile&act=login';</script>";
             
