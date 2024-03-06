@@ -39,6 +39,19 @@ class Database
         $stmt->execute();
         return $stmt;
     }
+
+    public function selectAll($query) {
+        $stmt = $this->link->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function selectOne($query) {
+        $stmt = $this->link->prepare($query);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+
     public function insert($query)
     {
         return $this->link->exec($query);

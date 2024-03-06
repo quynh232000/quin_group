@@ -1,10 +1,10 @@
 <?php
-
+include_once 'model/admin/create_category_refferal.php';
 extract($_REQUEST);
 if (isset($act) && $act) {
     switch ($act) {
 
-        //dashboard
+            //dashboard
         case "dashboard":
             include_once "view/admin/header.php";
             include_once "view/admin/index.php";
@@ -12,14 +12,14 @@ if (isset($act) && $act) {
             break;
 
             //category
-        case "mn_all_cat":
+        case "mn_settings_cat":
+            $category = new Category();
             include_once "view/admin/header.php";
-            include_once "view/admin/pages/manage_category/all_category.php";
-            include_once "view/admin/scripts.php";
-            break;
-        case "mn_addNew_cat":
-            include_once "view/admin/header.php";
-            include_once "view/admin/pages/manage_category/addNew_category.php";
+            include_once "view/admin/pages/manage_category/settings_category.php";
+            if (isset($_FILES["file_img"]) && isset($_POST["name_category"])) {
+                $nameFile = $category->createParentCategory($_FILES["file_img"]);
+                $category->insertToDB($_POST["name_category"], $nameFile);
+            }
             include_once "view/admin/scripts.php";
             break;
         case "mn_deleted_cat":

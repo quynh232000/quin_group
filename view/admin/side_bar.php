@@ -18,8 +18,7 @@
       </a>
       <div class="collapse" id="ui-basic">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="?mod=admin&act=mn_all_cat">Tất cả danh mục</a></li>
-          <li class="nav-item"> <a class="nav-link" href="?mod=admin&act=mn_addNew_cat">Tạo danh mục</a></li>
+          <li class="nav-item"> <a class="nav-link" href="?mod=admin&act=mn_settings_cat">Cài đặt danh mục</a></li>
           <li class="nav-item"> <a class="nav-link" href="?mod=admin&act=mn_deleted_cat">Danh mục đã xóa</a></li>
         </ul>
       </div>
