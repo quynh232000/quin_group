@@ -4,14 +4,11 @@ include "./config/config.php";
 <?php
 class Database
 {
-    //     public $host   = DB_HOST;
-    //     public $user   = DB_USER;
-    //     public $pass   = DB_PASS;
-    //     public $dbname = DB_NAME;
     public $host = DB_HOST;
     public $user = DB_USER;
     public $pass = DB_PASS;
     public $dbname = DB_NAME;
+
 
     public $link;
     public $error;
@@ -37,6 +34,9 @@ class Database
     {
         $stmt = $this->link->prepare($query);
         $stmt->execute();
+        // $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+        
         return $stmt;
     }
 
@@ -65,6 +65,7 @@ class Database
         } else {
             return false;
         }
+
     }
     public function delete($query)
     {

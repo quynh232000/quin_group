@@ -5,6 +5,7 @@ include_once "model/cart.php";
 include_once "model/product.php";
 include_once "model/order.php";
 include_once "model/comment.php";
+include_once "model/category.php";
 
 extract($_REQUEST);
 if (isset($act)) {
@@ -69,6 +70,13 @@ if (isset($act)) {
                 echo json_encode($result, JSON_PRETTY_PRINT);
             }
             
+            return;
+        case 'get-all-category':
+            $idCate = $_GET['idCate'] ??0;
+            $class_category = new Category();
+            $result = $class_category->getAllCate($idCate);
+
+            echo json_encode($result, JSON_PRETTY_PRINT);
             return;
         default:
             break;

@@ -1,1 +1,3 @@
 upload/
+config/
+lib/database.php

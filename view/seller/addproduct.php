@@ -68,43 +68,46 @@
                                 <div class="cate-body w-100">
                                     <div class="form-group-body w-100">
                                         <label for="" class="form-label">
-                                            Category <i class="fa-solid fa-circle-info"></i>
+                                            Danh mục <i class="fa-solid fa-circle-info"></i>
                                         </label>
                                         <div class="shop-form-control">
                                             <div class="form-input-body">
                                                 <div class="select-cate-title" id="select-category-product">
-                                                    <span>
-                                                        Select category
+                                                    <span class="show-select-cate-view">
+                                                        Chọn danh mục
                                                     </span>
                                                     <i class="fa-solid fa-pen"></i>
                                                 </div>
+                                                <!-- <input id="input_category_id" type="text" name="category_id"> -->
                                                 <!-- @*modal eidit category*@ -->
                                                 <div class="modal-edit-cate">
                                                     <div class="modal-cate-wrapper">
                                                         <div class="modal-cate-title">
-                                                            <span>Edit category</span>
+                                                            <span>Chỉnh sửa danh mục</span>
                                                             <div class="modal-close btn-modal-cate-close">
                                                                 <i class="fa-solid fa-xmark"></i>
                                                             </div>
                                                         </div>
                                                         <div class="modal-cate-body">
                                                             <div class="madla-cate-body-title">Select the correct field,
-                                                                <a href="#">click here to learn more.</a></div>
-                                                            <div class="modal-cate-info">
-                                                                <div class="modal-cate-group">
+                                                                <a href="#">click here to learn more.</a>
+                                                            </div>
+                                                            <div class="modal-cate-info" id="show-detail-cate">
+
+                                                               
+                                                               <div class="modal-cate-group">
                                                                     <div class="modal-cate-group-wrapper">
                                                                         <?php
                                                                         foreach ($allCategory as $key => $value) { ?>
-                                                                            <div class="modal-cate-item"
-                                                                                idCate="<?= $value['id'] ?>" checkLast="
-                                                                                 <?php
+                                                                      
+                                                                            <div class="modal-cate-item" onclick="selectCategory(this,<?=$value['id']?>)"
+                                                                                idCate="<?= $value['id'] ?>" checkLast=" <?php
                                                                                  if (isset($value['children']) && $value['children']) {
                                                                                      echo "has";
                                                                                  } else {
                                                                                      echo "no";
                                                                                  }
-                                                                                 ?>
-                                                                                 ">
+                                                                                 ?>">
                                                                                 <p>
                                                                                     <?= $value['name'] ?>
                                                                                 </p>
@@ -117,21 +120,10 @@
                                                                             </div>
                                                                         <?php }
                                                                         ?>
-                                                                        <!-- @*item*@
-                                                                              @foreach (var item in categories)
-                                                                              {
-                                                                                  <div class="modal-cate-item" idCate="@item.Id" checkLast=@(item.TempChild == true ?"has":"no")>
-                                                                                      <p>@item.Name</p>
-                                                                                      @if (item.TempChild == true)
-                                                                                      {
-                                                                                          <i class="fa-solid fa-chevron-right"></i>
-                                                                                      }
-                                                                                  </div>
-                                                                              } -->
                                                                     </div>
-                                                                </div>
+                                                                </div> 
 
-                                                                <div class="modal-cate-group">
+                                                                <!-- <div class="modal-cate-group">
                                                                     <div class="modal-cate-group-wrapper">
 
                                                                         <div class="modal-cate-item active">
@@ -159,7 +151,8 @@
                                                                             <i class="fa-solid fa-chevron-right"></i>
                                                                         </div>
                                                                     </div>
-                                                                </div>
+                                                                </div> -->
+
                                                             </div>
                                                         </div>
                                                         <div class="modal-cate-bottom">
@@ -168,7 +161,7 @@
                                                                     Selected:
                                                                 </span>
                                                                 <div class="modal-cate-selected">
-                                                                    <div class="modal-cate-selected-item">
+                                                                    <!-- <div class="modal-cate-selected-item">
                                                                         <span>Clothes</span>
 
                                                                     </div>
@@ -181,11 +174,11 @@
                                                                         <i class="fa-solid fa-chevron-right"></i>
                                                                         <span>Clothes</span>
 
-                                                                    </div>
+                                                                    </div> -->
                                                                 </div>
                                                             </div>
-                                                            <div class="modal-cate-bottom-right">
-                                                                <button class="modal-btn-cancel">
+                                                            <div class="modal-cate-bottom-right" onclick="loghello()">
+                                                                <button class="modal-btn-cancel" >
                                                                     Cancel
                                                                 </button>
                                                                 <button disabled class="modal-btn-confirm">
@@ -268,7 +261,7 @@
                                     <div class="shop-form-control">
                                         <div class="form-input-body">
                                             <input type="text" name="origin"
-                                                value=" <?= isset($productInfo) ? $productInfo[0]['origin'] : "" ?>"
+                                                value="<?= isset($productInfo) ? $productInfo[0]['origin'] : "" ?>"
                                                 class="form-input" placeholder="Trung Quốc, Nhật Bản..." />
                                         </div>
                                     </div>
@@ -298,7 +291,7 @@
                                 <div class="shop-form-control">
                                     <div class="form-input-body">
                                         <input type="text" name="salePercent" class="form-input"
-                                            value=" <?= isset($productInfo) ? $productInfo[0]['salePercent'] : "" ?>"
+                                            value="<?= isset($productInfo) ? $productInfo[0]['salePercent'] : "" ?>"
                                             placeholder="0%" />
                                     </div>
                                 </div>
