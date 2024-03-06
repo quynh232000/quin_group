@@ -80,6 +80,7 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <script src="../src/js/main.js" type="module"></script>
+    <!-- <script src="../src/js/seller.js" type="module"></script> -->
     <script src="../src/js/slider.js"></script>
    
 </body>

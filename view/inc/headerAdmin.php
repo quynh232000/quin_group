@@ -40,7 +40,9 @@
     <link rel="stylesheet" href="src/css/shopaddproduct.css">
     <link rel="stylesheet" href="src/css/shopmanageorder.css">
     <link rel="stylesheet" href="src/css/shopdelivery.css">
-    
+    <link rel="stylesheet" href="./src/css/profile.css">
+    <!-- <link rel="stylesheet" href="./src/js/define.js"> -->
+    <script src="./src/js/seller.js"></script>
 
     <!-- swiper -->
     <link

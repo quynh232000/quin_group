@@ -518,11 +518,17 @@
     padding: 0 14px;
     
 }
+.show-select-cate-view{
+    display: flex;
+    align-items: center;
+}
 .modal-cate-item:hover {
     background-color:rgba(22,22,23,.08)
 }
 .modal-cate-item.active{
-    color:var(--primary)
+    display: flex !important;
+    color:var(--primary);
+    background-color: #fbeded;
 }
 .modal-cate-bottom{
     display:flex;

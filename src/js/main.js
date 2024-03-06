@@ -290,7 +290,6 @@ function handleCreateProduct() {
     });
   });
   // fill data quilljs
-  console.log($("#description").val());
   // update product
   $("#form-create-product").on("submit", function () {
     $("#description").val($("#editor").html());
@@ -503,7 +502,7 @@ $().ready(function () {
       dataType: "json",
     }).done((res) => {
       if (res.status == false) {
-        toastjs(res.message,false);
+        toastjs(res.message, false);
       } else {
         location.href =
           "?mod=page&act=detail&id=" +
@@ -653,8 +652,133 @@ $().ready(function () {
       }
     });
   }
+  // =========================================================================================================================//
+  // ========================Seller===================//
+  // ================================================//
+
+  // selectCategory();
+
+  // ================================================//
+  // =====================Seller=====================//
+  // ==========================================================================================================================//
 });
 // =================funtions====================//
+// select category add product
+
+function buildCategoryTree(categories, parentId = 0) {
+  let branch = [];
+  categories.forEach((category) => {
+    if (category.parent_id == parentId) {
+      let children = buildCategoryTree(categories, category.id);
+      if (children.length > 0) {
+        category.children = children;
+      }
+      branch.push(category);
+    }
+  });
+
+  return branch;
+}
+function fetchCategory(id, callBack) {
+  $.ajax({
+    url: "?mod=request&act=get-all-category&idCate=" + id,
+  }).done((data) => {
+    data = JSON.parse(data);
+    renderCategory(data,callBack)
+  });
+}
+function renderCategory(data, callBack) {
+  if (data.length > 0) {
+    const html = data
+      .map((item) => {
+        return `
+            <div class="modal-cate-item"
+                idCate="${item.id}" checkLast="${
+          item?.children?.length > 0 ? "has" : "no"
+        }">
+                <p>
+                    ${item.name}
+                </p>
+                ${
+                  item?.children?.length > 0
+                    ? `<i class="fa-solid fa-chevron-right"></i>`
+                    : ""
+                }
+            </div>
+          `;
+      })
+      .join("");
+    $(this).closest(".modal-cate-group").after(`
+      <div class="modal-cate-group">
+          <div class="modal-cate-group-wrapper">
+            ${html}
+          </div>
+      </div>
+    `);
+  }
+  if (callBack) {
+    callBack();
+  }
+}
+function selectCategory() {
+  $(".modal-cate-item").each((index, element) => {
+    $(element).on("click", function () {
+      // ===
+      $(this).closest(".modal-cate-group").nextAll()?.remove();
+      $(this)
+        .closest(".modal-cate-group")
+        .find(".modal-cate-item")
+        ?.removeClass("active");
+      $(this).addClass("active");
+      const type = $(this).attr("checkLast")?.trim();
+      const id = $(this).attr("idCate");
+      if (type == "has") {
+        console.log(id);
+        // $(this).closest('.modal-cate-group').nextAll().remove()
+        $.ajax({
+          url: "?mod=request&act=get-all-category&idCate=" + id,
+        }).done((data) => {
+          data = JSON.parse(data);
+          if (data.length > 0) {
+            const html = data
+              .map((item) => {
+                return `
+                    <div class="modal-cate-item"
+                        idCate="${item.id}" checkLast="${
+                  item?.children?.length > 0 ? "has" : "no"
+                }">
+                        <p>
+                            ${item.name}
+                        </p>
+                        ${
+                          item?.children?.length > 0
+                            ? `<i class="fa-solid fa-chevron-right"></i>`
+                            : ""
+                        }
+                    </div>
+                  `;
+              })
+              .join("");
+            $(this).closest(".modal-cate-group").after(`
+              <div class="modal-cate-group" onclick="selectCategory(${id})">
+                  <div class="modal-cate-group-wrapper">
+                    ${html}
+                  </div>
+              </div>
+            `);
+          }
+          // selectCategory();
+        });
+      } else {
+        console.log("no ", id);
+      }
+      // ===
+    });
+  });
+  // $(".modal-cate-item").click(function () {
+
+  // });
+}
 function randomTime(min, max) {
   return Math.floor(Math.random() * max) + min;
 }
