@@ -23,4 +23,10 @@ class Category
         $query = "INSERT INTO `category` (`name`, `icon`, `parent_id`, `is_deleted`) VALUES ('$name_category', '$icon', '0', '0');";
         $this->db->insert($query);
     }
+
+    public function selectParentCategories()
+    {
+        $query = "SELECT * from category where parent_id = 0";
+        $this->db->selectAll($query);
+    }
 }

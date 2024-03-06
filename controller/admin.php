@@ -20,6 +20,8 @@ if (isset($act) && $act) {
                 $nameFile = $category->createParentCategory($_FILES["file_img"]);
                 $category->insertToDB($_POST["name_category"], $nameFile);
             }
+
+            $parentCategories = $category->selectParentCategories();
             include_once "view/admin/scripts.php";
             break;
         case "mn_deleted_cat":

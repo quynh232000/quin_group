@@ -1,0 +1,11 @@
+.admin-treeview-box {}
+
+.admin-treeview-column {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+}
+
+.expandable {}
+
+.collapsable {}
