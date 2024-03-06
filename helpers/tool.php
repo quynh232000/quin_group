@@ -19,11 +19,10 @@ class Tool
                 mkdir($fileDir, 0, true);
             }
             $fileNameNew =   self::GUID() . "." . (explode(".", $fileName)[1]);
-            $fileDir =$fileDir .$fileNameNew;
+            $fileDir = $fileDir . $fileNameNew;
             if (move_uploaded_file($file['tmp_name'], $fileDir)) {
                 return $fileNameNew;
-                
-            }else{
+            } else {
                 return false;
             }
         } else {
@@ -71,10 +70,7 @@ class Tool
             }
         } else {
             $value = "/";
-
         }
         return $value;
     }
 }
-
-?>

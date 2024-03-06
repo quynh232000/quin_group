@@ -14,6 +14,9 @@ if (isset($mod)) {
         case 'seller':
             include_once 'controller/seller.php';
             break;
+        case 'admin':
+            include_once 'controller/admin.php';
+            break;
         case 'request':
             include_once 'controller/request.php';
             break;
@@ -33,4 +36,3 @@ if (isset($mod)) {
         header('location: ?mod=page&act=home');
     }
 }
-?>

@@ -132,8 +132,6 @@ if (isset($act)) {
                 if ($type == 'edit') {
                     $resultGetInfo = $cate->getInfoCate($idCate);
                 }
-
-
             }
             if (isset($resultDeleteCate)) {
                 if ($resultDeleteCate->status == true) {
