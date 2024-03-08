@@ -13,15 +13,18 @@ if (isset($act) && $act) {
 
             //category
         case "mn_settings_cat":
-            $category = new Category();
+            $category = new CategoryAdmin();
+            $parentCategories = $category->getAllCate();
             include_once "view/admin/header.php";
             include_once "view/admin/pages/manage_category/settings_category.php";
             if (isset($_FILES["file_img"]) && isset($_POST["name_category"])) {
-                $nameFile = $category->createParentCategory($_FILES["file_img"]);
+                $nameFile = $category->createImg($_FILES["file_img"]);
                 $category->insertToDB($_POST["name_category"], $nameFile);
             }
+            // echo "<pre>";
+            // print_r($parentCategories);
 
-            $parentCategories = $category->selectParentCategories();
+
             include_once "view/admin/scripts.php";
             break;
         case "mn_deleted_cat":
