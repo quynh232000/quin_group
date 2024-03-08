@@ -11,12 +11,14 @@ class Product
     private $fm;
     private $tool;
     private $response;
+    private $db_name;
 
     public function __construct()
     {
         $this->db = new Database();
         $this->fm = new Format();
         $this->tool = new Tool();
+        $this->db_name = DB_NAME;
     }
     public function updateProduct(
         $name = '',
@@ -29,7 +31,6 @@ class Product
         $percent_sale = '',
         $image = '',
         $listImage = '',
-        $unit = '',
         $type = '',
         $id = ''
     ) {
@@ -46,12 +47,13 @@ class Product
             $queryUpdate .= "p.price = '$price',";
             $queryUpdate .= "p.percent_sale = '$percent_sale',";
             $queryUpdate .= "p.price = '$price',";
+            $queryUpdate .= "p.status = 'New',";
             // upload img
-            $fileResult = $this->tool->uploadFile($image);
+            $fileResult = $this->tool->uploadFile($image,'product/');
             if ($fileResult) {
-                $queryUpdate .= "p.image = '$fileResult',";
+                $queryUpdate .= "p.image_cover = '$fileResult',";
             }
-            $queryUpdate .= 'updatedAt = NOW()';
+            $queryUpdate .= 'updated_at = NOW()';
             $resultEditPro = $this->db->update("UPDATE product AS p
                         SET $queryUpdate
                         WHERE p.id = $id
@@ -62,16 +64,20 @@ class Product
             return new Response(true, "Cập nhật sản phẩm thành công", "", "", "");
         } else {
             // create
-            $slug = $this->tool->slug($name, '-');
-            $fileResult = $this->tool->uploadFile($image);
+            // get shop id
+            $user_id = Session::get('id');
+            $shop_id = $this->db->select("SELECT id FROM shop WHERE user_id ='$user_id'")->fetchColumn();
+
+            $slug = $this->tool->slug($name);
+            $fileResult = $this->tool->uploadFile($image,"/product/");
             $query = "INSERT INTO product (product.name, product.description, product.category_id,product.status,
-            product.quantity,product.brand,product.image,origin,price,
-            percent_sale,slug,unit,created_at,sold) VALUES
+            product.quantity,product.brand,product.image_cover,origin,price,
+            percent_sale,slug,created_at,shop_id) VALUES
                 (
                     '$name',
                     '$description',
                     '$category_id',
-                    'active',
+                    'New',
                     '$quantity',
                     '$brand',
                     '$fileResult',
@@ -79,9 +85,8 @@ class Product
                     '$price',
                     '$percent_sale',
                     '$slug',
-                    '$unit',
                     NOW(),
-                    0
+                    '$shop_id'
                 )
             ";
             $result = $this->db->insert($query);
@@ -97,7 +102,7 @@ class Product
             $totalFile = count($listImage['name']);
             $querylistImg = "";
             for ($i = 0; $i < $totalFile; $i++) {
-                $fileDir = "./assest/upload/";
+                $fileDir = "./assest/upload/".'/product/';
                 if (isset($listImage['error'][$i]) && $listImage['error'][$i] == 0) {
                     $fileName = basename($listImage['name'][$i]);
                     if (!file_exists($fileDir)) {
@@ -106,12 +111,12 @@ class Product
                     $fileNameNew = $this->tool->GUID() . "." . (explode(".", $fileName)[1]);
                     $fileDir = $fileDir . $fileNameNew;
                     if (move_uploaded_file($listImage['tmp_name'][$i], $fileDir)) {
-                        $querylistImg .= "('$idPro', '$fileNameNew',NOW()),";
+                        $querylistImg .= "('$idPro', 'product/$fileNameNew',NOW()),";
                     }
                 }
             }
             $querylistImg = rtrim($querylistImg, ",");
-            $queryImg = "INSERT into listimage (productId,imagePro,created_at) values
+            $queryImg = "INSERT into listimage (product_id,link,created_at) values
                 $querylistImg ";
             $resulltListImage = $this->db->insert($queryImg);
             if ($resulltListImage == false) {
@@ -126,10 +131,13 @@ class Product
         if ($type) {
             $type = " AND pr.status = '$type'";
         }
+        $shop_id = "";
         if ($user_id) {
-            $user_id = " AND pr.user_id = '$user_id'";
+            $shop = $this->db->select("SELECT * FROM shop WHERE user_id = '$user_id'")->fetch();
+            $shop_id = $shop['id'];
+            $shop_id = " AND pr.shop_id = '$shop_id'";
         }
-        $getTotal = $this->db->select("SELECT COUNT(*) AS total from product AS pr WHERE 1  $type $user_id");
+        $getTotal = $this->db->select("SELECT COUNT(*) AS total from product AS pr WHERE 1 AND is_deleted ='0'  $type $shop_id");
         $total = $getTotal->fetchAll()[0];
         $total = $total == false ? 0 : $total['total'];
         if ($page < 1) {
@@ -137,8 +145,9 @@ class Product
         }
         $currentPage = ($page - 1) * $limit;
         $query = "SELECT pr.*, cate.name as nameCategory from product as pr 
-            INNER JOIN category as cate on pr.category_id = cate.id 
-            $type $user_id
+            INNER JOIN category as cate on pr.category_id = cate.id where 1
+            $type $shop_id
+           
             ORDER BY pr.created_at DESC 
             limit $currentPage,$limit
         ";
@@ -196,7 +205,7 @@ class Product
             $result = [];
             if ($key == "detail") {
                 $result = $response->fetchAll();
-                $listImg = $this->db->select("SELECT imagePro as link FROM listimage WHERE productId = $value ");
+                $listImg = $this->db->select("SELECT  link FROM listimage WHERE product_id = $value ");
                 if ($listImg != false) {
                     array_push($result, $listImg->fetchAll());
                 }
@@ -245,8 +254,11 @@ class Product
     }
     public function dashboard()
     {
+        $user_id = Session::get('id');
+        $shop_id = $this->db->select("SELECT id From shop where user_id = '$user_id' ")->fetchColumn();
+
         $result = [];
-        $totalProduct = $this->db->select("SELECT count(*) as total FROM product");
+        $totalProduct = $this->db->select("SELECT count(*) as total FROM product where shop_id = '$shop_id'");
 
         if ($totalProduct == false) {
             $result['totalPro'] = 0;
@@ -254,13 +266,22 @@ class Product
             $totalProduct = $totalProduct->fetchAll()[0];
             $result['totalPro'] = $totalProduct['total'];
         }
-        $totalSold = $this->db->select("SELECT sum(i.quantity) as total FROM invoicedetail as i");
+       
+        $totalSold = $this->db->select("SELECT sum(order_detail.quantity) as total 
+        FROM order_detail 
+        INNER JOIN $this->db_name.order
+        on  order_detail.order_id = order.id
+        where order.shop_id = '$shop_id'
+        AND order.status ='To Rate'
+        ");
         if ($totalSold == false) {
             $result['totalSold'] = 0;
         } else {
             $totalSold = $totalSold->fetchAll()[0];
             $result['totalSold'] = $totalSold['total'];
         }
+        // echo "quynh";
+        // return;
         $totalOut = $this->db->select("SELECT count(p.id) as total FROM product as p where p.id < 1");
         if ($totalOut == false) {
             $result['totalOut'] = 0;
@@ -268,8 +289,9 @@ class Product
             $totalOut = $totalOut->fetchAll()[0];
             $result['totalOut'] = $totalOut['total'];
         }
+        
         // totalHidden
-        $totalHidden = $this->db->select("SELECT count(p.id) as total FROM product as p where p.status ='hidden'");
+        $totalHidden = $this->db->select("SELECT count(p.id) as total FROM product as p where p.is_show = 0 AND shop_id = '$shop_id'");
         if ($totalHidden == false) {
             $result['totalHidden'] = 0;
         } else {
@@ -277,7 +299,7 @@ class Product
             $result['totalHidden'] = $totalHidden['total'];
         }
         // totalOrder
-        $totalOrder = $this->db->select("SELECT count(*) as total FROM invoice");
+        $totalOrder = $this->db->select("SELECT count(*) as total FROM $this->db_name.order where shop_id = '$shop_id' AND status = 'To Rate'");
         if ($totalOrder == false) {
             $result['totalOrder'] = 0;
         } else {
@@ -285,7 +307,7 @@ class Product
             $result['totalOrder'] = $totalOrder['total'];
         }
         // totalOrderNew
-        $totalOrderNew = $this->db->select("SELECT count(*) as total FROM invoice  where invoice.status ='new'");
+        $totalOrderNew = $this->db->select("SELECT count(*) as total FROM $this->db_name.order  where order.status ='new' AND shop_id = '$shop_id'");
         if ($totalOrderNew == false) {
             $result['totalOrderNew'] = 0;
         } else {
@@ -293,7 +315,7 @@ class Product
             $result['totalOrderNew'] = $totalOrderNew['total'];
         }
         // totalOrderSuccess
-        $totalOrderSuccess = $this->db->select("SELECT count(*) as total FROM invoice  where invoice.status ='confirmed'");
+        $totalOrderSuccess = $this->db->select("SELECT count(*) as total FROM $this->db_name.order  where order.status ='To Rate' AND shop_id = '$shop_id'");
         if ($totalOrderSuccess == false) {
             $result['totalOrderSuccess'] = 0;
         } else {
@@ -301,7 +323,7 @@ class Product
             $result['totalOrderSuccess'] = $totalOrderSuccess['total'];
         }
         // totalOrderCancel
-        $totalOrderCancel = $this->db->select("SELECT count(*) as total FROM invoice  where invoice.status ='cancel'");
+        $totalOrderCancel = $this->db->select("SELECT count(*) as total FROM $this->db_name.order  where order.status ='Cancelled'");
         if ($totalOrderCancel == false) {
             $result['totalOrderCancel'] = 0;
         } else {
@@ -309,7 +331,7 @@ class Product
             $result['totalOrderCancel'] = $totalOrderCancel['total'];
         }
         //  total balance
-        $totalBalance = $this->db->select("SELECT sum(invoice.total) as total FROM invoice  where invoice.status ='confirmed'");
+        $totalBalance = $this->db->select("SELECT sum(order.total) as total FROM $this->db_name.order  where order.status ='To Rate' AND shop_id = '$shop_id'");
         if ($totalBalance == false) {
             $result['totalBalance'] = 0;
         } else {

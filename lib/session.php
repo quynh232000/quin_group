@@ -23,10 +23,19 @@
                 return false;
             }
         }
+        public static function remove($key){
+            if(isset($_SESSION[$key])){
+                unset($_SESSION[$key]);
+                return true;
+            }else{
+                return false;
+            }
+        }
         public static function checkPermission($role){
             self::checkSession();
             if(!(self::get("role") == 'admin' || self::get("role") == 'adminall')){
                 header("Location: ?mod=profile&act=login&redirect=admin");
+                
             }
         }
         public static function checkSession(){

@@ -29,8 +29,8 @@ class Cart
             $type = "";
         }
         $cartUser = $this->db->select("SELECT c.*,
-        p.namePro, p.image, p.brand, p.price, p.quantity, p.origin
-        from cart AS c INNER JOIN product AS p  ON c.productId = p.id WHERE c.userId = '$userId'  $type");
+        p.name, p.image_cover, p.brand, p.price, p.quantity, p.origin
+        from cart AS c INNER JOIN product AS p  ON c.product_id = p.id WHERE c.user_id = '$userId'  $type");
         if ($cartUser == false) {
             return new Response(false, "false", "", "");
         } else {
@@ -48,11 +48,11 @@ class Cart
             return new Response(true, "success", ["total" => "0", "totalPrice" => 0], "");
         }
         $userId = Session::get("id");
-        $checkCart = $this->db->select("SELECT * FROM cart WHERE userId = '$userId' ");
+        $checkCart = $this->db->select("SELECT * FROM cart WHERE user_id = '$userId' ");
         if ($checkCart == false) {
             return new Response(true, "success", ["total" => "0", "totalPrice" => 0], "");
         }
-        $query = "select SUM(c.count * p.price) as totalPrice, SUM(c.count) as total from cart as c inner join product as p on c.productId = p.id where userId = '$userId' AND c.check = '1';";
+        $query = "select SUM(c.quantity * p.price) as totalPrice, SUM(c.quantity) as total from cart as c inner join product as p on c.product_id = p.id where c.user_id = '$userId' AND c.check = '1';";
         $resultGetCart = $this->db->select($query);
         if ($resultGetCart == false) {
             return new Response(true, "success", ["total" => "0", "totalPrice" => 0], "");

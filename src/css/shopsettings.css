@@ -23,6 +23,7 @@
     height: 120px;
     border-radius: 50%;
     object-fit: cover;
+    box-shadow: 0 0 4px rgba(22,22,23,.2);
 }
 .s-profile-top{
     display: flex;
@@ -33,7 +34,7 @@
 .s-profile-img-upload{
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 6px;
     transition: .3s ease;
 }
 .s-profile-img-upload:hover{

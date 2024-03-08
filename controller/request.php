@@ -78,6 +78,17 @@ if (isset($act)) {
 
             echo json_encode($result, JSON_PRETTY_PRINT);
             return;
+            case 'update_status_cate':
+                if(isset($_GET['id']) && $_GET['id']&&isset($_GET['type']) && $_GET['type']){
+                    $classOrder = new Order();
+                    $result = $classOrder->update_status_order($_GET['id'], $_GET['type']);
+                }else{
+                    $result =['status'=>false,'message'=>"Missing paramater"];
+                }
+               
+    
+                echo json_encode($result, JSON_PRETTY_PRINT);
+                return;
         default:
             break;
 

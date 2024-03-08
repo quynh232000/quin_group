@@ -20,7 +20,7 @@
                         <div class="de-info-item-group">
                             <span>Họ tên:</span>
                             <strong>
-                                <?= $invoiceInfo['nameReceiver'] ?>
+                                <?= $invoiceInfo['name_receiver'] ?>
                             </strong>
                         </div>
                         <div class="de-info-item-group">
@@ -32,26 +32,26 @@
                         <div class="de-info-item-group">
                             <span>Phone:</span>
                             <strong class="">
-                                <?= $invoiceInfo['phone'] ?>
+                                <?= $invoiceInfo['phone_number'] ?>
                             </strong>
                         </div>
                         <div class="de-info-item-group">
                             <span>Địa chỉ:</span>
                             <strong class="">
-                                <?= $invoiceInfo['city'] ?> -
-                                <?= $invoiceInfo['province'] ?>
+                                <?= $invoiceInfo['province'] ?> -
+                                <?= $invoiceInfo['district'] ?> 
                             </strong>
                         </div>
                         <div class="de-info-item-group">
                             <span>Địa chỉ chi tiết:</span>
                             <strong class="">
-                                <?= $invoiceInfo['addressDetail'] ?>
+                                <?= $invoiceInfo['address_detail'] ?>
                             </strong>
                         </div>
                         <div class="de-info-item-group">
                             <span>Ghi chú:</span>
                             <strong class="">
-                                <?= $invoiceInfo['note'] ?>
+                                <?= $invoiceInfo['note']??"-" ?>
                             </strong>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                         <div class="de-info-item-group">
                             <span>Ngày:</span>
                             <strong>
-                                <?= $invoiceInfo['createdAt'] ?>
+                                <?= $invoiceInfo['created_at'] ?>
                             </strong>
                         </div>
                         <div class="de-info-item-group">
@@ -78,7 +78,7 @@
                         <div class="de-info-item-group">
                             <span>Tạm tính:</span>
                             <strong class="fm-price">
-                                <?= $invoiceInfo['subTotal'] ?>
+                                <?= $invoiceInfo['sub_total'] ?>
                             </strong>
                         </div>
                         <div class="de-info-item-group de-group-total">
@@ -114,12 +114,12 @@
                             </td>
                             <td>
                                 <div class="de-pro">
-                                    <img src="assest/upload/<?=$value['image'] ?>"
+                                    <img src="assest/upload/<?=$value['image_cover'] ?>"
                                         alt="">
                                 </div>
                             </td>
                             <td>
-                                <a href="?mod=page&act=detail&id=<?=$value['id'] ?>" class="de-pro"><?=$value['namePro'] ?></a>
+                                <a href="?mod=page&act=detail&id=<?=$value['id'] ?>" class="de-pro"><?=$value['name'] ?></a>
                             </td>
                             <td>
                                 <div class="de-pro fm-price"><?=$value['price'] ?></div>

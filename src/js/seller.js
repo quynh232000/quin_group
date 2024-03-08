@@ -44,13 +44,12 @@ function selectCategory(_this, id) {
             </div>
         `;
     }
-    
   });
   const type = $(_this).attr("checkLast")?.trim();
 
   // const id = $(_this).attr("idCate");
   if (type == "has") {
-    $('#input_category_id').val("")
+    $("#input_category_id").val("");
     // $(_this).closest('.modal-cate-group').nextAll().remove()
     $.ajax({
       url: "?mod=request&act=get-all-category&idCate=" + id,
@@ -95,34 +94,33 @@ function selectCategory(_this, id) {
             </div>
           `);
         //show nav select
-        // console.log("asdd: ",$(".modal-cate-item.active"));
-        //show nav select
       }
-      // selectCategory();
     });
+    $(".modal-btn-confirm").attr("disabled", "disabled");
   } else {
-    $('#input_category_id').val(id)
-    $(".show-select-cate-view").html(htmlCateSelect)
+    $(".show-select-cate-view").html(htmlCateSelect);
+    $(".modal-btn-confirm").removeAttr("disabled");
+    $("#input_category_id").val(id);
+
+    $(".modal-btn-confirm").click(function () {
+      $(".modal-edit-cate").css("display", "none");
+    });
   }
-  
-  // $(".modal-cate-item").map((index,item) => {
-  //   console.log($(item));
-  //   // $text = $(item).find("p")?.text();
-  //   // $id = $(item).attr("idCate").trim();
-  //   // console.log(text);
-  // });
-  // let htmlCateSelect = $(".modal-cate-item.active")
-  //   .map((index,item) => {
-  //     const text = $(item).find("p")?.text();
-  //     const id = $(item).attr("idCate").trim();
-  //     return `
-  //       <div class="modal-cate-selected-item">
-  //         <span>${text}</span>
-  //       </div>
-  //   `;
-  //   })
-  //   .join("");
-  // console.log(htmlCateSelect);
   $(".modal-cate-selected").html(htmlCateSelect);
+}
+// accept order
+function order_accept(id) {
+  $.ajax({
+    url: `?mod=request&act=update_status_cate&id=${id}&type=accept`,
+  }).done((data) => {
+    data = JSON.parse(data);
+    if(data.status){
+      window.location.href ="?mod=seller&act=manageorders#order"+id;
+    }
+  });
   
+}
+// cancel order
+function order_cancel(id) {
+  console.log(id);
 }

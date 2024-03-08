@@ -5,13 +5,13 @@ include "./config/config.php";
 class Database
 {
     //     public $host   = DB_HOST;
-//     public $user   = DB_USER;
-//     public $pass   = DB_PASS;
-//     public $dbname = DB_NAME;
+    // public $user   = DB_USER;
+    // public $pass   = DB_PASS;
+    // public $dbname = DB_NAME;
     public $host = "localhost";
     public $user = "quin";
     public $pass = "Quin123@123.";
-    public $dbname = "quin";
+    public $dbname = "quinshop";
 
     public $link;
     public $error;

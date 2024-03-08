@@ -30,7 +30,7 @@
                                     <div class="shop-form-control">
                                         <div class="form-input-body">
                                             <input type="text" name="name"
-                                                value="<?= isset($productInfo) ? $productInfo[0]['namePro'] : "" ?>"
+                                                value="<?= isset($productInfo) ? $productInfo[0]['name'] : "" ?>"
                                                 rules="required" class="form-input"
                                                 placeholder="Nhập tên sản phẩm..." />
                                         </div>
@@ -74,11 +74,19 @@
                                             <div class="form-input-body">
                                                 <div class="select-cate-title" id="select-category-product">
                                                     <span class="show-select-cate-view">
-                                                        Chọn danh mục
+                                                        <?php 
+                                                        if (isset($productInfo[0]['category_id'])) {
+                                                            echo $productInfo[0]['nameCategory'];
+                                                        } else {
+                                                           echo 'Chọn danh mục';
+                                                        }
+                                                        
+                                                        ?>
+                                                        
                                                     </span>
                                                     <i class="fa-solid fa-pen"></i>
                                                 </div>
-                                                <!-- <input id="input_category_id" type="text" name="category_id"> -->
+                                                <input id="input_category_id" type="text" hidden name="category_id" value="<?=$productInfo[0]['category_id'] ??""?>">
                                                 <!-- @*modal eidit category*@ -->
                                                 <div class="modal-edit-cate">
                                                     <div class="modal-cate-wrapper">
@@ -177,13 +185,14 @@
                                                                     </div> -->
                                                                 </div>
                                                             </div>
-                                                            <div class="modal-cate-bottom-right" onclick="loghello()">
-                                                                <button class="modal-btn-cancel" >
+                                                            <div class="modal-cate-bottom-right" >
+                                                            <!-- class="modal-btn-cancel "  -->
+                                                                <button >
                                                                     Cancel
                                                                 </button>
-                                                                <button disabled class="modal-btn-confirm">
+                                                                <div disabled class="modal-btn-confirm">
                                                                     Confirm
-                                                                </button>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -225,22 +234,6 @@
                                 </div>
 
 
-
-
-                                <div class="form-group-body w-50">
-                                    <label for="" class="form-label">
-                                        Đơn vị <i class="fa-solid fa-circle-info"></i>
-                                    </label>
-                                    <div class="shop-form-control">
-                                        <div class="form-input-body">
-                                            <input type="text"
-                                                value="<?= isset($productInfo) ? $productInfo[0]['unit'] : "" ?>"
-                                                name="unit" placeholder="Cái, cặp, hộp,..." />
-
-                                        </div>
-                                    </div>
-                                    <div class="form-msg"></div>
-                                </div>
                                 <div class="form-group-body w-50">
                                     <label for="" class="form-label">
                                         Thương hiệu<i class="fa-solid fa-circle-info"></i>
@@ -291,7 +284,7 @@
                                 <div class="shop-form-control">
                                     <div class="form-input-body">
                                         <input type="text" name="salePercent" class="form-input"
-                                            value="<?= isset($productInfo) ? $productInfo[0]['salePercent'] : "" ?>"
+                                            value="<?= isset($productInfo) ? $productInfo[0]['percent_sale'] : "" ?>"
                                             placeholder="0%" />
                                     </div>
                                 </div>
@@ -362,7 +355,7 @@
                                     <div class="create-show-image-body"
                                         style=" <?= isset($productInfo) ? "display:flex" : "" ?>">
                                         <img class="create-show-image"
-                                            src="./assest/upload/<?= isset($productInfo) ? $productInfo[0]['image'] : "" ?>" />
+                                            src="./assest/upload/<?= isset($productInfo) ? $productInfo[0]['image_cover'] : "" ?>" />
                                     </div>
                                 </div>
                                 <div class="form-msg"></div>
