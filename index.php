@@ -20,6 +20,9 @@ if (isset($mod)) {
         case 'redirect-google':
             include_once 'model/redirect-google.php';
             break;
+            case 'verify':
+                include_once 'controller/verify.php';
+                break;
 
         default:
             header("Location: ?page=404");

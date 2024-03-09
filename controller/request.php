@@ -6,6 +6,7 @@ include_once "model/product.php";
 include_once "model/order.php";
 include_once "model/comment.php";
 include_once "model/category.php";
+include_once "model/address.php";
 
 extract($_REQUEST);
 if (isset($act)) {
@@ -64,31 +65,54 @@ if (isset($act)) {
                 return;
             }
         case 'fillterproduct':
-            if(isset($_GET['id']) && $_GET['id']){
+            if (isset($_GET['id']) && $_GET['id']) {
                 $classProduct = new Product();
-                $result = $classProduct->filterProduct('category',$_GET['id']);
+                $result = $classProduct->filterProduct('category', $_GET['id']);
                 echo json_encode($result, JSON_PRETTY_PRINT);
             }
-            
+
             return;
         case 'get-all-category':
-            $idCate = $_GET['idCate'] ??0;
+            $idCate = $_GET['idCate'] ?? 0;
             $class_category = new Category();
             $result = $class_category->getAllCate($idCate);
 
             echo json_encode($result, JSON_PRETTY_PRINT);
             return;
-            case 'update_status_cate':
-                if(isset($_GET['id']) && $_GET['id']&&isset($_GET['type']) && $_GET['type']){
-                    $classOrder = new Order();
-                    $result = $classOrder->update_status_order($_GET['id'], $_GET['type']);
-                }else{
-                    $result =['status'=>false,'message'=>"Missing paramater"];
+        case 'update_status_cate':
+            if (isset($_GET['id']) && $_GET['id'] && isset($_GET['type']) && $_GET['type']) {
+                $classOrder = new Order();
+                $result = $classOrder->update_status_order($_GET['id'], $_GET['type']);
+            } else {
+                $result = ['status' => false, 'message' => "Missing paramater"];
+            }
+
+
+            echo json_encode($result, JSON_PRETTY_PRINT);
+            return;
+        case 'get_address':
+            if (isset($_GET['type']) && isset($_GET['type'])) {
+                $classAddress = new Address();
+                switch ($_GET['type']) {
+                    case 'province':
+                        $result = $classAddress->get_all_province();
+                        echo json_encode($result, JSON_PRETTY_PRINT);
+                        break;
+                    case 'district':
+                        $result = $classAddress->get_district($_GET['id']);
+                        echo json_encode($result, JSON_PRETTY_PRINT);
+                        break;
+
+                    case 'ward':
+                        $result = $classAddress->get_ward($_GET['id']);
+                        echo json_encode($result, JSON_PRETTY_PRINT);
+                        break;
+                    default:
+                    echo json_encode([], JSON_PRETTY_PRINT);
+                        break;
                 }
-               
-    
-                echo json_encode($result, JSON_PRETTY_PRINT);
-                return;
+            }
+            return;
         default:
             break;
 

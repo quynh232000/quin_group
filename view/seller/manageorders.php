@@ -7,7 +7,7 @@
         </div>
         <div class="shop-orders">
             <div class="s-orders-top">
-                <div class="s-orders-filter">
+                <!-- <div class="s-orders-filter">
                     <div class="s-orders-filter-left">
                         <div class="s-orders-filter-select">
                             <input type="text" placeholder="Tìm kiếm...">
@@ -34,27 +34,35 @@
                             <span>Đặt lại</span>
                         </div>
                     </div>
-                </div>
-                <div class="s-orders-option">
+                </div> -->
+                <!-- <div class="s-orders-option">
                     <div class="s-orders-option-item" type="confirmed">
                         <span>Xác nhận đơn hàng</span>
-                        <!-- <i class="fa-solid fa-angle-down"></i> -->
+                        <i class="fa-solid fa-angle-down"></i>
                     </div>
                     <div class="s-orders-option-item" type="success">
                         <span>Xác nhận đã giao</span>
-                        <!-- <i class="fa-solid fa-angle-down"></i> -->
+                        <i class="fa-solid fa-angle-down"></i>
                     </div>
                     <div class="s-orders-option-item" type="cancel">
                         <span>Hủy đơn hàng</span>
-                        <!-- <i class="fa-solid fa-angle-down"></i> -->
+                        <i class="fa-solid fa-angle-down"></i>
                     </div>
-                    
+
+                </div> -->
+                <div class="s-order-nav">
+                    <a href="?mod=seller&act=manageorders" class="s-order-nav-item <?= !isset($_GET['status']) ?"active":"" ?>">Tất cả</a>
+                    <a href="?mod=seller&act=manageorders&status=New" class="s-order-nav-item   <?=(isset($_GET['status']) && $_GET['status'] =='New') ?'active':"" ?>">Chờ xác nhận</a>
+                    <a href="?mod=seller&act=manageorders&status=Confirmed" class="s-order-nav-item  <?=(isset($_GET['status']) && $_GET['status'] =='Confirmed') ?'active':"" ?>">Chờ lấy hàng</a>
+                    <a href="?mod=seller&act=manageorders&status=On_Delivery" class="s-order-nav-item  <?=(isset($_GET['status']) && $_GET['status'] =='On_Delivery') ?'active':"" ?>">Đang giao</a>
+                    <a href="?mod=seller&act=manageorders&status=Completed" class="s-order-nav-item  <?=(isset($_GET['status']) && $_GET['status'] =='Completed') ?'active':"" ?>">Đã giao</a>
+                    <a href="?mod=seller&act=manageorders&status=Cancelled" class="s-order-nav-item  <?=(isset($_GET['status']) && $_GET['status'] =='Cancelled') ?'active':"" ?>">Đơn hủy</a>
                 </div>
             </div>
-           
+
             <div class="s-orders-body">
                 <div class="s-ordes-nav">
-                    <div class="s-order-item" >
+                    <div class="s-order-item">
                         <div class="s-order-left">
                             <div class="s-orders-input">
                                 <input type="checkbox">
@@ -65,7 +73,7 @@
                             <div class="s-orders-time">
                                 <div class="s-orders-title">Ngày</div>
                             </div>
-                            
+
                             <div class="s-orders-code">
                                 <div class="s-orders-title">Code</div>
                             </div>
@@ -84,9 +92,9 @@
                             <div class="s-orders-status">
                                 <div class="s-orders-title">Trạng thái</div>
                             </div>
-                          
+
                             <div class="s-orders-status">
-                            <!-- s-orders-total-price  -->
+                                <!-- s-orders-total-price  -->
                                 <div class="s-orders-title">Tổng</div>
                             </div>
                             <div class="s-orders-phone">
@@ -98,67 +106,83 @@
                 <div class="s-orders-list">
                     <?php
                     if (isset($resultOrder) && is_array($resultOrder->result)) {
-                        $status =['Order Placed'=>["s1"=>"Chờ xác nhận",'s2'=>'Chưa thanh toán'],'Delivering'=>["s1"=>"Đang giao hàng",'0'=>'Chưa thanh toán'],'To Rate'=>['s1'=>"Đã giao hàng",'s2'=>'Đã thanh toán'],'cancel'=>['s1'=>"Đã hủy",'s2'=>"Đã hủy"]];
+                        $status = [
+                            'New' => ["s1" => "Chờ nhận đơn", 's2' => 'Chưa thanh toán'],
+                            'Processing' => ["s1" => "Đang Xử lý", '0' => 'Chưa thanh toán'],
+                            'Confirmed' => ['s1' => "Đang đợi vận chuyển", 's2' => 'Đã thanh toán'],
+                            'On_Delivery' => ['s1' => "Đang vận chuyển", 's2' => "Đã hủy"],
+                            'Completed' => ['s1' => "Đã hoàn thành", 's2' => "Đã hủy"],
+                            'Cancelled' => ['s1' => "Đã hủy", 's2' => "Đã hủy"]
+                        ];
                         foreach ($resultOrder->result as $key => $value) { ?>
                             <div class="s-order-item">
                                 <div class="s-order-left">
                                     <div class="s-orders-input">
-                                        <input type="checkbox" class="order-input-check" orderid ="<?=$value['id'] ?>" >
+                                        <input type="checkbox" class="order-input-check" orderid="<?= $value['id'] ?>">
                                         <div class="s-orders-view">
-                                            <a href="?mod=seller&act=detailorder&id=<?=$value['id'] ?>" class="s-orders-view-wrapper">
+                                            <a href="?mod=seller&act=detailorder&id=<?= $value['id'] ?>"
+                                                class="s-orders-view-wrapper">
                                                 <i class="fa-solid fa-eye"></i>
                                                 <span>View</span>
                                             </a>
                                         </div>
                                     </div>
-                                    <div class="s-orders-time"><?=explode(" ",$value['created_at'])[0] ?></div>
-                                    
-                                    <div class="s-orders-code">#000<?=$value['id'] ?></div>
+                                    <div class="s-orders-time">
+                                        <?= explode(" ", $value['created_at'])[0] ?>
+                                    </div>
+
+                                    <div class="s-orders-code">#000
+                                        <?= $value['id'] ?>
+                                    </div>
 
                                 </div>
                                 <div class="s-order-right">
-                                    <!-- <div class="s-orders-user"><?=$value['name_receiver'] ?></div> -->
-                                    <!-- <div class="s-orders-phone"><?=$value['phone_number'] ?></div> -->
-                                    <div class="s-orders-payment <?=$value['payment_status']==1?'green':"confirmed" ?>"><?=$value['payment_status']==1?"Đã thanh toán":"Chưa thanh toán" ?></div>
-                                    <div class="s-orders-status <?=$value['status'] ?>">
-                                    <?=$status[$value['status']]['s1'] ?>
+                                    <!-- <div class="s-orders-user"><?= $value['name_receiver'] ?></div> -->
+                                    <!-- <div class="s-orders-phone"><?= $value['phone_number'] ?></div> -->
+                                    <div class="s-orders-payment <?= $value['payment_status'] == 1 ? 'green' : "confirmed" ?>">
+                                        <?= $value['payment_status'] == 1 ? "Đã thanh toán" : "Chưa thanh toán" ?>
                                     </div>
-                                    
-                                    <div class="s-orders-total-price s-orders-status fm-price"><?=$value['total'] ?></div>
+                                    <div class="s-orders-status <?= $value['status'] ?>">
+                                        <?= $status[$value['status']]['s1'] ?>
+                                    </div>
+
+                                    <div class="s-orders-total-price s-orders-status fm-price">
+                                        <?= $value['total'] ?>
+                                    </div>
                                     <div class="s-orders-user btn-or-action-wrapper">
                                         <?php
-                                        if($value['status']=='Order Placed'){
-                                            echo '<button class="btn-or-action" onclick="order_accept('.$value['id'].')">Xác nhận</button>
-                                            <button class="btn-or-action" onclick="order_cancel('.$value['id'].')">Hủy</button>';
+                                        if ($value['status'] == 'New') {
+                                            echo '<button class="btn-or-action btn-orange" onclick="update_status_order('.$value['id'] .','."'Processing'".')" >Nhận đơn</button>';
 
-                                        }elseif($value['status']=='Cancelled'){
+                                        }elseif ($value['status'] == 'Processing') {
+                                            echo '<button class="btn-or-action" onclick="update_status_order("'. $value['id'] .'",'."Confirmed".')">Xác nhận</button>
+                                            <button class="btn-or-action" onclick="update_status_order("'. $value['id'] .'","Cancelled")">Hủy</button>';
+                                        }
+                                         elseif ($value['status'] == 'Cancelled') {
                                             echo '<button class="btn-or-action" disabled>Đã hủy</button>';
-                                        }
-                                        elseif($value['status']=='Delivering'){
-                                            echo '<button title="Xem link" class="btn-or-action"><i class="fa-solid fa-link"></i></button>';
-                                        }
-                                        elseif($value['status']=='To Rate'){
+                                        } elseif ($value['status'] == 'On_Delivery') {
+                                            echo '<a target="_blank" href="' . $classOrder->get_link_order($value['id']) . '" title="Xem link" class="btn-or-action"><i class="fa-solid fa-link"></i></a>';
+                                        } elseif ($value['status'] == 'Completed') {
                                             // '
                                             echo '<button class="btn-or-action" disabled>Đã Giao</button>';
-                                        }
-                                        else{
-                                            echo '<button title="Xem link" class="btn-or-action"><i class="fa-solid fa-link"></i></button>';
+                                        } else {
+                                            echo '<a target="_blank" href="' . $classOrder->get_link_order($value['id']) . '" title="Xem link" class="btn-or-action"><i class="fa-solid fa-link"></i></a>';
                                         }
                                         ?>
-                                        
+
                                         <!-- // <i class="fa-solid fa-ban"></i> -->
                                         <!-- <button class="btn-or-action"><i class="fa-solid fa-link"></i></button> -->
-                                        
+
                                     </div>
                                 </div>
                             </div>
                         <?php }
-                    }else{
+                    } else {
                         echo '<div class="no-orders">Không có đơn hàng nào!</div>';
                     }
                     ?>
-                   
-                 
+
+
                 </div>
                 <!-- <div class="p-pagination" style="margin-top:40px">
                     <div class="p-pagination-left">

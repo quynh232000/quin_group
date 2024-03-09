@@ -46,9 +46,9 @@ class Order
         if ($isLogin != true) {
             return new Response(false, "false", "", "");
         }
-        $typeWhere = '';
+        $statusWhere = '';
         if ($status != "") {
-            $typeWhere = " AND i.status = '" . $status . "'";
+            $statusWhere = " AND o.status = '" . $status . "'";
         }
 
         $user_id = Session::get('id');
@@ -61,7 +61,7 @@ class Order
             INNER JOIN $this->db_name.delivery_address AS ad
             ON o.delivery_address_id = ad.id
             WHERE 1
-            $typeWhere
+            $statusWhere
             $shop_id
             ORDER BY o.created_at
         ");
@@ -134,7 +134,10 @@ class Order
             case 'cancel':
                 $status = 'Cancelled';
                 break;
-
+            case 'confirm_delivered':
+                $status ='To Rate';
+                $this->db->update("UPDATE link_order_ship SET is_expired = 1");
+                break;
             default:
                 # code...
                 break;
@@ -148,9 +151,17 @@ class Order
         }
         return new Response(true, "Cập nhật đơn hàng thành công!", $data, "");
     }
-
+    // get link order
+    public function get_link_order($id)  {
+        $link ="";
+        if($id){
+            $link = $this->db->select("SELECT link FROM link_order_ship")->fetchColumn();
+        }
+        return $link;
+    }
+    public function check_link_order($id) {
+        return $this->db->select("SELECT is_expired FROM link_order_ship")->fetchColumn();
+    }
 }
-
-
 
 ?>

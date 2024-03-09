@@ -269,10 +269,10 @@ class Product
        
         $totalSold = $this->db->select("SELECT sum(order_detail.quantity) as total 
         FROM order_detail 
-        INNER JOIN $this->db_name.order
-        on  order_detail.order_id = order.id
-        where order.shop_id = '$shop_id'
-        AND order.status ='To Rate'
+        INNER JOIN $this->db_name.order as o
+        on  order_detail.order_id = o.id
+        where o.shop_id = '$shop_id'
+        AND o.status ='Completed'
         ");
         if ($totalSold == false) {
             $result['totalSold'] = 0;
@@ -280,9 +280,7 @@ class Product
             $totalSold = $totalSold->fetchAll()[0];
             $result['totalSold'] = $totalSold['total'];
         }
-        // echo "quynh";
-        // return;
-        $totalOut = $this->db->select("SELECT count(p.id) as total FROM product as p where p.id < 1");
+        $totalOut = $this->db->select("SELECT count(p.id) as total FROM product as p where p.quantity < 1 AND shop_id = '$shop_id'");
         if ($totalOut == false) {
             $result['totalOut'] = 0;
         } else {
@@ -299,7 +297,7 @@ class Product
             $result['totalHidden'] = $totalHidden['total'];
         }
         // totalOrder
-        $totalOrder = $this->db->select("SELECT count(*) as total FROM $this->db_name.order where shop_id = '$shop_id' AND status = 'To Rate'");
+        $totalOrder = $this->db->select("SELECT count(*) as total FROM $this->db_name.order where shop_id = '$shop_id'");
         if ($totalOrder == false) {
             $result['totalOrder'] = 0;
         } else {
@@ -307,7 +305,7 @@ class Product
             $result['totalOrder'] = $totalOrder['total'];
         }
         // totalOrderNew
-        $totalOrderNew = $this->db->select("SELECT count(*) as total FROM $this->db_name.order  where order.status ='new' AND shop_id = '$shop_id'");
+        $totalOrderNew = $this->db->select("SELECT count(*) as total FROM $this->db_name.order  where order.status ='New' AND shop_id = '$shop_id'");
         if ($totalOrderNew == false) {
             $result['totalOrderNew'] = 0;
         } else {
@@ -315,7 +313,7 @@ class Product
             $result['totalOrderNew'] = $totalOrderNew['total'];
         }
         // totalOrderSuccess
-        $totalOrderSuccess = $this->db->select("SELECT count(*) as total FROM $this->db_name.order  where order.status ='To Rate' AND shop_id = '$shop_id'");
+        $totalOrderSuccess = $this->db->select("SELECT count(*) as total FROM $this->db_name.order  where order.status ='Completed' AND shop_id = '$shop_id'");
         if ($totalOrderSuccess == false) {
             $result['totalOrderSuccess'] = 0;
         } else {
@@ -331,7 +329,7 @@ class Product
             $result['totalOrderCancel'] = $totalOrderCancel['total'];
         }
         //  total balance
-        $totalBalance = $this->db->select("SELECT sum(order.total) as total FROM $this->db_name.order  where order.status ='To Rate' AND shop_id = '$shop_id'");
+        $totalBalance = $this->db->select("SELECT sum(o.total) as total FROM $this->db_name.order as o  where o.status ='Completed' AND shop_id = '$shop_id'");
         if ($totalBalance == false) {
             $result['totalBalance'] = 0;
         } else {

@@ -24,7 +24,7 @@ class Cart
         }
         $userId = Session::get("id");
         if( $type =="checked"){
-            $type = "AND c.check = '1'";
+            $type = "AND c.is_check = '1'";
         }else{
             $type = "";
         }
@@ -52,7 +52,7 @@ class Cart
         if ($checkCart == false) {
             return new Response(true, "success", ["total" => "0", "totalPrice" => 0], "");
         }
-        $query = "select SUM(c.quantity * p.price) as totalPrice, SUM(c.quantity) as total from cart as c inner join product as p on c.product_id = p.id where c.user_id = '$userId' AND c.check = '1';";
+        $query = "select SUM(c.quantity * p.price) as totalPrice, SUM(c.quantity) as total from cart as c inner join product as p on c.product_id = p.id where c.user_id = '$userId' AND c.is_check = '1';";
         $resultGetCart = $this->db->select($query);
         if ($resultGetCart == false) {
             return new Response(true, "success", ["total" => "0", "totalPrice" => 0], "");
@@ -96,11 +96,11 @@ class Cart
                         return new Response(true, "Cập nhật giỏ hàng thành công!", "", "");
                     }
                 }
-            case 'check':
+            case 'is_check':
                 if ($checkCart == false) {
                     return new Response(false, "Check sản phẩm thất bại!", "", "");
                 } else {
-                    $updateCart = $this->db->delete("UPDATE cart SET cart.check = '1' where userId = '$userId' AND productId = '$value'");
+                    $updateCart = $this->db->delete("UPDATE cart SET cart.is_check = '1' where userId = '$userId' AND productId = '$value'");
                     if ($updateCart == false) {
                         return new Response(false, "Cập nhật giỏ hàng thất bại thất bại!", "", "");
                     } else {
@@ -111,7 +111,7 @@ class Cart
                 if ($checkCart == false) {
                     return new Response(false, "Uncheck sản phẩm thất bại!", "", "");
                 } else {
-                    $updateCart = $this->db->delete("UPDATE cart SET cart.check = '0' where userId = '$userId' AND productId = '$value'");
+                    $updateCart = $this->db->delete("UPDATE cart SET cart.is_check = '0' where userId = '$userId' AND productId = '$value'");
                     if ($updateCart == false) {
                         return new Response(false, "Cập nhật giỏ hàng thất bại thất bại!", "", "");
                     } else {
@@ -175,7 +175,7 @@ class Cart
         // create invoicedetail
         $invoiceDetail = $this->db->insert("INSERT INTO invoicedetail (invoinceId,productId,quantity)
             SELECT  '$idInvoice' ,c.productId, c.count FROM cart AS c
-            WHERE c.userId = '$userId' AND c.check = '1'
+            WHERE c.userId = '$userId' AND c.is_check = '1'
         ");
         if ($invoiceDetail == false) {
             return new Response(false, "Create new invoice detail fail!","", "");

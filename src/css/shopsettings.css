@@ -173,3 +173,19 @@
         justify-content: flex-end;
     }
 }
+.shop-shipping{
+    border-top: 4px solid var(--orange);
+    padding-top: 20px;
+}
+.shop-ship-group {
+    width: 240px !important;
+    flex: none;
+}
+.shop-ship-free{
+    color: green;
+    font-size: 12px;
+}
+.shop-ship-group select{
+    width: 100%;
+    border: none;
+}

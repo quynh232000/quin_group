@@ -16,7 +16,8 @@
     --gray-dark: #343a40;
     --green:rgb(39, 185, 39);
     --width:1240px;
-    --boder-radius:2px
+    --boder-radius:2px;;
+    --orange :#FFC200;
     /* --width:calc(100% - 20px); */
 
 }
