@@ -30,7 +30,7 @@
                                     <div class="shop-form-control">
                                         <div class="form-input-body">
                                             <input type="text" name="name"
-                                                value="<?= isset($productInfo) ? $productInfo[0]['namePro'] : "" ?>"
+                                                value="<?= isset($productInfo) ? $productInfo[0]['name'] : "" ?>"
                                                 rules="required" class="form-input"
                                                 placeholder="Nhập tên sản phẩm..." />
                                         </div>
@@ -68,43 +68,54 @@
                                 <div class="cate-body w-100">
                                     <div class="form-group-body w-100">
                                         <label for="" class="form-label">
-                                            Category <i class="fa-solid fa-circle-info"></i>
+                                            Danh mục <i class="fa-solid fa-circle-info"></i>
                                         </label>
                                         <div class="shop-form-control">
                                             <div class="form-input-body">
                                                 <div class="select-cate-title" id="select-category-product">
-                                                    <span>
-                                                        Select category
+                                                    <span class="show-select-cate-view">
+                                                        <?php 
+                                                        if (isset($productInfo[0]['category_id'])) {
+                                                            echo $productInfo[0]['nameCategory'];
+                                                        } else {
+                                                           echo 'Chọn danh mục';
+                                                        }
+                                                        
+                                                        ?>
+                                                        
                                                     </span>
                                                     <i class="fa-solid fa-pen"></i>
                                                 </div>
+                                                <input id="input_category_id" type="text" hidden name="category_id" value="<?=$productInfo[0]['category_id'] ??""?>">
                                                 <!-- @*modal eidit category*@ -->
                                                 <div class="modal-edit-cate">
                                                     <div class="modal-cate-wrapper">
                                                         <div class="modal-cate-title">
-                                                            <span>Edit category</span>
+                                                            <span>Chỉnh sửa danh mục</span>
                                                             <div class="modal-close btn-modal-cate-close">
                                                                 <i class="fa-solid fa-xmark"></i>
                                                             </div>
                                                         </div>
                                                         <div class="modal-cate-body">
                                                             <div class="madla-cate-body-title">Select the correct field,
-                                                                <a href="#">click here to learn more.</a></div>
-                                                            <div class="modal-cate-info">
-                                                                <div class="modal-cate-group">
+                                                                <a href="#">click here to learn more.</a>
+                                                            </div>
+                                                            <div class="modal-cate-info" id="show-detail-cate">
+
+                                                               
+                                                               <div class="modal-cate-group">
                                                                     <div class="modal-cate-group-wrapper">
                                                                         <?php
                                                                         foreach ($allCategory as $key => $value) { ?>
-                                                                            <div class="modal-cate-item"
-                                                                                idCate="<?= $value['id'] ?>" checkLast="
-                                                                                 <?php
+                                                                      
+                                                                            <div class="modal-cate-item" onclick="selectCategory(this,<?=$value['id']?>)"
+                                                                                idCate="<?= $value['id'] ?>" checkLast=" <?php
                                                                                  if (isset($value['children']) && $value['children']) {
                                                                                      echo "has";
                                                                                  } else {
                                                                                      echo "no";
                                                                                  }
-                                                                                 ?>
-                                                                                 ">
+                                                                                 ?>">
                                                                                 <p>
                                                                                     <?= $value['name'] ?>
                                                                                 </p>
@@ -117,21 +128,10 @@
                                                                             </div>
                                                                         <?php }
                                                                         ?>
-                                                                        <!-- @*item*@
-                                                                              @foreach (var item in categories)
-                                                                              {
-                                                                                  <div class="modal-cate-item" idCate="@item.Id" checkLast=@(item.TempChild == true ?"has":"no")>
-                                                                                      <p>@item.Name</p>
-                                                                                      @if (item.TempChild == true)
-                                                                                      {
-                                                                                          <i class="fa-solid fa-chevron-right"></i>
-                                                                                      }
-                                                                                  </div>
-                                                                              } -->
                                                                     </div>
-                                                                </div>
+                                                                </div> 
 
-                                                                <div class="modal-cate-group">
+                                                                <!-- <div class="modal-cate-group">
                                                                     <div class="modal-cate-group-wrapper">
 
                                                                         <div class="modal-cate-item active">
@@ -159,7 +159,8 @@
                                                                             <i class="fa-solid fa-chevron-right"></i>
                                                                         </div>
                                                                     </div>
-                                                                </div>
+                                                                </div> -->
+
                                                             </div>
                                                         </div>
                                                         <div class="modal-cate-bottom">
@@ -168,7 +169,7 @@
                                                                     Selected:
                                                                 </span>
                                                                 <div class="modal-cate-selected">
-                                                                    <div class="modal-cate-selected-item">
+                                                                    <!-- <div class="modal-cate-selected-item">
                                                                         <span>Clothes</span>
 
                                                                     </div>
@@ -181,16 +182,17 @@
                                                                         <i class="fa-solid fa-chevron-right"></i>
                                                                         <span>Clothes</span>
 
-                                                                    </div>
+                                                                    </div> -->
                                                                 </div>
                                                             </div>
-                                                            <div class="modal-cate-bottom-right">
-                                                                <button class="modal-btn-cancel">
+                                                            <div class="modal-cate-bottom-right" >
+                                                            <!-- class="modal-btn-cancel "  -->
+                                                                <button >
                                                                     Cancel
                                                                 </button>
-                                                                <button disabled class="modal-btn-confirm">
+                                                                <div disabled class="modal-btn-confirm">
                                                                     Confirm
-                                                                </button>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -232,22 +234,6 @@
                                 </div>
 
 
-
-
-                                <div class="form-group-body w-50">
-                                    <label for="" class="form-label">
-                                        Đơn vị <i class="fa-solid fa-circle-info"></i>
-                                    </label>
-                                    <div class="shop-form-control">
-                                        <div class="form-input-body">
-                                            <input type="text"
-                                                value="<?= isset($productInfo) ? $productInfo[0]['unit'] : "" ?>"
-                                                name="unit" placeholder="Cái, cặp, hộp,..." />
-
-                                        </div>
-                                    </div>
-                                    <div class="form-msg"></div>
-                                </div>
                                 <div class="form-group-body w-50">
                                     <label for="" class="form-label">
                                         Thương hiệu<i class="fa-solid fa-circle-info"></i>
@@ -268,7 +254,7 @@
                                     <div class="shop-form-control">
                                         <div class="form-input-body">
                                             <input type="text" name="origin"
-                                                value=" <?= isset($productInfo) ? $productInfo[0]['origin'] : "" ?>"
+                                                value="<?= isset($productInfo) ? $productInfo[0]['origin'] : "" ?>"
                                                 class="form-input" placeholder="Trung Quốc, Nhật Bản..." />
                                         </div>
                                     </div>
@@ -298,7 +284,7 @@
                                 <div class="shop-form-control">
                                     <div class="form-input-body">
                                         <input type="text" name="salePercent" class="form-input"
-                                            value=" <?= isset($productInfo) ? $productInfo[0]['salePercent'] : "" ?>"
+                                            value="<?= isset($productInfo) ? $productInfo[0]['percent_sale'] : "" ?>"
                                             placeholder="0%" />
                                     </div>
                                 </div>
@@ -369,7 +355,7 @@
                                     <div class="create-show-image-body"
                                         style=" <?= isset($productInfo) ? "display:flex" : "" ?>">
                                         <img class="create-show-image"
-                                            src="./assest/upload/<?= isset($productInfo) ? $productInfo[0]['image'] : "" ?>" />
+                                            src="./assest/upload/<?= isset($productInfo) ? $productInfo[0]['image_cover'] : "" ?>" />
                                     </div>
                                 </div>
                                 <div class="form-msg"></div>

@@ -518,11 +518,17 @@
     padding: 0 14px;
     
 }
+.show-select-cate-view{
+    display: flex;
+    align-items: center;
+}
 .modal-cate-item:hover {
     background-color:rgba(22,22,23,.08)
 }
 .modal-cate-item.active{
-    color:var(--primary)
+    display: flex !important;
+    color:var(--primary);
+    background-color: #fbeded;
 }
 .modal-cate-bottom{
     display:flex;
@@ -550,6 +556,9 @@
 .modal-cate-group-wrapper::-webkit-scrollbar{
     display:none
 }
+.modal-cate-bottom-right{
+    display: flex;
+}
 .modal-cate-bottom-right button {
     border: none;
     border: 1px solid rgba(22,22,24,.12);
@@ -563,10 +572,26 @@
     cursor: pointer;
     transition: .3s ease
 }
+.modal-cate-bottom-right div {
+    border: none;
+    border: 1px solid rgba(22,22,24,.12);
+    border-radius: 4px;
+    background-color: white;
+    padding: 10px 26px;
+    min-width: 120px;
+    color: rgba(22,22,24,.8);
+    font-weight: 600;
+    margin-right: 12px;
+    cursor: pointer;
+    transition: .3s ease;
+    background-color: var(--primary);
+    color: white;
+    text-align: center;
+}
 .modal-cate-bottom-right button:hover{
     background-color:rgba(22,22,23,.08)
 }
-    .modal-cate-bottom-right button[disabled] {
+    .modal-cate-bottom-right div[disabled] {
         background-color: #a3cdf7 !important;
         color: white;
         border-color:transparent 

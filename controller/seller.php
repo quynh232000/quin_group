@@ -11,6 +11,11 @@ include_once 'model/category.php';
 include_once 'model/product.php';
 include_once 'model/user.php';
 include_once 'model/order.php';
+include_once 'model/shop.php';
+include_once 'model/address.php';
+$classShop = new Shop();
+$shop_info = $classShop->get_shop_info();
+
 
 extract($_REQUEST);
 if (isset($act)) {
@@ -26,6 +31,7 @@ if (isset($act)) {
             include_once 'view/inc/footer.php';
             break;
         case 'addproduct':
+            $classShop->check_shop_info();
             $viewTitle = 'Create new product';
             $classPro = new Product();
             $cate = new Category();
@@ -38,7 +44,7 @@ if (isset($act)) {
                 $resAddPro = $classPro->updateProduct(
                     $_POST['name'],
                     $_POST["description"],
-                    $_POST["categoryId"],
+                    $_POST["category_id"],
                     $_POST["quantity"],
                     $_POST["origin"],
                     $_POST["brand"],
@@ -46,7 +52,6 @@ if (isset($act)) {
                     $_POST["salePercent"],
                     $_FILES["image"],
                     $_FILES["listImage"],
-                    $_POST["unit"],
                     $type,
                     $id
                 );
@@ -62,7 +67,7 @@ if (isset($act)) {
                 $infoPro = $classPro->filterProduct("detail", $_GET['idPro']);
                 if (isset($infoPro) && $infoPro->status == true) {
                     $productInfo = $infoPro->result;
-                    $viewTitle = $productInfo[0]['namePro'];
+                    $viewTitle = $productInfo[0]['name'];
                 }
             }
             include_once 'view/inc/headerAdmin.php';
@@ -78,7 +83,7 @@ if (isset($act)) {
             if (isset($_GET['page']) && $_GET['page']) {
                 $page = $_GET['page'];
             }
-            $allProduct = $classPro->getAllProduct($page, 20, "", Session::get('id'));
+            $allProduct = $classPro->getAllProduct($page, 10, "", Session::get('id'));
             $cate = new Category();
             // $allCategory = $cate->getAllCate();
             // ddelete product
@@ -151,11 +156,17 @@ if (isset($act)) {
             break;
         case 'manageorders':
             $classOrder = new Order();
-            $type = '';
-            if (isset($_GET['type']) && ($_GET['type'] == 'confirmed' || $_GET['type'] == 'new' || $_GET['type'] == 'cancel')) {
-                $type = $_GET['type'];
+            $status = '';
+            if (isset($_GET['status']) && ($_GET['status'] == 'New' || 
+            $_GET['status'] == 'Processing' ||
+            $_GET['status'] == 'Confirmed' ||
+            $_GET['status'] == 'On_Delivery' ||
+            $_GET['status'] == 'Completed' ||
+             $_GET['status'] == 'Cancelled')) {
+                $status = $_GET['status'];
             }
-            $resultOrder = $classOrder->getAllInvoince($type);
+            $resultOrder = $classOrder->getAllInvoince($status);
+
             $viewTitle = 'Manage orders';
             include_once 'view/inc/headerAdmin.php';
             include_once 'view/inc/sidebarAdmin.php';
@@ -166,15 +177,16 @@ if (isset($act)) {
             $classOrder = new Order();
 
             $resultOrder = $classOrder->getAllInvoince();
+
             if (isset($_GET['id']) && $_GET['id']) {
                 $getInvoiceDetail = $classOrder->getOrderDetail($_GET['id']);
                 if ($getInvoiceDetail->status == true) {
                     $data = $getInvoiceDetail->result;
                 } else {
-                    header('location: ?mod=admin&act=manageorders');
+                    // header('location: ?mod=admin&act=manageorders');
                 }
             } else {
-                header('location: ?mod=admin&act=manageorders');
+                // header('location: ?mod=admin&act=manageorders');
             }
             $viewTitle = 'Manage orders';
             include_once 'view/inc/headerAdmin.php';
@@ -236,6 +248,72 @@ if (isset($act)) {
             include_once 'view/seller/manageuser.php';
             include_once 'view/inc/footer.php';
             break;
+        case 'setting':
+            $class_address = new Address();
+            if (isset($_POST['name']) && $_POST['name']) {
+                $name = $_POST['name'];
+                $phone_number = $_POST['phone_number'];
+                $address_detail = $_POST['address_detail'];
+                $province = $_POST['province'];
+                $district = $_POST['district'];
+                $icon = $_FILES['icon'];
+
+                $ship_north = $_POST['ship_north'];
+                $ship_south = $_POST['ship_south'];
+                $ship_mid_north = $_POST['ship_mid_north'];
+                $ship_mid_south = $_POST['ship_mid_south'];
+
+                
+                if (
+
+                    empty($name) || empty($phone_number) ||
+                    empty($address_detail) || empty($province) ||
+                    empty($district) || ($ship_north == "") || ($ship_south == "") ||
+                    ($ship_mid_north == "") || ($ship_mid_south == "")
+                ) {
+                    echo '<div id="toast" mes-type="error" mes-title="Thất bại!" mes-text="Thông tin không được để trống!"></div>';
+                } else {
+                    $updateshop = $classShop->update_shop(
+                        $name,
+                        $phone_number,
+                        $address_detail,
+                        $icon,
+                        $province,
+                        $district,
+                        $ship_south,
+                        $ship_north,
+                        $ship_mid_north,
+                        $ship_mid_south
+                    );
+                    
+                    if ($updateshop->status == true) {
+
+                        echo '<div id="toast" mes-type="success" mes-title="Thành công!" mes-text="' . $updateshop->message . '"></div>';
+                        // echo ' <script>
+                        //         setTimeout(function() {
+                        //             window.location.href="?mod=seller&act=setting";
+                        //         }, 2500);
+                        //     </script>';
+                    } else {
+                        echo '<div id="toast" mes-type="error" mes-title="Thất bại!" mes-text="' . $updateshop->message . '"></div>';
+                    }
+                }
+            }
+            if (Session::get('checkshop')) {
+                echo '<div id="toast" mes-type="error" mes-title="Thành công!" mes-text="' . Session::get('checkshop') . '"></div>';
+                sleep(3);
+                Session::remove('checkshop');
+            }
+            if ($classShop->get_shipping_shop()->status) {
+                $shop_ship = $classShop->get_shipping_shop();
+            }
+            $viewTitle = 'Cài đặt shop';
+            include_once 'view/inc/headerAdmin.php';
+            include_once 'view/inc/sidebarAdmin.php';
+            include_once 'view/seller/setting.php';
+            include_once 'view/inc/footer.php';
+            break;
+
         default:
             header('Location: ?page=404');
     }

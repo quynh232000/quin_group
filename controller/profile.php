@@ -67,7 +67,7 @@ if (isset($act)) {
             }
             include_once 'view/register.php';
             break;
-
+     
 
         case 'orderhistory':
             $viewTitle = 'Lịch sử đơn hàng';
@@ -78,6 +78,7 @@ if (isset($act)) {
             include_once 'view/inc/header.php';
             include_once 'view/inc/profilesidebar.php';
             include_once 'view/orderhistory.php';
+            
             include_once 'view/inc/footer.php';
             break;
         case 'sercurity':

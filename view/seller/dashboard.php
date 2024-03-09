@@ -109,7 +109,7 @@
                     <div class="dash-content-count">
                         <?php
                         if (isset($resultData)) {
-                            echo $resultData->result['totalSold'];
+                            echo $resultData->result['totalSold']??0;
                         }
                         ?>
                     </div>
@@ -147,7 +147,7 @@
                     </div>
                     <div class="dash-content-title">Tổng đơn hàng</div>
                 </a>
-                <a href="?mod=seller&act=manageorders&type=new" class="dash-content-item">
+                <a href="?mod=seller&act=manageorders&status=New" class="dash-content-item">
                     <div class="dash-content-count">
                         <?php
                         if (isset($resultData)) {
@@ -157,7 +157,7 @@
                     </div>
                     <div class="dash-content-title">Đơn hàng mới</div>
                 </a>
-                <a href="?mod=seller&act=manageorders&type=confirmed" class="dash-content-item">
+                <a href="?mod=seller&act=manageorders&status=Completed" class="dash-content-item">
                     <div class="dash-content-count">
                         <?php
                         if (isset($resultData)) {
@@ -167,7 +167,7 @@
                     </div>
                     <div class="dash-content-title">Đơn hàng đã giao</div>
                 </a>
-                <a href="?mod=seller&act=manageorders&type=cancel" class="dash-content-item">
+                <a href="?mod=seller&act=manageorders&status=Cancelled" class="dash-content-item">
                     <div class="dash-content-count">
                         <?php
                         if (isset($resultData)) {
