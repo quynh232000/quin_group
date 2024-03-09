@@ -40,7 +40,9 @@
     <link rel="stylesheet" href="src/css/shopaddproduct.css">
     <link rel="stylesheet" href="src/css/shopmanageorder.css">
     <link rel="stylesheet" href="src/css/shopdelivery.css">
-    
+    <link rel="stylesheet" href="./src/css/profile.css">
+    <!-- <link rel="stylesheet" href="./src/js/define.js"> -->
+    <script src="./src/js/seller.js"></script>
 
     <!-- swiper -->
     <link
@@ -186,14 +188,14 @@
             <div class="header-body">
                 <div class="wrapper">
                     <a href="<?php 
-                    if($mod =="admin" && $act=="dashboard"){
+                    if($mod =="seller" && $act=="dashboard"){
                         echo "./";
                     }else{
-                        echo "?mod=admin&act=dashboard";
+                        echo "?mod=seller&act=dashboard";
                     }
                     ?>" class="header-logo">
                         <img src="assest/images/UNIDI_LOGO-FINAL 2.svg" alt="">
-                        <div class="shop-header-name">ADMIN</div>
+                        <div class="shop-header-name">SELLER</div>
                     </a>
                     <div class="header-search-body">
                         <div class="header-search">
@@ -219,13 +221,13 @@
                         </div>
                         <div class="header-search-item header-search-account">
                             <div class="header-search-item-icon">
-                                <img src="<?php echo "./assest/upload/" . Session::get("avatar");?>" class="img-user" alt="">
+                                <img src="<?php echo "./assest/upload/" .  $shop_info->result['icon'];?>" class="img-user" alt="">
                             </div>
                             <a href="?mod=profile&act=profile" class="header-search-info">
                                
-                                <span>Hi, 
+                                <span>Shop, 
                                     <?php
-                                        echo Session::get("fullName") ;
+                                        echo $shop_info->result['name'];
                                     ?>    
                                 </span>
                                 <div class="header-search-text-s">
@@ -242,7 +244,7 @@
                                         echo Session::destroy();
                                     }
                                     ?>
-                                    <a href="?mod=admin&act=dashboard&action=logout" class="account-more-item">
+                                    <a href="?mod=seller&act=dashboard&action=logout" class="account-more-item">
                                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
                                         <span>Đăng xuất</span>
                                     </a>

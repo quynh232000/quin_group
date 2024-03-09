@@ -12,7 +12,7 @@
             ) {
                 echo "active";
             } ?>">
-                <a href="?mod=admin&act=dashboard" class="shop-sidebar-link">
+                <a href="?mod=seller&act=dashboard" class="shop-sidebar-link">
                     <div class="shop-sidebar-icon">
                         <i class="fa-solid fa-house"></i>
                     </div>
@@ -23,7 +23,7 @@
             <div class="shop-sidebar-item <?php if (($act == "manageproduct") || ($act == "addproduct")) {
                 echo "active";
             } ?>">
-                <a href="?mod=admin&act=manageproduct" class="shop-sidebar-link">
+                <a href="?mod=seller&act=manageproduct" class="shop-sidebar-link">
                     <div class="shop-sidebar-icon">
                         <i class="fa-solid fa-box"></i>
                     </div>
@@ -32,10 +32,10 @@
                 </a>
 
             </div>
-            <div class="shop-sidebar-item <?php if (($act == "managecategory")) {
+            <!-- <div class="shop-sidebar-item <?php if (($act == "managecategory")) {
                 echo "active";
             } ?>">
-                <a href="?mod=admin&act=managecategory" class="shop-sidebar-link">
+                <a href="?mod=seller&act=managecategory" class="shop-sidebar-link">
                     <div class="shop-sidebar-icon">
                         <i class="fa-solid fa-box"></i>
                     </div>
@@ -43,26 +43,26 @@
 
                 </a>
 
-            </div>
+            </div> -->
             <!--shop-sidebar item -->
             <div class="shop-sidebar-item <?php if (($act == "manageorders")) {
                 echo "active";
             } ?>">
-                <a href="?mod=admin&act=manageorders" class="shop-sidebar-link">
+                <a href="?mod=seller&act=manageorders" class="shop-sidebar-link">
                     <div class="shop-sidebar-icon">
                         <i class="fa-solid fa-file-invoice"></i>
                     </div>
                     <span class="shop-sidebar-title">Đơn hàng</span>
                 </a>
             </div>
-            <div class="shop-sidebar-item <?php if (($act == "manageuser")) {
+            <div class="shop-sidebar-item <?php if (($act == "setting")) {
                 echo "active";
             } ?>">
-                <a href="?mod=admin&act=manageuser" class="shop-sidebar-link">
+                <a href="?mod=seller&act=setting" class="shop-sidebar-link">
                     <div class="shop-sidebar-icon">
-                        <i class="fa-regular fa-user"></i>
+                    <i class="fa-solid fa-gear"></i>
                     </div>
-                    <span class="shop-sidebar-title">Quản lý user</span>
+                    <span class="shop-sidebar-title">Cài đặt</span>
                 </a>
             </div>
 

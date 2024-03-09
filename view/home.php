@@ -64,10 +64,10 @@
                         <a href="?mod=page&act=collection&category=<?= $value['id'] ?>" class="cate-item">
                             <div class="cate-item-body">
                                 <div class="cate-img">
-                                    <img src="assest/upload/<?= $value['imageCate'] ?>" alt="">
+                                    <img src="assest/upload/<?= $value['icon'] ?>" alt="">
                                 </div>
                                 <div class="cate-name">
-                                    <?= $value['nameCate'] ?>
+                                    <?= $value['name'] ?>
                                 </div>
                                 <div class="cate-count">
                                     <?=$value['count'] ?> sản phẩm
@@ -151,17 +151,17 @@
                                                             </defs>
                                                         </svg>
                                                         <span>-%
-                                                            <?= $value['salePercent'] ?>
+                                                            <?= $value['percent_sale'] ?>
                                                         </span>
                                                     </div>
                                                     <div class="product-img">
-                                                        <img src="./assest/upload/<?= $value['image'] ?>" alt="">
+                                                        <img src="./assest/upload/<?= $value['image_cover'] ?>" alt="">
                                                     </div>
                                                     <div class="product-brand">
                                                         <?= $value['brand'] ?>
                                                     </div>
                                                     <div class="product-name">
-                                                        <?= $value['namePro'] ?>
+                                                        <?= $value['name'] ?>
                                                     </div>
                                                     <div class="product-stars">
                                                         <i class="fa-solid fa-star"></i>
@@ -176,7 +176,7 @@
                                                             <?= $value['price'] ?>
                                                         </div>
                                                         <del class="product-price-old fm-price">
-                                                            <?= $value['price'] * (1 + $value['salePercent'] / 100) ?>
+                                                            <?= $value['price'] * (1 + $value['percent_sale'] / 100) ?>
                                                         </del>
                                                     </div>
                                                 </a>
@@ -256,17 +256,17 @@
                                                 </defs>
                                             </svg>
                                             <span>-%
-                                                <?= $value['salePercent'] ?>
+                                                <?= $value['percent_sale'] ?>
                                             </span>
                                         </div>
                                         <div class="product-img">
-                                            <img src="./assest/upload/<?= $value['image'] ?>" alt="">
+                                            <img src="./assest/upload/<?= $value['image_cover'] ?>" alt="">
                                         </div>
                                         <div class="product-brand">
                                             <?= $value['brand'] ?>
                                         </div>
                                         <div class="product-name">
-                                            <?= $value['namePro'] ?>
+                                            <?= $value['name'] ?>
                                         </div>
                                         <div class="product-stars">
                                             <i class="fa-solid fa-star"></i>
@@ -281,7 +281,7 @@
                                                 <?= $value['price'] ?>
                                             </div>
                                             <del class="product-price-old fm-price">
-                                                <?= $value['price'] * (1 + $value['salePercent'] / 100) ?>
+                                                <?= $value['price'] * (1 + $value['percent_sale'] / 100) ?>
                                             </del>
                                         </div>
                                     </a>
@@ -354,17 +354,17 @@
                                                     </defs>
                                                 </svg>
                                                 <span>-%
-                                                    <?= $value['salePercent'] ?>
+                                                    <?= $value['percent_sale'] ?>
                                                 </span>
                                             </div>
                                             <div class="product-img">
-                                                <img src="./assest/upload/<?= $value['image'] ?>" alt="">
+                                                <img src="./assest/upload/<?= $value['image_cover'] ?>" alt="">
                                             </div>
                                             <div class="product-brand">
                                                 <?= $value['brand'] ?>
                                             </div>
                                             <div class="product-name">
-                                                <?= $value['namePro'] ?>
+                                                <?= $value['name'] ?>
                                             </div>
                                             <div class="product-stars">
                                                 <i class="fa-solid fa-star"></i>
@@ -379,7 +379,7 @@
                                                     <?= $value['price'] ?>
                                                 </div>
                                                 <del class="product-price-old fm-price">
-                                                    <?= $value['price'] * (1 + $value['salePercent'] / 100) ?>
+                                                    <?= $value['price'] * (1 + $value['percent_sale'] / 100) ?>
                                                 </del>
                                             </div>
                                         </a>
@@ -497,17 +497,17 @@
                                             </defs>
                                         </svg>
                                         <span>-%
-                                            <?= $value['salePercent'] ?>
+                                            <?= $value['percent_sale'] ?>
                                         </span>
                                     </div>
                                     <div class="product-img">
-                                        <img src="./assest/upload/<?= $value['image'] ?>" alt="">
+                                        <img src="./assest/upload/<?= $value['image_cover'] ?>" alt="">
                                     </div>
                                     <div class="product-brand">
                                         <?= $value['brand'] ?>
                                     </div>
                                     <div class="product-name">
-                                        <?= $value['namePro'] ?>
+                                        <?= $value['name'] ?>
                                     </div>
                                     <div class="product-stars">
                                         <i class="fa-solid fa-star"></i>
@@ -522,7 +522,7 @@
                                             <?= $value['price'] ?>
                                         </div>
                                         <del class="product-price-old fm-price">
-                                            <?= $value['price'] * (1 + $value['salePercent'] / 100) ?>
+                                            <?= $value['price'] * (1 + $value['percent_sale'] / 100) ?>
                                         </del>
                                     </div>
                                 </a>

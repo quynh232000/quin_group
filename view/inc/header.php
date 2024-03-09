@@ -76,7 +76,7 @@ if (empty($viewTitle)) {
                             <i class="fa-solid fa-house"></i>
                             Trang chủ
                         </a>
-                        <a href="?mod=admin&act=dashboard" class="sidebar-item">
+                        <a href="?mod=seller&act=dashboard" class="sidebar-item">
                             <i class="fa-solid fa-cart-plus"></i>
                             Quản trị
                         </a>
@@ -140,13 +140,13 @@ if (empty($viewTitle)) {
                                 Thông báo
                             </div>
                         </a>
-                        <a href="?mod=admin&act=dashboard" class="header-top-item">
+                        <a href="?mod=seller&act=dashboard" class="header-top-item">
                             <div class="header-top-item-body">
                                 <i class="fa-regular fa-circle-question"></i>
 
                             </div>
                             <div class="header-top-item-title">
-                                Quản trị
+                                Người bán hàng
                             </div>
                         </a>
                         <a href="./shopowner" class="header-top-item">
@@ -228,7 +228,7 @@ if (empty($viewTitle)) {
                                     } -->
                                 <a href="?mod=profile&act=profile" class="header-search-info">
                                     <div class="fullname">Hi,
-                                        <?php echo Session::get("fullName") ?>
+                                        <?php echo Session::get("full_name") ?>
                                     </div>
                                     <div class="header-search-text-s">
                                         Hồ sơ

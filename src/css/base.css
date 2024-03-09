@@ -4,7 +4,8 @@
     --text-color:#ADADAD;
     --white: #ffffff;
     --black:#161618;
-    --bg-yellow:#FFC200;
+    /* --bg-yellow:#FFC200; */
+    --bg-yellow:#ff2600;
     /* --bg-yellow:orangered; */
     --bg-hover:rgba(22,22,24,.06);
     --box-shadows:rgba(0, 0, 0, 0.12);
@@ -15,7 +16,8 @@
     --gray-dark: #343a40;
     --green:rgb(39, 185, 39);
     --width:1240px;
-    --boder-radius:2px
+    --boder-radius:2px;;
+    --orange :#FFC200;
     /* --width:calc(100% - 20px); */
 
 }

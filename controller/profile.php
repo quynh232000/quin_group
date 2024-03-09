@@ -40,13 +40,15 @@ if (isset($act)) {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $redirect = ""; 
                 if(isset($_GET['redirect']) && $_GET['redirect']=='admin'){
-                    $redirect ="?mod=admin&act=dashboard";
+                   
+                }elseif(isset($_GET['redirect']) && $_GET['redirect']=='seller'){
+                    $redirect ="?mod=seller&act=dashboard";
                 }else{
                     $redirect = "./";
                 }
-                $adminUser = $_POST['adminUser'];
-                $adminPass = md5($_POST['adminPass']);
-                $login_check = $class->login_admin($adminUser, $adminPass,$redirect);
+                $email = $_POST['email'];
+                $password = $_POST['password'] ? md5($_POST['password']) :"";
+                $login_check = $class->login_admin($email, $password,$redirect);
             }
             include_once 'view/login.php';
             break;
@@ -55,8 +57,7 @@ if (isset($act)) {
             $class = new Adminlogin();
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $checkRegister = $class->register_admin(
-                    $_POST['username'],
-                    $_POST['fullname'],
+                    $_POST['full_name'],
                     $_POST['email'],
                     $_POST['phone'],
                     ($_POST['password']),
@@ -66,7 +67,7 @@ if (isset($act)) {
             }
             include_once 'view/register.php';
             break;
-
+     
 
         case 'orderhistory':
             $viewTitle = 'Lịch sử đơn hàng';
@@ -77,6 +78,7 @@ if (isset($act)) {
             include_once 'view/inc/header.php';
             include_once 'view/inc/profilesidebar.php';
             include_once 'view/orderhistory.php';
+            
             include_once 'view/inc/footer.php';
             break;
         case 'sercurity':

@@ -60,17 +60,39 @@ class Category
             }
         }
     }
-    public function getAllCate()
+    function buildCategoryTree($categories, $parentId = 0)
     {
-        $query = "SELECT c.*, COUNT(p.categoryId) as count
+        $branch = [];
+        foreach ($categories as $key => $category) {
+            if ($category['parent_id'] == $parentId . "") {
+                $children = $this->buildCategoryTree($categories, $category['id']);
+                if ($children) {
+                    $category['children'] = $children;
+                }
+                $branch[] = $category;
+            }
+        }
+
+        return $branch;
+    }
+    public function getAllCate($idCate = 0)
+    {
+        $query = "SELECT c.*, COUNT(p.category_id) as count
                 from  category as c
                 LEFT JOIN product AS p
-                ON p.categoryId = c.id
+                ON p.category_id = c.id
                 GROUP BY c.id
         ";
-        $result = $this->db->select($query);
-        return $result;
+        $result = $this->db->select($query)->fetchAll();
+        // $tree = buildCategoryTree($categories);
+        // print_r($this->buildCategoryTree($result));
+        // echo json_encode($this->buildCategoryTree($result), JSON_PRETTY_PRINT);
+        // return;
+        return($this->buildCategoryTree($result, $idCate));
+
     }
+
+
     public function getInfoCate($id)
     {
         if ($id) {
