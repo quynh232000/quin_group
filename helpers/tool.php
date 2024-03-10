@@ -77,6 +77,7 @@ class Tool
         }
         return $value;
     }
+    
 }
 
 ?>
