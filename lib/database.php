@@ -11,9 +11,8 @@ class Database
     public $host = "localhost";
     public $user = "quin";
     public $pass = "Quin123@123.";
-    
-    // public $dbname = "quinshop";
     public $dbname = "quingroup";
+
 
     public $link;
     public $error;
@@ -44,6 +43,19 @@ class Database
         
         return $stmt;
     }
+
+    public function selectAll($query) {
+        $stmt = $this->link->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function selectOne($query) {
+        $stmt = $this->link->prepare($query);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+
     public function insert($query)
     {
         return $this->link->exec($query);
@@ -57,7 +69,6 @@ class Database
         } else {
             return false;
         }
-
 
     }
     public function delete($query)
