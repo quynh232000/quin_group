@@ -1,3 +1,16 @@
+// toast message
+function toastjs(text, type = true) {
+  var x = document.getElementById("snackbar");
+
+  x.className = "show";
+  if (type == false) {
+    x.classList.add("toast-error");
+  }
+  x.textContent = text;
+  setTimeout(function () {
+    x.className = x.className.replace("show", "");
+  }, 3000);
+}
 // function  count time
 
 function countTime(
@@ -110,39 +123,61 @@ function selectCategory(_this, id) {
 }
 // accept order
 function update_status_order(id,status) {
-  console.log(status);
-  return
+
+ 
   $.ajax({
-    url: `?mod=request&act=update_status_cate&id=${id}&type=accept`,
+    url: `?mod=request&act=update_status_order&id=${id}&status=${status}` ,
   }).done((data) => {
     data = JSON.parse(data);
-    if(data.status){
-      window.location.href ="?mod=seller&act=manageorders#order"+id;
+    console.log(data);
+    if (data) {
+      toastjs(data.message,data.status)
+      setTimeout(()=>{
+        window.location.reload();
+      },2500)
     }
   });
-  
 }
-// cancel order
-function order_cancel(id) {
-  console.log(id);
+// update status order all
+function update_status_order_all(status) {
+  if(status){
+    $.ajax({
+      url: `?mod=request&act=update_status_order_all&status=${status}` ,
+    }).done((data) => {
+      data = JSON.parse(data);
+      console.log(data);
+      if (data) {
+        toastjs(data.message,data.status)
+        setTimeout(()=>{
+          window.location.reload();
+        },2500)
+      }
+    });
+  }
 }
+
 // address
-function select_address(el,type) {
+function select_address(el, type) {
   console.log(el.value);
   console.log(type);
-  const id = el.value
+  const id = el.value;
   $.ajax({
     url: `?mod=request&act=get_address&id=${el.value}&type=${type}`,
   }).done((data) => {
     data = JSON.parse(data);
-    let html = data.map(item=>{
+    let html = data.map((item) => {
       return `
-        <option value="${type == 'province'? item.matp : item.maqh}">${item.name}</option>
-      `
-    })
-    html.unshift('option value="">--Chọn--</option>')
-    $('#'+type).html(html)
-    
+        <option value="${type == "province" ? item.matp : item.maqh}">${
+        item.name
+      }</option>
+      `;
+    });
+    html.unshift('option value="">--Chọn--</option>');
+    $("#" + type).html(html);
   });
-  
+}
+// get param 
+function get_param(paramName) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(paramName);
 }
