@@ -413,7 +413,11 @@
         </div>
     </main>
     <!-- qr code -->
-    <input id="text" hidden type="text" value="<?= $_SERVER['REQUEST_URI'] ?>&qrcode=true" style="width:80%" /><br />
+    <?php
+    $currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    
+    ?>
+    <input id="text" hidden type="text" value="<?=$currentUrl?>&qrcode=true" style="width:80%" /><br />
 
     <div id="snackbar"></div>
     <!-- qr code -->
@@ -437,7 +441,7 @@
                 console.log(data);
                 if ((data.status == "Confirmed") || data.status == "On_Delivery") {
                     loop(uuid)
-                } 
+                }
             });
             function loop(uui) {
                 let id = setInterval(() => {
@@ -448,7 +452,7 @@
                         console.log(data);
                         if ((data.status == "Confirmed") || data.status == "On_Delivery") {
                         } else {
-                            window.location.href ="?mod=verify&act=order&code="+uuid
+                            window.location.href = "?mod=verify&act=order&code=" + uuid
                             clearInterval(id)
                         }
 
