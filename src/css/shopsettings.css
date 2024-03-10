@@ -23,6 +23,7 @@
     height: 120px;
     border-radius: 50%;
     object-fit: cover;
+    box-shadow: 0 0 4px rgba(22,22,23,.2);
 }
 .s-profile-top{
     display: flex;
@@ -33,7 +34,7 @@
 .s-profile-img-upload{
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 6px;
     transition: .3s ease;
 }
 .s-profile-img-upload:hover{
@@ -171,4 +172,20 @@
         display: flex;
         justify-content: flex-end;
     }
+}
+.shop-shipping{
+    border-top: 4px solid var(--orange);
+    padding-top: 20px;
+}
+.shop-ship-group {
+    width: 240px !important;
+    flex: none;
+}
+.shop-ship-free{
+    color: green;
+    font-size: 12px;
+}
+.shop-ship-group select{
+    width: 100%;
+    border: none;
 }

@@ -221,13 +221,13 @@
                         </div>
                         <div class="header-search-item header-search-account">
                             <div class="header-search-item-icon">
-                                <img src="<?php echo "./assest/upload/" . Session::get("avatar");?>" class="img-user" alt="">
+                                <img src="<?php echo "./assest/upload/" .  $shop_info->result['icon'];?>" class="img-user" alt="">
                             </div>
                             <a href="?mod=profile&act=profile" class="header-search-info">
                                
-                                <span>Hi, 
+                                <span>Shop, 
                                     <?php
-                                        echo Session::get("full_name") ;
+                                        echo $shop_info->result['name'];
                                     ?>    
                                 </span>
                                 <div class="header-search-text-s">

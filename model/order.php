@@ -8,11 +8,13 @@ include_once "lib/session.php";
 class Order
 {
     private $db;
+    private $db_name;
     private $tool;
     private $response;
 
     public function __construct()
     {
+        $this->db_name = DB_NAME;
         $this->db = new Database();
         $this->tool = new Tool();
     }
@@ -38,22 +40,30 @@ class Order
 
         return new Response(true, "success", $oders->fetchAll(), "");
     }
-    public function getAllInvoince($type = "")
+    public function getAllInvoince($status = "")
     {
         $isLogin = Session::get("isLogin");
         if ($isLogin != true) {
             return new Response(false, "false", "", "");
         }
-        $typeWhere = '';
-        if ($type != "") {
-            $typeWhere = "WHERE i.status = '" . $type . "'";
+        $statusWhere = '';
+        if ($status != "") {
+            $statusWhere = " AND o.status = '" . $status . "'";
         }
-        $invoice = $this->db->select("SELECT i.*,ad.nameReceiver, ad.phone
-            FROM invoice AS i
-            INNER JOIN quin.address as ad
-            ON i.addressId = ad.id
-            $typeWhere
-            ORDER BY i.createdAt
+
+        $user_id = Session::get('id');
+        $shop_id = $this->db->select("SELECT id from shop where user_id = '$user_id'")->fetchColumn();
+        if ($shop_id) {
+            $shop_id = " AND shop_id = '$shop_id'";
+        }
+        $invoice = $this->db->select("SELECT o.*, ad.name_receiver, ad.phone_number
+            FROM $this->db_name.order AS o
+            INNER JOIN $this->db_name.delivery_address AS ad
+            ON o.delivery_address_id = ad.id
+            WHERE 1
+            $statusWhere
+            $shop_id
+            ORDER BY o.created_at
         ");
         if ($invoice == false) {
             return new Response(false, "false", "", "");
@@ -82,31 +92,76 @@ class Order
     // get detail ordder
     public function getOrderDetail($id)
     {
-        $listOrder = $this->db->select("SELECT i.* ,p.namePro, p.price,c.nameCate,p.image
-        FROM invoicedetail as i
+
+        $listOrder = $this->db->select("SELECT i.* ,p.name, p.price,c.name as nameCate,p.image_cover
+        FROM order_detail as i
         INNER JOIN product as p
-        ON p.id = i.productId 
+        ON p.id = i.product_id 
         INNER JOIN category as c
-        ON c.id = p.categoryId
-        WHERE i.invoinceId = '$id'
+        ON c.id = p.category_id
+        WHERE i.order_id = '$id'
         ");
 
 
-        $infoInvoince = $this->db->select("SELECT i.*, u.fullName, u.email, u.avatar, a.nameReceiver, a.addressDetail, a.phone, a.city,a.province
-         FROM invoice as i 
-         INNER JOIN user as u
-         ON u.id = i.userId
-         INNER JOIN address as a
-         ON a.id = i.addressId
+        $infoInvoince = $this->db->select("SELECT i.*, u.full_name, u.email, u.avatar, a.name_receiver, a.address_detail, a.phone_number, a.district,a.province
+         FROM $this->db_name.order as i 
+         INNER JOIN $this->db_name.user as u
+         ON u.id = i.user_id
+         INNER JOIN $this->db_name.delivery_address as a
+         ON a.id = i.delivery_address_id
          WHERE i.id = '$id'
         ");
-      
 
-        return  new Response(true, "success!", ['listpro'=>$listOrder->fetchAll(),'invoice'=>$infoInvoince->fetchAll()], "");
+
+        return new Response(true, "success!", ['listpro' => $listOrder->fetchAll(), 'invoice' => $infoInvoince->fetchAll()], "");
     }
+    // update status Order
+    public function update_status_order($id, $type)
+    {
+        if ($id == "" || $type == "") {
+            return new Response(false, "Missing parammeter", "", "");
+        }
+        $status = "";
+        $data ="";
+        switch ($type) {
+            case 'accept':
+                $status = 'Delivering';
+                $idEncode = base64_encode($id);
+                $data="?mod=verify&act=order&token=$idEncode";
+                $this->db->insert("INSERT INTO link_order_ship (order_id,link)values($id,'$data')");
 
+                break;
+            case 'cancel':
+                $status = 'Cancelled';
+                break;
+            case 'confirm_delivered':
+                $status ='To Rate';
+                $this->db->update("UPDATE link_order_ship SET is_expired = 1");
+                break;
+            default:
+                # code...
+                break;
+        }
+        $resultUpdate = $this->db->update("UPDATE $this->db_name.order 
+            SET status = '$status' 
+            WHERE id = '$id'
+        ");
+        if ($resultUpdate == false) {
+            return new Response(false, "Something wrong from server!", "", "");
+        }
+        return new Response(true, "Cập nhật đơn hàng thành công!", $data, "");
+    }
+    // get link order
+    public function get_link_order($id)  {
+        $link ="";
+        if($id){
+            $link = $this->db->select("SELECT link FROM link_order_ship")->fetchColumn();
+        }
+        return $link;
+    }
+    public function check_link_order($id) {
+        return $this->db->select("SELECT is_expired FROM link_order_ship")->fetchColumn();
+    }
 }
-
-
 
 ?>

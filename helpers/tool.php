@@ -9,19 +9,22 @@ class Tool
 
         return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
     }
-    public function uploadFile($file, $path = "")
+    public function uploadFile($file,$path ="" )
     {
         // path = "foldername/"
-        $fileDir = "./assest/upload/" . $path;
+        $fileDir = "./assest/upload/".$path;
+
         if (isset($file) && $file['error'] == 0) {
             $fileName = basename($file['name']);
             if (!file_exists($fileDir)) {
                 mkdir($fileDir, 0, true);
             }
+
             $fileNameNew = self::GUID() . "." . (explode(".", $fileName)[1]);
             $fileDir = $fileDir . $fileNameNew;
             if (move_uploaded_file($file['tmp_name'], $fileDir)) {
                 return  $path . $fileNameNew;
+
             } else {
                 return false;
             }
@@ -77,3 +80,7 @@ class Tool
         return $value;
     }
 }
+
+
+?>
+
