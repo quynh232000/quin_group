@@ -7,7 +7,7 @@ include_once "model/order.php";
 include_once "model/comment.php";
 include_once "model/category.php";
 include_once "model/address.php";
-
+$classOrder = new Order();
 extract($_REQUEST);
 if (isset($act)) {
     switch ($act) {
@@ -81,7 +81,7 @@ if (isset($act)) {
             return;
         case 'update_status_cate':
             if (isset($_GET['id']) && $_GET['id'] && isset($_GET['type']) && $_GET['type']) {
-                $classOrder = new Order();
+
                 $result = $classOrder->update_status_order($_GET['id'], $_GET['type']);
             } else {
                 $result = ['status' => false, 'message' => "Missing paramater"];
@@ -108,11 +108,36 @@ if (isset($act)) {
                         echo json_encode($result, JSON_PRETTY_PRINT);
                         break;
                     default:
-                    echo json_encode([], JSON_PRETTY_PRINT);
+                        echo json_encode([], JSON_PRETTY_PRINT);
                         break;
                 }
             }
             return;
+        // update status order
+        case 'update_status_order':
+            if (isset($_GET['id']) && $_GET['id'] && isset($_GET['status']) && $_GET['status']) {
+
+                $data = $classOrder->update_status_order($_GET['id'], $_GET['status'], );
+                echo json_encode($data, JSON_PRETTY_PRINT);
+            } else {
+                echo json_encode(['status' => false, 'message' => "Missing parameter"], JSON_PRETTY_PRINT);
+            }
+            return;
+        case 'update_status_order_all':
+            if ( isset($_GET['status']) && $_GET['status']) {
+
+                $data = $classOrder->update_status_order_all( $_GET['status'] );
+                echo json_encode($data, JSON_PRETTY_PRINT);
+            } else {
+                echo json_encode(['status' => false, 'message' => "Missing parameter"], JSON_PRETTY_PRINT);
+            }
+            return;
+        case 'get_status_order':
+
+            echo json_encode($classOrder->get_status_order($_GET['uuid']), JSON_PRETTY_PRINT);
+
+
+            return;;
         default:
             break;
 
