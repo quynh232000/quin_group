@@ -22,7 +22,6 @@ class Tool
             $fileDir = $fileDir . $fileNameNew;
             if (move_uploaded_file($file['tmp_name'], $fileDir)) {
                 return  $path.$fileNameNew;
-
             } else {
                 return false;
             }
@@ -73,11 +72,12 @@ class Tool
             }
         } else {
             $value = "/";
-
         }
         return $value;
     }
     
 }
 
+
 ?>
+

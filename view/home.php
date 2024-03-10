@@ -103,6 +103,7 @@
                         <span class="mega-time" type="second">12</span>
                         <p>SECOND</p>
                     </div>
+                  
                 </div>
             </div>
         </div>
