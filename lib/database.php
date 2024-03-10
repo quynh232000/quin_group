@@ -4,10 +4,14 @@ include "./config/config.php";
 <?php
 class Database
 {
-    public $host = DB_HOST;
-    public $user = DB_USER;
-    public $pass = DB_PASS;
-    public $dbname = DB_NAME;
+    //     public $host   = DB_HOST;
+    // public $user   = DB_USER;
+    // public $pass   = DB_PASS;
+    // public $dbname = DB_NAME;
+    public $host = "localhost";
+    public $user = "quin";
+    public $pass = "Quin123@123.";
+    public $dbname = "quingroup";
 
 
     public $link;

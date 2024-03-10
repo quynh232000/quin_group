@@ -197,7 +197,7 @@
                     <a href="?mod=seller&act=manageproduct&page=<?= isset($_GET['page']) ? $_GET['page'] > 1 ? $_GET['page'] - 1 : 1 : 1 ?>"
                         class="<?php if (!isset($_GET['page']) || $_GET['page'] == 1)
                             echo "disabled"; ?> p-pagination-item previous-page">
-                        Trước
+                        <i class="fa-solid fa-angles-left"></i>
                     </a>
                     <?php if (isset($allProduct) && isset($allProduct->status)) {
                         for ($i = 1; $i < ceil($allProduct->total / 10) + 1; $i++) {
@@ -225,7 +225,7 @@
                      if (isset($_GET['page']) && (($_GET['page'] == ceil($allProduct->total / 10)))) {
                          echo "disabled";
                      }
-                     ?>">Sau</a>
+                     ?>"><i class="fa-solid fa-angles-right"></i></a>
                 </div>
             </div>
             <div class="shop-pro-body">
@@ -318,10 +318,10 @@
                                     </div>
                                     <div class="shop-pro-status" title="Waiting">
                                         <?php 
-                                        if($value['status']=='new'){
-                                            echo '<i  title="Pedding" class="fa-regular fa-clock"></i>';
-                                        }elseif($value['status']=='actived'){
-                                            echo '<i title="Actived" class="fa-regular fa-circle-check"></i>';
+                                        if($value['status']=='New'){
+                                            echo '<i  title="Pedding" class="fa-regular fa-clock" ></i>';
+                                        }elseif($value['status']=='Activated'){
+                                            echo '<i title="Actived" class="fa-regular fa-circle-check" style="color:green"></i>';
                                         }else{
                                             echo '<i title="Rejected" class="fa-regular fa-circle-xmark"></i>';
                                         }

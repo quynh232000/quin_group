@@ -47,7 +47,7 @@ class Adminlogin
                 Session::set('email', $value['email']);
                 Session::set('avatar', $value['avatar']);
                 Session::set('role', $value['role']);
-                Session::set('phone', $value['phone']);
+                Session::set('phone', $value['phone_number']);
                 return ["status" => true, "message" => "Đăng nhập thành công!", "result" => [], "redirect" => $redirect];
             } else {
                 $alert = "Tên đăng nhập hoặc tài khoản không đúng!";
@@ -94,7 +94,7 @@ class Adminlogin
         $avatar = '5EA63482-44B3-40C9-B3A8-1479DB08CCD4.jpg';
         $id = $this->tool->GUID();
         $pass = md5($password);
-        $query = "INSERT INTO user (id,full_name,email,phone,password,avatar) VALUE
+        $query = "INSERT INTO user (id,full_name,email,phone_number,password,avatar) VALUE
                ( '$id',
                  '$fullName',
                 '$email',

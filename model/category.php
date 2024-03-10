@@ -63,7 +63,6 @@ class Category
     function buildCategoryTree($categories, $parentId = 0)
     {
         $branch = [];
-
         foreach ($categories as $key => $category) {
             if ($category['parent_id'] == $parentId . "") {
                 $children = $this->buildCategoryTree($categories, $category['id']);
@@ -87,8 +86,8 @@ class Category
         $result = $this->db->select($query)->fetchAll();
         // $tree = buildCategoryTree($categories);
         // print_r($this->buildCategoryTree($result));
-// echo json_encode($this->buildCategoryTree($result), JSON_PRETTY_PRINT);
-// return;
+        // echo json_encode($this->buildCategoryTree($result), JSON_PRETTY_PRINT);
+        // return;
         return($this->buildCategoryTree($result, $idCate));
 
     }

@@ -2,6 +2,7 @@
 session_start();
 include_once "./lib/session.php";
 
+
 extract($_REQUEST);
 if (isset($mod)) {
     switch ($mod) {
@@ -23,6 +24,9 @@ if (isset($mod)) {
         case 'redirect-google':
             include_once 'model/redirect-google.php';
             break;
+            case 'verify':
+                include_once 'controller/verify.php';
+                break;
 
         default:
             header("Location: ?page=404");

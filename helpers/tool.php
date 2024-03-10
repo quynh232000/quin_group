@@ -9,19 +9,19 @@ class Tool
 
         return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
     }
-    public function uploadFile($file)
+    public function uploadFile($file,$path ="" )
     {
-        // print_r($file);
-        $fileDir = "./assest/upload/";
+        // path = "foldername/"
+        $fileDir = "./assest/upload/".$path;
         if (isset($file) && $file['error'] == 0) {
             $fileName = basename($file['name']);
             if (!file_exists($fileDir)) {
                 mkdir($fileDir, 0, true);
             }
-            $fileNameNew =   self::GUID() . "." . (explode(".", $fileName)[1]);
+            $fileNameNew =self::GUID() . "." . (explode(".", $fileName)[1]);
             $fileDir = $fileDir . $fileNameNew;
             if (move_uploaded_file($file['tmp_name'], $fileDir)) {
-                return $fileNameNew;
+                return  $path.$fileNameNew;
             } else {
                 return false;
             }
@@ -30,31 +30,33 @@ class Tool
         }
     }
 
-    public function slug($text, string $divider = '-')
+    public function slug($string)
     {
-        // replace non letter or digits by divider
-        $text = preg_replace('~[^\pL\d]+~u', $divider, $text);
+        $string = preg_replace('/[^\p{L}\p{N}\s]/u', '', $string);
 
-        // transliterate
-        // $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+        // Convert Vietnamese characters to Latin characters
+        $string = str_replace(
+            ['á', 'à', 'ả', 'ã', 'ạ', 'ă', 'ắ', 'ằ', 'ẳ', 'ẵ', 'ặ', 'â', 'ấ', 'ầ', 'ẩ', 'ẫ', 'ậ', 'đ', 'é', 'è', 'ẻ', 'ẽ', 'ẹ', 'ê', 'ế', 'ề', 'ể', 'ễ', 'ệ', 'í', 'ì', 'ỉ', 'ĩ', 'ị', 'ó', 'ò', 'ỏ', 'õ', 'ọ', 'ô', 'ố', 'ồ', 'ổ', 'ỗ', 'ộ', 'ơ', 'ớ', 'ờ', 'ở', 'ỡ', 'ợ', 'ú', 'ù', 'ủ', 'ũ', 'ụ', 'ư', 'ứ', 'ừ', 'ử', 'ữ', 'ự', 'ý', 'ỳ', 'ỷ', 'ỹ', 'ỵ'],
+            ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'd', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i', 'i', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'y', 'y', 'y', 'y', 'y'],
+            $string
+        );
 
-        // remove unwanted characters
-        $text = preg_replace('~[^-\w]+~', '', $text);
+        // Remove remaining special characters
+        $string = preg_replace('/[^\p{L}\p{N}\s]/u', '', $string);
 
-        // trim
-        $text = trim($text, $divider);
+        // Replace spaces with dashes
+        $slug = str_replace(' ', '-', $string);
 
-        // remove duplicate divider
-        $text = preg_replace('~-+~', $divider, $text);
+        // Remove extra dashes
+        $slug = preg_replace('/-+/', '-', $slug);
 
-        // lowercase
-        $text = strtolower($text);
+        // Trim dashes from the beginning and end
+        $slug = trim($slug, '-');
 
-        if (empty($text)) {
-            return 'n-a';
-        }
+        // Convert to lowercase
+        $slug = strtolower($slug);
 
-        return $text;
+        return $slug;
     }
     function path()
     {
@@ -73,4 +75,9 @@ class Tool
         }
         return $value;
     }
+    
 }
+
+
+?>
+

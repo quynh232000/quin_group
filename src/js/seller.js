@@ -1,3 +1,16 @@
+// toast message
+function toastjs(text, type = true) {
+  var x = document.getElementById("snackbar");
+
+  x.className = "show";
+  if (type == false) {
+    x.classList.add("toast-error");
+  }
+  x.textContent = text;
+  setTimeout(function () {
+    x.className = x.className.replace("show", "");
+  }, 3000);
+}
 // function  count time
 
 function countTime(
@@ -44,13 +57,12 @@ function selectCategory(_this, id) {
             </div>
         `;
     }
-    
   });
   const type = $(_this).attr("checkLast")?.trim();
 
   // const id = $(_this).attr("idCate");
   if (type == "has") {
-    $('#input_category_id').val("")
+    $("#input_category_id").val("");
     // $(_this).closest('.modal-cate-group').nextAll().remove()
     $.ajax({
       url: "?mod=request&act=get-all-category&idCate=" + id,
@@ -95,34 +107,77 @@ function selectCategory(_this, id) {
             </div>
           `);
         //show nav select
-        // console.log("asdd: ",$(".modal-cate-item.active"));
-        //show nav select
       }
-      // selectCategory();
     });
+    $(".modal-btn-confirm").attr("disabled", "disabled");
   } else {
-    $('#input_category_id').val(id)
-    $(".show-select-cate-view").html(htmlCateSelect)
+    $(".show-select-cate-view").html(htmlCateSelect);
+    $(".modal-btn-confirm").removeAttr("disabled");
+    $("#input_category_id").val(id);
+
+    $(".modal-btn-confirm").click(function () {
+      $(".modal-edit-cate").css("display", "none");
+    });
   }
-  
-  // $(".modal-cate-item").map((index,item) => {
-  //   console.log($(item));
-  //   // $text = $(item).find("p")?.text();
-  //   // $id = $(item).attr("idCate").trim();
-  //   // console.log(text);
-  // });
-  // let htmlCateSelect = $(".modal-cate-item.active")
-  //   .map((index,item) => {
-  //     const text = $(item).find("p")?.text();
-  //     const id = $(item).attr("idCate").trim();
-  //     return `
-  //       <div class="modal-cate-selected-item">
-  //         <span>${text}</span>
-  //       </div>
-  //   `;
-  //   })
-  //   .join("");
-  // console.log(htmlCateSelect);
   $(".modal-cate-selected").html(htmlCateSelect);
-  
+}
+// accept order
+function update_status_order(id,status) {
+
+ 
+  $.ajax({
+    url: `?mod=request&act=update_status_order&id=${id}&status=${status}` ,
+  }).done((data) => {
+    data = JSON.parse(data);
+    console.log(data);
+    if (data) {
+      toastjs(data.message,data.status)
+      setTimeout(()=>{
+        window.location.reload();
+      },2500)
+    }
+  });
+}
+// update status order all
+function update_status_order_all(status) {
+  if(status){
+    $.ajax({
+      url: `?mod=request&act=update_status_order_all&status=${status}` ,
+    }).done((data) => {
+      data = JSON.parse(data);
+      console.log(data);
+      if (data) {
+        toastjs(data.message,data.status)
+        setTimeout(()=>{
+          window.location.reload();
+        },2500)
+      }
+    });
+  }
+}
+
+// address
+function select_address(el, type) {
+  console.log(el.value);
+  console.log(type);
+  const id = el.value;
+  $.ajax({
+    url: `?mod=request&act=get_address&id=${el.value}&type=${type}`,
+  }).done((data) => {
+    data = JSON.parse(data);
+    let html = data.map((item) => {
+      return `
+        <option value="${type == "province" ? item.matp : item.maqh}">${
+        item.name
+      }</option>
+      `;
+    });
+    html.unshift('option value="">--Chọn--</option>');
+    $("#" + type).html(html);
+  });
+}
+// get param 
+function get_param(paramName) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(paramName);
 }

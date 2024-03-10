@@ -2,7 +2,7 @@
     
     class Response{
         public $status;
-        public $page;
+        public $message;
         public $result;
         public $redirect;
         public $total;
@@ -14,6 +14,7 @@
             $this->total = $total;
         }
     }
+    
    
    
 ?>
