@@ -40,7 +40,7 @@ class Database
         return $stmt;
     }
 
-    public function selectAll($query) {
+    public function selectMultiple($query) {
         $stmt = $this->link->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll();

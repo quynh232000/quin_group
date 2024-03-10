@@ -180,21 +180,17 @@
                 <!-- chat tab ends -->
             </div>
         </div>
-
-
         <!-- partial -->
         <!-- partial:../../partials/_sidebar.html -->
-        <?php include_once "./view/admin/side_bar.php"; ?>
+        <?php include_once "view/admin/component/side_bar.php"; ?>
         <!-- partial -->
         <div class="main-panel">
             <div class="content-wrapper">
-
-                
-                
+                <?php include_once "view/admin/component/treeview/treeViewUI.php"; ?>
             </div>
             <!-- content-wrapper ends -->
             <!-- partial:../../partials/_footer.html -->
-            <?php include_once "view/admin/footer.php" ?>
+            <?php include_once "view/admin/component/footer.php" ?>
             <!-- partial -->
         </div>
         <!-- main-panel ends -->
