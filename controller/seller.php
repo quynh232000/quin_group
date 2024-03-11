@@ -153,6 +153,8 @@ if (isset($act)) {
             include_once 'view/inc/footer.php';
             break;
         case 'manageorders':
+            $limit = 20;
+            $param ="";
             $classOrder = new Order();
             $status = '';
             if (isset($_GET['status']) && ($_GET['status'] == 'New' || 
@@ -162,8 +164,16 @@ if (isset($act)) {
             $_GET['status'] == 'Completed' ||
              $_GET['status'] == 'Cancelled')) {
                 $status = $_GET['status'];
+
+                $param ="&status=".$_GET['status'];
             }
-            $resultOrder = $classOrder->getAllInvoince($status);
+            // get page
+            $page = 1;
+            if(isset($_GET['page'])&& $_GET['page']){
+                $page = $_GET['page'];
+            }
+            $resultOrder = $classOrder->getAllInvoince($status,$page,$limit);
+
 
             $viewTitle = 'Manage orders';
             include_once 'view/inc/headerAdmin.php';
@@ -287,11 +297,13 @@ if (isset($act)) {
                     if ($updateshop->status == true) {
 
                         echo '<div id="toast" mes-type="success" mes-title="Thành công!" mes-text="' . $updateshop->message . '"></div>';
-                        // echo ' <script>
-                        //         setTimeout(function() {
-                        //             window.location.href="?mod=seller&act=setting";
-                        //         }, 2500);
-                        //     </script>';
+
+                        echo ' <script>
+                                setTimeout(function() {
+                                    window.location.href="?mod=seller&act=setting";
+                                }, 2500);
+                            </script>';
+
                     } else {
                         echo '<div id="toast" mes-type="error" mes-title="Thất bại!" mes-text="' . $updateshop->message . '"></div>';
                     }
