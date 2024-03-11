@@ -78,37 +78,29 @@ if (isset($act)) {
         case 'manageproduct':
             $viewTitle = 'Manage your products';
             $classPro = new Product();
-            // get page product
             $page = 1;
             if (isset($_GET['page']) && $_GET['page']) {
                 $page = $_GET['page'];
             }
-            $allProduct = $classPro->getAllProduct($page, 10, "", Session::get('id'));
+            $allProduct = $classPro->getAllProductSeller($page, 10, "");
             $cate = new Category();
-            // $allCategory = $cate->getAllCate();
-            // ddelete product
             if ((isset($_GET['type']) && isset($_GET['idPro'])) && ($_GET['type']) && $_GET['idPro']) {
                 $type = $_GET['type'];
                 $idPro = $_GET['idPro'];
                 if ($type == "delete") {
                     $resultDeletePro = $classPro->deleteProduct($idPro);
-                    header("Location: ?mod=admin&act=manageproduct");
+                    if ($resultDeletePro->status == true) {
+                        echo '<div id="toast" mes-type="success" mes-title="Thành công!" mes-text="' . $resultDeletePro->message . '"></div>';
+                    } else {
+                        echo '<div id="toast" mes-type="error" mes-title="Thất bại!" mes-text="' . $resultDeletePro->message . '"></div>';
+    
+                    }
+                    // sleep(3);
+                    // header("Location: ?mod=seller&act=manageproduct");
                 }
             }
             include_once 'view/inc/headerAdmin.php';
-            if (isset($resultDeletePro)) {
-                if ($resultDeletePro->status == true) {
-                    echo '<div id="toast" mes-type="success" mes-title="Thành công!" mes-text="' . $resultDeletePro->message . '"></div>';
-                } else {
-                    echo '<div id="toast" mes-type="error" mes-title="Thất bại!" mes-text="' . $resultDeletePro->message . '"></div>';
-
-                }
-                // echo ' <script>
-                //     setTimeout(function() {
-                //         window.location.href="'.$resultDeletePro->redirect.'";
-                //     }, 4000);
-                // </script>';
-            }
+           
             include_once 'view/inc/sidebarAdmin.php';
             include_once 'view/seller/manageproduct.php';
             include_once 'view/inc/footer.php';
