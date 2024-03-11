@@ -4,6 +4,7 @@ include "./config/config.php";
 <?php
 class Database
 {
+
     //     public $host   = DB_HOST;
     // public $user   = DB_USER;
     // public $pass   = DB_PASS;
@@ -12,6 +13,8 @@ class Database
     public $user = "quin";
     public $pass = "Quin123@123.";
     public $dbname = "quingroup";
+
+
 
 
     public $link;
@@ -44,7 +47,7 @@ class Database
         return $stmt;
     }
 
-    public function selectAll($query) {
+    public function selectMultiple($query) {
         $stmt = $this->link->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll();

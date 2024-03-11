@@ -176,7 +176,7 @@
     </div>
     <!-- partial -->
     <!-- partial:../../partials/_sidebar.html -->
-    <?php include_once "./view/admin/side_bar.php"; ?>
+    <?php include_once "view/component/side_bar.php"; ?>
     <!-- partial -->
     <div class="main-panel">
       <div class="content-wrapper">
@@ -892,7 +892,7 @@
       </div>
       <!-- content-wrapper ends -->
       <!-- partial:../../partials/_footer.html -->
-      <?php include_once "view/admin/footer.php" ?>
+      <?php include_once "view/component/footer.php" ?>
       <!-- partial -->
     </div>
     <!-- main-panel ends -->

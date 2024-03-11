@@ -40,7 +40,9 @@ class Order
 
         return new Response(true, "success", $oders->fetchAll(), "");
     }
+
     public function getAllInvoince($status = "", $page = 1, $limit = 5)
+
     {
         $isLogin = Session::get("isLogin");
         if ($isLogin != true) {
@@ -55,12 +57,12 @@ class Order
         if ($status != "") {
             $statusWhere = " AND o.status = '" . $status . "'";
         }
-
         $user_id = Session::get('id');
         $shop_id = $this->db->select("SELECT id from shop where user_id = '$user_id'")->fetchColumn();
         if ($shop_id) {
             $shop_id = " AND shop_id = '$shop_id'";
         }
+
         $invoice = $this->db->select("SELECT o.*, ad.name_receiver, ad.phone_number
             FROM $this->db_name.order AS o
             INNER JOIN $this->db_name.delivery_address AS ad
@@ -69,7 +71,8 @@ class Order
             $statusWhere
             $shop_id
             ORDER BY o.created_at
-            LIMIT $currentPage, $limit
+            LIMIT $currentPage, $limi
+
         ");
         // count total
         $count = $this->db->select("SELECT count(*) as total
@@ -129,6 +132,57 @@ class Order
 
         return new Response(true, "success!", ['listpro' => $listOrder->fetchAll(), 'invoice' => $infoInvoince->fetchAll()], "");
     }
+
+    // update status Order
+    public function update_status_order($id, $type)
+    {
+        if ($id == "" || $type == "") {
+            return new Response(false, "Missing parammeter", "", "");
+        }
+        $status = "";
+        $data ="";
+        switch ($type) {
+            case 'accept':
+                $status = 'Delivering';
+                $idEncode = base64_encode($id);
+                $data="?mod=verify&act=order&token=$idEncode";
+                $this->db->insert("INSERT INTO link_order_ship (order_id,link)values($id,'$data')");
+
+                break;
+            case 'cancel':
+                $status = 'Cancelled';
+                break;
+            case 'confirm_delivered':
+                $status ='To Rate';
+                $this->db->update("UPDATE link_order_ship SET is_expired = 1");
+                break;
+            default:
+                # code...
+                break;
+        }
+        $resultUpdate = $this->db->update("UPDATE $this->db_name.order 
+            SET status = '$status' 
+            WHERE id = '$id'
+        ");
+        if ($resultUpdate == false) {
+            return new Response(false, "Something wrong from server!", "", "");
+        }
+        return new Response(true, "Cập nhật đơn hàng thành công!", $data, "");
+    }
+    // get link order
+    public function get_link_order($id)  {
+        $link ="";
+        if($id){
+            $link = $this->db->select("SELECT link FROM link_order_ship")->fetchColumn();
+        }
+        return $link;
+    }
+    public function check_link_order($id) {
+        return $this->db->select("SELECT is_expired FROM link_order_ship")->fetchColumn();
+    }
+}
+
+
     public function get_order_detail($id){
         if($id =="")  new Response(false, "Missing parameter", "", "", "");
         $order = $this->db->select("SELECT o.*, ad.name_receiver, ad.phone_number ,s.id as shop_id 
@@ -242,5 +296,6 @@ class Order
         return $this->db->select("SELECT is_expired FROM link_order_ship")->fetchColumn();
     }
 }
+
 
 ?>
