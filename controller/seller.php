@@ -13,6 +13,7 @@ include_once 'model/user.php';
 include_once 'model/order.php';
 include_once 'model/shop.php';
 include_once 'model/address.php';
+include_once 'model/voucher.php';
 $classShop = new Shop();
 $shop_info = $classShop->get_shop_info();
 
@@ -78,37 +79,29 @@ if (isset($act)) {
         case 'manageproduct':
             $viewTitle = 'Manage your products';
             $classPro = new Product();
-            // get page product
             $page = 1;
             if (isset($_GET['page']) && $_GET['page']) {
                 $page = $_GET['page'];
             }
-            $allProduct = $classPro->getAllProduct($page, 10, "", Session::get('id'));
+            $allProduct = $classPro->getAllProductSeller($page, 10, "");
             $cate = new Category();
-            // $allCategory = $cate->getAllCate();
-            // ddelete product
             if ((isset($_GET['type']) && isset($_GET['idPro'])) && ($_GET['type']) && $_GET['idPro']) {
                 $type = $_GET['type'];
                 $idPro = $_GET['idPro'];
                 if ($type == "delete") {
                     $resultDeletePro = $classPro->deleteProduct($idPro);
-                    header("Location: ?mod=admin&act=manageproduct");
+                    if ($resultDeletePro->status == true) {
+                        echo '<div id="toast" mes-type="success" mes-title="Thành công!" mes-text="' . $resultDeletePro->message . '"></div>';
+                    } else {
+                        echo '<div id="toast" mes-type="error" mes-title="Thất bại!" mes-text="' . $resultDeletePro->message . '"></div>';
+
+                    }
+                    // sleep(3);
+                    // header("Location: ?mod=seller&act=manageproduct");
                 }
             }
             include_once 'view/inc/headerAdmin.php';
-            if (isset($resultDeletePro)) {
-                if ($resultDeletePro->status == true) {
-                    echo '<div id="toast" mes-type="success" mes-title="Thành công!" mes-text="' . $resultDeletePro->message . '"></div>';
-                } else {
-                    echo '<div id="toast" mes-type="error" mes-title="Thất bại!" mes-text="' . $resultDeletePro->message . '"></div>';
 
-                }
-                // echo ' <script>
-                //     setTimeout(function() {
-                //         window.location.href="'.$resultDeletePro->redirect.'";
-                //     }, 4000);
-                // </script>';
-            }
             include_once 'view/inc/sidebarAdmin.php';
             include_once 'view/seller/manageproduct.php';
             include_once 'view/inc/footer.php';
@@ -154,24 +147,26 @@ if (isset($act)) {
             break;
         case 'manageorders':
             $limit = 20;
-            $param ="";
+            $param = "";
             $classOrder = new Order();
             $status = '';
-            if (isset($_GET['status']) && ($_GET['status'] == 'New' || 
-            $_GET['status'] == 'Processing' ||
-            $_GET['status'] == 'Confirmed' ||
-            $_GET['status'] == 'On_Delivery' ||
-            $_GET['status'] == 'Completed' ||
-             $_GET['status'] == 'Cancelled')) {
+            if (
+                isset($_GET['status']) && ($_GET['status'] == 'New' ||
+                    $_GET['status'] == 'Processing' ||
+                    $_GET['status'] == 'Confirmed' ||
+                    $_GET['status'] == 'On_Delivery' ||
+                    $_GET['status'] == 'Completed' ||
+                    $_GET['status'] == 'Cancelled')
+            ) {
                 $status = $_GET['status'];
-                $param ="&status=".$_GET['status'];
+                $param = "&status=" . $_GET['status'];
             }
             // get page
             $page = 1;
-            if(isset($_GET['page'])&& $_GET['page']){
+            if (isset($_GET['page']) && $_GET['page']) {
                 $page = $_GET['page'];
             }
-            $resultOrder = $classOrder->getAllInvoince($status,$page,$limit);
+            $resultOrder = $classOrder->getAllInvoince($status, $page, $limit);
 
             $viewTitle = 'Manage orders';
             include_once 'view/inc/headerAdmin.php';
@@ -269,7 +264,7 @@ if (isset($act)) {
                 $ship_mid_north = $_POST['ship_mid_north'];
                 $ship_mid_south = $_POST['ship_mid_south'];
 
-                
+
                 if (
 
                     empty($name) || empty($phone_number) ||
@@ -291,7 +286,7 @@ if (isset($act)) {
                         $ship_mid_north,
                         $ship_mid_south
                     );
-                    
+
                     if ($updateshop->status == true) {
 
                         echo '<div id="toast" mes-type="success" mes-title="Thành công!" mes-text="' . $updateshop->message . '"></div>';
@@ -318,6 +313,48 @@ if (isset($act)) {
             include_once 'view/inc/sidebarAdmin.php';
             include_once 'view/seller/setting.php';
             include_once 'view/inc/footer.php';
+            break;
+        case 'manage_voucher':
+            $viewTitle = 'Quản lý vouchers';
+
+            
+            if (isset($_POST['label']) && $_POST['label']) {
+                $label = $_POST['label'] ?? "";
+                $code = $_POST['code'] ?? "";
+                $date_start = $_POST['date_start'] ?? "";
+                $date_end = $_POST['date_end'] ?? "";
+                $discount_amount = $_POST['discount_amount'] ?? "";
+                $quantity = $_POST['quantity'] ?? "";
+                $minimum_price = $_POST['minimum_price'] ?? "";
+                $classVoucher = new Voucher();
+                $createVoucher = $classVoucher->create_voucher(
+                    $label,
+                    $code,
+                    $date_start,
+                    $date_end,
+                    $discount_amount,
+                    $quantity,
+                    $minimum_price
+                );
+                var_dump($createVoucher);
+                return;
+                if($createVoucher->status ==true){
+                    echo '<div id="toast" mes-type="success" mes-title="Thành công!" mes-text="' . $createVoucher->message . '"></div>';
+                    // sleep(3);
+                    // header("Location: ?mod=seller&act=manage_voucher");;
+                }else{
+                    echo '<div id="toast" mes-type="error" mes-title="Thất bại!" mes-text="' . $createVoucher->message . '"></div>';
+                }
+
+            }
+
+
+            include_once 'view/inc/headerAdmin.php';
+            include_once 'view/inc/sidebarAdmin.php';
+            include_once 'view/seller/shopmanagevoucher.php';
+            include_once 'view/inc/footer.php';
+
+
             break;
 
         default:

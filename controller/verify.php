@@ -16,7 +16,6 @@ if (isset($_GET['act']) && $_GET['act']) {
             $classAddress = new Address();
             $format = new Format();
             $order = $classOrder->get_order_detail($code);
-
             if (isset($order) && ($order->status == true)&&(($order->result['status']=='Confirmed')||$order->result['status']=='On_Delivery') ) {
                 if (isset($_GET['qrcode']) && $_GET['qrcode'] == "true") {
                     $classOrder->update_status_order($order->result['id'], 'Completed');
