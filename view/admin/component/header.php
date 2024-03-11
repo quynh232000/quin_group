@@ -6,22 +6,32 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Star Admin2 </title>
+  <!-- admin  -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- admin end  -->
+
+  <!-- modal  -->
+  <link rel="stylesheet" href="view/admin/component/treeview/style.css">
+  <!-- end modal  -->
+
+
   <!-- plugins:css -->
-  <link rel="stylesheet" href="./view/admin/vendors/feather/feather.css">
-  <link rel="stylesheet" href="./view/admin/vendors/mdi/css/materialdesignicons.min.css">
-  <link rel="stylesheet" href="./view/admin/vendors/ti-icons/css/themify-icons.css">
-  <link rel="stylesheet" href="./view/admin/vendors/typicons/typicons.css">
-  <link rel="stylesheet" href="./view/admin/vendors/simple-line-icons/css/simple-line-icons.css">
-  <link rel="stylesheet" href="./view/admin/vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="view/admin/vendors/feather/feather.css">
+  <link rel="stylesheet" href="view/admin/vendors/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="view/admin/vendors/ti-icons/css/themify-icons.css">
+  <link rel="stylesheet" href="view/admin/vendors/typicons/typicons.css">
+  <link rel="stylesheet" href="view/admin/vendors/simple-line-icons/css/simple-line-icons.css">
+  <link rel="stylesheet" href="view/admin/vendors/css/vendor.bundle.base.css">
   <!-- endinject -->
   <!-- Plugin css for this page -->
-  <link rel="stylesheet" href="./view/admin/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
-  <link rel="stylesheet" href="./view/admin/js/select.dataTables.min.css">
+  <link rel="stylesheet" href="view/admin/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+  <link rel="stylesheet" href="view/admin/js/select.dataTables.min.css">
   <!-- End plugin css for this page -->
   <!-- inject:css -->
-  <link rel="stylesheet" href="./view/admin/css/vertical-layout-light/style.css">
+  <link rel="stylesheet" href="view/admin/css/vertical-layout-light/style.css">
   <!-- endinject -->
-  <link rel="shortcut icon" href="./view/admin/images/favicon.png" />
+  <link rel="shortcut icon" href="view/admin/images/favicon.png" />
 </head>
 
 <body>
@@ -36,10 +46,10 @@
       </div>
       <div>
         <a class="navbar-brand brand-logo" href="?mod=admin&act=dashboard">
-          <img src="./view/admin/images/logo.svg" alt="logo" />
+          <img src="view/admin/images/logo.svg" alt="logo" />
         </a>
         <a class="navbar-brand brand-logo-mini" href="?mod=admin&act=dashboard">
-          <img src="./view/admin/images/logo-mini.svg" alt="logo" />
+          <img src="view/admin/images/logo-mini.svg" alt="logo" />
         </a>
       </div>
     </div>
@@ -51,47 +61,8 @@
         </li>
       </ul>
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item dropdown d-none d-lg-block">
-          <a class="nav-link dropdown-bordered dropdown-toggle dropdown-toggle-split" id="messageDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false"> Select Category </a>
-          <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="messageDropdown">
-            <a class="dropdown-item py-3">
-              <p class="mb-0 font-weight-medium float-left">Select category</p>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item preview-item">
-              <div class="preview-item-content flex-grow py-2">
-                <p class="preview-subject ellipsis font-weight-medium text-dark">Bootstrap Bundle </p>
-                <p class="fw-light small-text mb-0">This is a Bundle featuring 16 unique dashboards</p>
-              </div>
-            </a>
-            <a class="dropdown-item preview-item">
-              <div class="preview-item-content flex-grow py-2">
-                <p class="preview-subject ellipsis font-weight-medium text-dark">Angular Bundle</p>
-                <p class="fw-light small-text mb-0">Everything you’ll ever need for your Angular projects</p>
-              </div>
-            </a>
-            <a class="dropdown-item preview-item">
-              <div class="preview-item-content flex-grow py-2">
-                <p class="preview-subject ellipsis font-weight-medium text-dark">VUE Bundle</p>
-                <p class="fw-light small-text mb-0">Bundle of 6 Premium Vue Admin Dashboard</p>
-              </div>
-            </a>
-            <a class="dropdown-item preview-item">
-              <div class="preview-item-content flex-grow py-2">
-                <p class="preview-subject ellipsis font-weight-medium text-dark">React Bundle</p>
-                <p class="fw-light small-text mb-0">Bundle of 8 Premium React Admin Dashboard</p>
-              </div>
-            </a>
-          </div>
-        </li>
-        <li class="nav-item d-none d-lg-block">
-          <div id="datepicker-popup" class="input-group date datepicker navbar-date-picker">
-            <span class="input-group-addon input-group-prepend border-right">
-              <span class="icon-calendar input-group-text calendar-icon"></span>
-            </span>
-            <input type="text" class="form-control">
-          </div>
-        </li>
+
+
         <li class="nav-item">
           <form class="search-form" action="#">
             <i class="icon-search"></i>
@@ -149,7 +120,7 @@
             <div class="dropdown-divider"></div>
             <a class="dropdown-item preview-item">
               <div class="preview-thumbnail">
-                <img src="images/faces/face10.jpg" alt="image" class="img-sm profile-pic">
+                <img src="view/admin/images/faces/face10.jpg" alt="image" class="img-sm profile-pic">
               </div>
               <div class="preview-item-content flex-grow py-2">
                 <p class="preview-subject ellipsis font-weight-medium text-dark">Marian Garner </p>
@@ -181,7 +152,7 @@
             <img class="img-xs rounded-circle" src="view/admin/images/faces/face8.jpg" alt="Profile image"> </a>
           <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
             <div class="dropdown-header text-center">
-              <img class="img-md rounded-circle" src="images/faces/face8.jpg" alt="Profile image">
+              <img class="img-md rounded-circle" src="view/admin/images/faces/face8.jpg" alt="Profile image">
               <p class="mb-1 mt-3 font-weight-semibold">Allen Moreno</p>
               <p class="fw-light text-muted mb-0">allenmoreno@gmail.com</p>
             </div>

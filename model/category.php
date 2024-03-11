@@ -75,6 +75,7 @@ class Category
 
         return $branch;
     }
+
     public function getAllCate($idCate = 0)
     {
         $query = "SELECT c.*, COUNT(p.category_id) as count
@@ -88,7 +89,9 @@ class Category
         // print_r($this->buildCategoryTree($result));
         // echo json_encode($this->buildCategoryTree($result), JSON_PRETTY_PRINT);
         // return;
+
         return($this->buildCategoryTree($result, $idCate));
+
 
     }
 
@@ -102,6 +105,8 @@ class Category
             return $result;
         }
     }
+
+
     public function deleteCate($id)
     {
         $isLogin = Session::get("isLogin");
@@ -123,8 +128,6 @@ class Category
             return new Response(false, "Xóa danh mục thất bại!", "", "");
         }
     }
-
-
 }
 
 ?>
