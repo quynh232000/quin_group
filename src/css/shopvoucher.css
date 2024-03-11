@@ -107,3 +107,21 @@
     align-items: center;
     font-weight:400 ;
 }
+.v-status.orange{
+    border-color: yellow;
+    background-color: rgb(244, 244, 228);
+}
+.v-status.green{
+    border-color: green;
+    background-color: rgb(236, 255, 236);
+}
+.s-order-nav-item{
+    position: relative;
+}
+.no-voucher{
+    width: 100%;
+    padding: 30px 0;
+    font-weight: 600;
+    font-size: 1.6rem;
+    color: red;
+}

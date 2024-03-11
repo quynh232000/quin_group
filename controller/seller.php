@@ -14,6 +14,7 @@ include_once 'model/order.php';
 include_once 'model/shop.php';
 include_once 'model/address.php';
 include_once 'model/voucher.php';
+include_once 'helpers/tool.php';
 $classShop = new Shop();
 $shop_info = $classShop->get_shop_info();
 
@@ -320,10 +321,20 @@ if (isset($act)) {
             include_once 'view/inc/footer.php';
             break;
         case 'manage_voucher':
-            $viewTitle = 'Quản lý vouchers';
+            $classVoucher = new Voucher();
 
+            $viewTitle = 'Quản lý vouchers';
             
-            if (isset($_POST['label']) && $_POST['label']) {
+            $tool = new Tool();
+            $classShop = new Shop();
+            $shop = $classShop->get_shop_info();
+            $slug_name = $tool->slug($shop->result['name']);
+            $name_shop_code_arr = explode("-", $slug_name);
+            $name_shop_code_str = implode("", $name_shop_code_arr);
+            $name_code = strtoupper(substr($name_shop_code_str, 0, 5));
+
+            // return;
+            if (isset($_POST['submit']) && $_POST['submit']) {
                 $label = $_POST['label'] ?? "";
                 $code = $_POST['code'] ?? "";
                 $date_start = $_POST['date_start'] ?? "";
@@ -331,29 +342,32 @@ if (isset($act)) {
                 $discount_amount = $_POST['discount_amount'] ?? "";
                 $quantity = $_POST['quantity'] ?? "";
                 $minimum_price = $_POST['minimum_price'] ?? "";
-                $classVoucher = new Voucher();
+
                 $createVoucher = $classVoucher->create_voucher(
                     $label,
-                    $code,
+                    $name_code . strtoupper($code),
                     $date_start,
                     $date_end,
                     $discount_amount,
                     $quantity,
                     $minimum_price
                 );
-                var_dump($createVoucher);
-                return;
-                if($createVoucher->status ==true){
+
+                if ($createVoucher->status == true) {
                     echo '<div id="toast" mes-type="success" mes-title="Thành công!" mes-text="' . $createVoucher->message . '"></div>';
-                    // sleep(3);
-                    // header("Location: ?mod=seller&act=manage_voucher");;
-                }else{
+                    echo ' <script>
+                    setTimeout(function() {
+                        window.location.href="?mod=seller&act=manage_voucher#list-order";
+                    }, 2000);
+                </script>';
+
+                } else {
                     echo '<div id="toast" mes-type="error" mes-title="Thất bại!" mes-text="' . $createVoucher->message . '"></div>';
                 }
 
             }
 
-
+            $vouchers = $classVoucher->get_voucher();
             include_once 'view/inc/headerAdmin.php';
             include_once 'view/inc/sidebarAdmin.php';
             include_once 'view/seller/shopmanagevoucher.php';
