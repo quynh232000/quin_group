@@ -1,0 +1,109 @@
+.voucher-row{
+    display: flex;
+    margin-top: 12px;
+}
+.voucher-group{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 40%;
+}
+.voucher-label{
+    font-weight: 600;
+}
+.voucher-input-name{
+    padding-right: 5px;
+    margin-right: 5px;
+    border-right: 1px solid rgba(22,22,24,.12);
+    color: var(--primary);
+    font-weight: 600;
+}
+.voucher-input {
+    width: 80%;
+    border: 1px solid rgba(22,22,24,.2);
+    padding: 6px 10px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    
+}
+.voucher-input input {
+    flex: 1;
+    border: none;
+}
+.voucher-group-date{
+    width: 100%;
+  
+}
+.voucher-group-date-wrapper{
+    display: flex;
+    width: 80%;
+    gap: 8px;
+    /* gap: 20px; */
+    align-items: center;
+}
+
+.voucher-input.date input{
+    text-align: center;
+}
+.voucher-group-btn{
+    width: 80%;
+    display: flex;
+    /* justify-content: center; */
+    padding-right: 20px;
+}
+.voucher-btn{
+    padding: 10px 20px;
+    background-color: var(--primary);
+    color: white;
+    border-radius: 4px;
+    transition: .3s ease;
+    cursor: pointer;
+    margin-top: 14px;
+}
+.voucher-btn:hover{
+    opacity: .8;
+}
+.s-voucher-title{
+    color: var(--orange);
+    font-weight: 600;
+    font-size: 1.8rem;
+}
+.voucher-input i{
+    margin-right: 8px;
+    color: var(--primary);
+}
+.shop-title{
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+.s-profile-content{
+    gap: 12px;
+}
+.s-orders-list .s-orders-time{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.v-item-code{
+    font-weight: 600;
+    color: var(--primary);
+}
+.v-status{
+    font-size: 1.4rem;
+    width: fit-content;
+    font-weight: 400;
+    border: 1px solid orangered;
+    padding: 8px 6px;
+    border-radius: 4px;
+    color: var(--primary);
+    background-color: rgb(247, 239, 236);
+}
+.s-orders-title.voucher{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    font-weight:400 ;
+}

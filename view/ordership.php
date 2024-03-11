@@ -613,7 +613,6 @@ if ($is_expire == 'expired') { ?>
                 url: `?mod=request&act=get_status_order&uuid=${uuid}`,
             }).done((data) => {
                 data = JSON.parse(data);
-                console.log(data);
                 if ((data.status == "Confirmed") || data.status == "On_Delivery") {
                     loop(uuid)
                 }
@@ -624,7 +623,6 @@ if ($is_expire == 'expired') { ?>
                         url: `?mod=request&act=get_status_order&uuid=${uuid}`,
                     }).done((data) => {
                         data = JSON.parse(data);
-                        console.log(data);
                         if ((data.status == "Confirmed") || data.status == "On_Delivery") {
                         } else {
                             window.location.href = "?mod=verify&act=order&code=" + uuid
