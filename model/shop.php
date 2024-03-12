@@ -141,8 +141,6 @@ class Shop
     public function get_info_shop($uuid)
     {
         $result = $this->db->select("select * from shop where uuid = '$uuid'")->fetch();
-        // $this->test($result);
-        // return $result;
         if ($result) {
             return new Response(true, 'success', $result);
         } else {
