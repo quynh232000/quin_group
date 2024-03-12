@@ -2,6 +2,7 @@
 session_start();
 include_once "./lib/session.php";
 
+
 extract($_REQUEST);
 if (isset($mod)) {
     switch ($mod) {
@@ -13,6 +14,9 @@ if (isset($mod)) {
             break;
         case 'seller':
             include_once 'controller/seller.php';
+            break;
+        case 'admin':
+            include_once 'controller/admin.php';
             break;
         case 'request':
             include_once 'controller/request.php';
@@ -36,4 +40,3 @@ if (isset($mod)) {
         header('location: ?mod=page&act=home');
     }
 }
-?>

@@ -4,16 +4,22 @@ include "./config/config.php";
 <?php
 class Database
 {
+
     //     public $host   = DB_HOST;
     // public $user   = DB_USER;
     // public $pass   = DB_PASS;
     // public $dbname = DB_NAME;
+
     public $host = "localhost:8111";
     public $user = "root";
     public $pass = "";
 
     // public $dbname = "quinshop";
+
     public $dbname = "quingroup";
+
+
+
 
     public $link;
     public $error;
@@ -44,6 +50,19 @@ class Database
 
         return $stmt;
     }
+
+    public function selectMultiple($query) {
+        $stmt = $this->link->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function selectOne($query) {
+        $stmt = $this->link->prepare($query);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+
     public function insert($query)
     {
         return $this->link->exec($query);
@@ -57,6 +76,7 @@ class Database
         } else {
             return false;
         }
+
     }
     public function delete($query)
     {

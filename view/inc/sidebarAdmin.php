@@ -55,12 +55,24 @@
                     <span class="shop-sidebar-title">Đơn hàng</span>
                 </a>
             </div>
+
+            <div class="shop-sidebar-item <?php if (($act == "manage_voucher")) {
+                echo "active";
+            } ?>">
+                <a href="?mod=seller&act=manage_voucher" class="shop-sidebar-link">
+                    <div class="shop-sidebar-icon">
+                    <i class="fa-solid fa-ticket"></i>
+                    </div>
+                    <span class="shop-sidebar-title">Vouchers</span>
+                </a>
+            </div>
+
             <div class="shop-sidebar-item <?php if (($act == "setting")) {
                 echo "active";
             } ?>">
                 <a href="?mod=seller&act=setting" class="shop-sidebar-link">
                     <div class="shop-sidebar-icon">
-                    <i class="fa-solid fa-gear"></i>
+                        <i class="fa-solid fa-gear"></i>
                     </div>
                     <span class="shop-sidebar-title">Cài đặt</span>
                 </a>

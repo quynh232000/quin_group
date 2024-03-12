@@ -40,7 +40,7 @@ if (isset($act)) {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $redirect = ""; 
                 if(isset($_GET['redirect']) && $_GET['redirect']=='admin'){
-                   
+                    $redirect ="?mod=admin&act=dashboard";
                 }elseif(isset($_GET['redirect']) && $_GET['redirect']=='seller'){
                     $redirect ="?mod=seller&act=dashboard";
                 }else{

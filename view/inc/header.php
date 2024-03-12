@@ -124,7 +124,14 @@ if (empty($viewTitle)) {
                             </div>
                         </div>
                         <div class="m-header-top-space"></div>
-
+                        <a href="?mod=admin&act=dashboard" class="header-top-item">
+                            <div class="header-top-item-body">
+                            <i class="fa-solid fa-user-tie"></i>
+                            </div>
+                            <div class="header-top-item-title">
+                               Quản trị
+                            </div>
+                        </a>
                     </div>
                     <div class="m-header-top-menu">
                         <i class="fa-solid fa-gear"></i>
