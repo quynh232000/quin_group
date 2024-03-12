@@ -40,7 +40,6 @@
           <li class="nav-item"><a class="nav-link" href="?mod=admin&act=mn_processcing_order">Đơn hàng chờ duyệt</a></li>
           <li class="nav-item"><a class="nav-link" href="?mod=admin&act=mn_delivered_order">Đơn hàng đã giao</a></li>
           <li class="nav-item"><a class="nav-link" href="?mod=admin&act=mn_returned_order">Đơn hàng đã trả hàng</a></li>
-          <li class="nav-item"><a class="nav-link" href="?mod=admin&act=mn_statistic_order">Thống kê đơn hàng</a></li>
         </ul>
       </div>
     </li>
@@ -57,9 +56,6 @@
       <div class="collapse" id="product-elements">
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"><a class="nav-link" href="?mod=admin&act=mn_all_products&page=1">Tất cả sản phẩm</a></li>
-          <li class="nav-item"><a class="nav-link" href="?mod=admin&act=mn_pending_product">Sản phẩm chờ duyệt</a></li>
-          <li class="nav-item"><a class="nav-link" href="?mod=admin&act=mn_approved_product">Sản phẩm đã duyệt</a></li>
-          <li class="nav-item"><a class="nav-link" href="?mod=admin&act=mn_cancel_product">Sản phẩm bị từ chối</a></li>
           <li class="nav-item"><a class="nav-link" href="?mod=admin&act=mn_inventory_products">Sản phẩm tồn kho</a></li>
           <li class="nav-item"><a class="nav-link" href="?mod=admin&act=mn_circulating_product">Sản phẩm đang lưu hành</a></li>
           <li class="nav-item"><a class="nav-link" href="?mod=admin&act=mn_trending_product">Sản phẩm bán chạy nhất</a></li>
