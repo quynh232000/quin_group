@@ -8,10 +8,10 @@ class Database
     // public $user   = DB_USER;
     // public $pass   = DB_PASS;
     // public $dbname = DB_NAME;
-    public $host = "localhost";
-    public $user = "quin";
-    public $pass = "Quin123@123.";
-    
+    public $host = "localhost:8111";
+    public $user = "root";
+    public $pass = "";
+
     // public $dbname = "quinshop";
     public $dbname = "quingroup";
 
@@ -41,7 +41,7 @@ class Database
         $stmt->execute();
         // $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
-        
+
         return $stmt;
     }
     public function insert($query)
@@ -57,8 +57,6 @@ class Database
         } else {
             return false;
         }
-
-
     }
     public function delete($query)
     {
