@@ -44,7 +44,6 @@ class Shop
             ($name == "") || ($phone_number == "") || ($address_detail == ""
                 || ($province == "")
                 || ($district == "")
-
             )
         ) {
 
@@ -65,7 +64,7 @@ class Shop
         address_detail = '$address_detail' ,
         province = '$province',
         district = '$district',
-        updated_at = now() 
+        updated_at = CURRENT_TIMESTAMP
         $queryicon 
         WHERE id = '$shop_id' ");
 
@@ -81,7 +80,7 @@ class Shop
              ship_south = '$ship_south',
             ship_mid_north = '$ship_mid_north',
              ship_mid_south = '$ship_mid_south',
-             updated_at = now()
+             updated_at = CURRENT_TIMESTAMP()
             WHERE shop_id = '$shop_id'
             ");
         } else {

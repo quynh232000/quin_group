@@ -184,35 +184,28 @@ function update_status_order_all(status) {
 
 // address
 function select_address(el, type) {
+  console.log(el);
   console.log(el.value);
   console.log(type);
-  const id = el.value;
+  
 
   $.ajax({
     url: `?mod=request&act=get_address&id=${el.value}&type=${type}`,
   }).done((data) => {
     data = JSON.parse(data);
-
     let html = data.map(item=>{
+      if(type =='district'){
+        console.log(item.maqh);
+      }else{
+        console.log(item.xaid);
+      }
       return `
-        <option value="${type == 'province'? item.matp : item.maqh}">${item.name}</option>
+        <option value="${(type == 'district')? item.maqh+"" : item.xaid+""}">${item.name}</option>
       `
     })
     html.unshift('option value="">--Chọn--</option>')
-    $('#'+type).html(html)
+    $('#'+type).html(html.join(''))
     
-  });
-  
-
-    let html = data.map((item) => {
-      return `
-        <option value="${type == "province" ? item.matp : item.maqh}">${
-        item.name
-      }</option>
-      `;
-    });
-    html.unshift('option value="">--Chọn--</option>');
-    $("#" + type).html(html);
   });
 }
 // get param 
