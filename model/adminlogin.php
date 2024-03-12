@@ -26,36 +26,41 @@ class Adminlogin
         $this->fm = new Format();
         $this->tool = new Tool();
     }
-    public function login_admin($email, $password,$redirect ="")
+    public function login_admin($email, $password, $redirect = "")
     {
-        
+
         if (empty($email) || empty($email)) {
             $alert = "Vui lòng nhập đầy đủ thông tin!";
             return ["status" => false, "message" => $alert, "result" => [], "redirect" => ""];
         } else {
             $query = "SELECT * FROM user WHERE email ='$email' AND password = '$password' LIMIT 1";
             $user = $this->db->select($query);
-            $result = $user->fetch();
+            $value = $user->fetch();
 
-            if ($result != false) {
+            if ($value != false) {
 
-                $value = $result;
+                if($redirect == '?mod=admin&act=dashboard'){
+                    if((!in_array($value['role'],['Admin','AdminAll']))){
+                        return ["status" => false, "message" => "Bạn không có quyền truy cập vào trang quản trị!" , "result" => [], "redirect" => "?mod=profile&act=login&redirect=admin"];
+                    }
+                }
                 Session::set('isLogin', true);
-
                 Session::set('id', $value['id']);
                 Session::set('full_name', $value['full_name']);
                 Session::set('email', $value['email']);
                 Session::set('avatar', $value['avatar']);
                 Session::set('role', $value['role']);
                 Session::set('phone', $value['phone_number']);
-                return ["status" => true, "message" => "Đăng nhập thành công!", "result" => [], "redirect" => $redirect];
+                
+                return ["status" => true, "message" => "Đăng nhập thành công!" , "result" => [], "redirect" => $redirect];
+
             } else {
                 $alert = "Tên đăng nhập hoặc tài khoản không đúng!";
                 return ["status" => false, "message" => $alert, "result" => [], "redirect" => ""];
             }
         }
     }
-    public function register_admin( $fullName, $email, $phone, $password, $confirmPassword)
+    public function register_admin($fullName, $email, $phone, $password, $confirmPassword)
     {
 
 
@@ -73,17 +78,17 @@ class Adminlogin
             return ["status" => false, "message" => $alert, "result" => []];
 
         }
-        
-        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
             return ["status" => false, "message" => 'Email không đúng định dạng!', "result" => []];
-       }
+        }
         if ($password != $confirmPassword) {
             $alert = "Mật khẩu không khớp!";
             return ["status" => false, "message" => $alert, "result" => []];
 
         }
-        if ( strlen($password)<8 ){
+        if (strlen($password) < 8) {
             return ["status" => false, "message" => 'Password phải từ 8 kí tự chở lên!', "result" => []];
 
         }
@@ -104,14 +109,14 @@ class Adminlogin
             ";
         $this->db->insert($query);
 
-                Session::set('isLogin', true);
+        Session::set('isLogin', true);
 
-                Session::set('id',$id);
-                Session::set('full_name', $fullName);
-                Session::set('email', $email);
-                Session::set('avatar', $avatar);
-                Session::set('role','member');
-                Session::set('phone', $phone);
+        Session::set('id', $id);
+        Session::set('full_name', $fullName);
+        Session::set('email', $email);
+        Session::set('avatar', $avatar);
+        Session::set('role', 'member');
+        Session::set('phone', $phone);
         // $this->login_admin($email,$password,"/");
         // return ["status" => true, "message" => "Đăng kí thành công!", "result" => [], "redirect" => "?mod=profile&act=login"];
         return ["status" => true, "message" => "Đăng kí thành công!", "result" => [], "redirect" => "./"];
@@ -133,7 +138,7 @@ class Adminlogin
         }
         // update user
         $queryUpdate = "";
-        $fileResult = $this->tool->uploadFile($image);
+        $fileResult = $this->tool->uploadFile($image,'profile/');
         if ($fileResult) {
             $queryUpdate .= "u.avatar = '$fileResult',";
         }
@@ -159,20 +164,20 @@ class Adminlogin
     }
     public function sendCodePassEmail($email)
     {
-        
+
         if (empty($email)) {
             return new Response(false, "Missing parammeter: Email", "", "?mod=profile&act=forgotpassword");
         }
         $resultUser = $this->db->select("SELECT * FROM user WHERE email =  '$email'");
-        $checkEmail =$resultUser->fetchAll();
+        $checkEmail = $resultUser->fetchAll();
         if (empty($checkEmail)) {
             return new Response(false, "Email không tồn tại trong hệ thống", "", "?mod=profile&act=forgotpassword");
         }
-        $checkEmail =  $checkEmail[0];
+        $checkEmail = $checkEmail[0];
         $id = $checkEmail['id'];
 
         $idEncode = base64_encode($id);
-        
+
         $code = mt_rand(1000, 9999);
         // insert database
         $this->db->update("UPDATE user 
@@ -180,7 +185,7 @@ class Adminlogin
         WHERE id = '$id'
         ");
 
-        
+
         // mesage
         $mesage = '<div style="padding: 40px 40px; font-size: 20px; border: 4px solid rgb(8, 110, 234);">
             <div style="width: 100%; text-align: center;margin-bottom: 20px;">Hi, <span style="color: blue;font-weight: bold;">' . $checkEmail['fullName'] . '</span>!</div>
@@ -190,7 +195,7 @@ class Adminlogin
         </div>';
         // mesage
 
-        
+
         // send email
         $mail = new PHPMailer(true);
         $mail->isSMTP();
@@ -213,40 +218,42 @@ class Adminlogin
         $mail->addAddress($email);
         $mail->isHTML(true);
         $mail->Subject = "Code verify change password!";
-        
+
         $mail->Body = $mesage;
         $mail->send();
 
-        return new Response(true, "Send email successfully", "", "?mod=profile&act=forgotpassword&verifytoken=".$idEncode);
+        return new Response(true, "Send email successfully", "", "?mod=profile&act=forgotpassword&verifytoken=" . $idEncode);
     }
-    function checkToken($token) {
+    function checkToken($token)
+    {
         $tokenDecode = base64_decode($token);
 
         $checkUser = $this->db->select("SELECT * FROM user WHERE id = '$tokenDecode'");
-        if(empty($checkUser->fetchAll())){
+        if (empty($checkUser->fetchAll())) {
             return new Response(false, "Đường dẫn không hợp lệ!", "", "?mod=profile&act=forgotpassword");
-        }else{
-            return new Response(true, "success",  $tokenDecode, "");
+        } else {
+            return new Response(true, "success", $tokenDecode, "");
         }
-        
+
     }
-    function checkCode($code,$token)  {
+    function checkCode($code, $token)
+    {
         $checkTokenVerify = self::checkToken($token);
-        if($checkTokenVerify->status ==false){
+        if ($checkTokenVerify->status == false) {
             return $checkTokenVerify;
         }
         $userId = $checkTokenVerify->result;
         $userInfoSelect = $this->db->select("SELECT * FROM user where id = '$userId' ");
         $userInfo = $userInfoSelect->fetchAll();
-        if(empty($userInfo)){
-            return new Response(false, "Người dùng không tồn tại",  "", "");
+        if (empty($userInfo)) {
+            return new Response(false, "Người dùng không tồn tại", "", "");
         }
 
         $userInfo = $userInfo[0];
         // print_r($userInfo);
         // return;
-        if($userInfo['codeVerify'] != $code){
-            return new Response(false, "Mã xác nhận không hợp lệ!",  "", "");
+        if ($userInfo['codeVerify'] != $code) {
+            return new Response(false, "Mã xác nhận không hợp lệ!", "", "");
         }
         $timeVerify = $userInfo['timeVerify'];
         date_default_timezone_set('Asia/Ho_Chi_Minh');
@@ -254,24 +261,35 @@ class Adminlogin
         // if($timeNow > strtotime($timeVerify)){
         //     return new Response(false, "Mã xác thực đã hết hạn. Vui lòng thử lại!",  "", "");
         // }
-        return new Response(true, "success",  "", "");
+        return new Response(true, "success", "", "");
     }
-    public function changePassword($pass, $token)  {
+    public function changePassword($pass, $token)
+    {
         $checkTokenVerify = self::checkToken($token);
-        if($checkTokenVerify->status ==false){
+        if ($checkTokenVerify->status == false) {
             return $checkTokenVerify;
         }
         $userId = $checkTokenVerify->result;
         $userInfoSelect = $this->db->select("SELECT * FROM user where id = '$userId' ");
         $userInfo = $userInfoSelect->fetchAll();
-        if(empty($userInfo)){
-            return new Response(false, "Người dùng không tồn tại",  "", "");
+        if (empty($userInfo)) {
+            return new Response(false, "Người dùng không tồn tại", "", "");
         }
         // change pass
         $changePass = $this->db->update("UPDATE user set pass = '$pass'
         WHERE id = '$userId'
         ");
-        return new Response(true, "success",  "", "");
+        return new Response(true, "success", "", "");
+    }
+    public function check_permistion()
+    {
+        if (!(Session::get('isLogin'))) {
+            header('location: ?mod=profile&act=login&redirect=admin');
+        }
+        $role = Session::get('role');
+        if (!in_array($role, ['Admin', 'AdminAll'])) {
+            header("Location: ?mod=profile&act=login&redirect=admin");
+        }
     }
 }
 
