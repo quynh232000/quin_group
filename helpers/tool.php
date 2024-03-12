@@ -12,7 +12,7 @@ class Tool
     public function uploadFile($file,$path ="" )
     {
         // path = "foldername/"
-        $fileDir = "./assest/upload/".$path;
+        $fileDir = "assest/upload/".$path;
 
         if (isset($file) && $file['error'] == 0) {
             $fileName = basename($file['name']);
