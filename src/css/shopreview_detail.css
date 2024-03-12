@@ -1,0 +1,125 @@
+.show-pro-show-item.active{
+    color: var(--primary);
+    font-weight: 600;
+    border-bottom: 2px solid var(--primary);
+}
+.show-pro-show-item{
+    min-width: 120px;
+    padding: 10px 0;
+    border-bottom: 2px solid transparent;
+    text-align: center !important;
+    transition: .3s ease;
+    display: flex;
+    justify-content: center;
+}
+.show-pro-show-item:hover{
+    cursor: pointer;
+    color: var(--primary);
+    border-bottom: 2px solid var(--primary);
+}
+.r-body{
+    padding: 20px;
+}
+.review-title{
+    font-size: 2rem;
+    font-weight: bold;
+}
+.review-rate{
+    display: flex;
+    gap: 10px;
+
+}
+.list-star{
+    color: var(--orange);
+}
+.review-list{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.shop-pro-show{
+    background-color: rgb(243, 235, 226);
+    margin-bottom: 10px;
+}
+.review-item{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(22,22,24,.2);
+}
+.r-item-info{
+    display: flex;
+    gap: 10px;
+    font-size: 1.4rem;
+}
+.r-item-info img{
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.r-item-right{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.r-item-name{
+    color: var(--primary);
+    font-weight: 800;
+}
+.r-item-rate{
+    display: flex;
+    gap: 20px;
+}
+.r-teim-star{
+    color: var(--orange);
+}
+.r-item-content{
+    font-size: 1.6rem;
+    margin-left: 52px;
+    line-height: 2.2rem;
+}
+/* pagination */
+.r-pagination-body{
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+.btn-back{
+    color: white;
+    background-color: var(--primary);
+    padding: 10px 36px;
+    border-radius: 10px;
+    transition: .3s ease;
+    cursor: pointer;
+    text-align: center;
+    height: fit-content;
+}
+.btn-back:hover{
+    opacity: .8;
+}
+.r-pagination{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.r-pagination-item{
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: .3s ease;
+}
+.r-pagination-item.active{
+    color: white;
+    background-color: var(--orange);
+    padding: 10px 12px;
+    border-radius: 4px;
+}
+.r-pagination-item:hover{
+    color: var(--primary);
+}
+.r-count-rate{
+    font-weight: bold;
+    color: var(--primary);
+}

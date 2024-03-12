@@ -131,6 +131,20 @@ class Shop
             return new Response(false, 'fail');
         }
     }
+    // get star shop
+    public function get_star_shop($shop_id = '')
+    {
+        if (empty($id)) {
+            $user_id = Session::get('id');
+            $shop_id = $this->db->select("SELECT avg(r.level) FROM shop where user_id = '$user_id'")->fetchColumn();
+        }
+        return $this->db->select("SELECT avg(r.level) 
+        FROM product_review  r
+        INNER JOIN product p
+        on p.id = r.product_id
+        where p.shop_id = '$shop_id'")->fetchColumn();
+    }
+    
 
 
 
