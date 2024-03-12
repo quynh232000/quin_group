@@ -117,7 +117,6 @@ class Shop
             Session::set('checkshop', 'Vui lòng cập nhật đầy đủ thông tin!');
             header("location: ?mod=seller&act=setting");
         }
-
     }
     // get shipping shop setting
     public function get_shipping_shop()
@@ -131,6 +130,7 @@ class Shop
             return new Response(false, 'fail');
         }
     }
+
     // get star shop
     public function get_star_shop($shop_id = '')
     {
@@ -146,8 +146,26 @@ class Shop
     }
     
 
+    // function test
+    public function test($any)
+    {
+        echo "<pre>";
+        var_dump($any);
+        die();
+    }
 
 
+    public function get_info_shop($uuid)
+    {
+        $result = $this->db->select("select * from shop where uuid = '$uuid'")->fetch();
+        // $this->test($result);
+        // return $result;
+        if ($result) {
+            return new Response(true, 'success', $result);
+        } else {
+            return new Response(false, 'fail');
+        }
+    }
 }
 
 
