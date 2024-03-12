@@ -26,6 +26,35 @@ class Address
     public function get_ward($id){
         return $this->db->select("SELECT * FROM address_ward where maqh = '$id'")->fetchAll();
     }
+
+    public function get_address_by_shop($id) {
+       
+        return $this->db->select("SELECT pr.name as province, di.name as district, wa.name as ward
+        FROM shop as s
+        INNER JOIN address_province as pr
+        ON s.province = pr.matp
+        INNER JOIN address_district as di
+        ON s.district = di.maqh
+        INNER JOIN address_ward as wa
+        ON s.address_detail = wa.xaid
+        WHERE s.id = '$id';
+        ")->fetch();
+        
+    }
+    public function get_addres_by_delivery($id) {
+        return$this->db->select("SELECT pr.name as province, di.name as district, wa.name as ward
+        FROM delivery_address as s
+        INNER JOIN address_province as pr
+        ON s.province = pr.matp
+        INNER JOIN address_district as di
+        ON s.district = di.maqh
+        INNER JOIN address_ward as wa
+        ON s.address_detail = wa.xaid
+        WHERE s.id = '$id';
+        ")->fetch();
+        
+    }
+
 }
 
 

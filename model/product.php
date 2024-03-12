@@ -126,18 +126,15 @@ class Product
             }
         }
     }
-    public function getAllProduct($page = 1, $limit = 10, $type = "",$user_id = null)
+    public function getAllProductSeller($page = 1, $limit = 10, $type = "")
     {
         if ($type) {
             $type = " AND pr.status = '$type'";
         }
-        $shop_id = "";
-        if ($user_id) {
-            $shop = $this->db->select("SELECT * FROM shop WHERE user_id = '$user_id'")->fetch();
-            $shop_id = $shop['id'];
-            $shop_id = " AND pr.shop_id = '$shop_id'";
-        }
-        $getTotal = $this->db->select("SELECT COUNT(*) AS total from product AS pr WHERE 1 AND is_deleted ='0'  $type $shop_id");
+        $user_id = Session::get('id');
+        $shop_id = $this->db->select("SELECT id from shop where user_id = '$user_id'")->fetchColumn();
+        
+        $getTotal = $this->db->select("SELECT COUNT(*) AS total from product AS pr WHERE  pr.is_deleted = '0' AND shop_id = '$shop_id' $type");
         $total = $getTotal->fetchAll()[0];
         $total = $total == false ? 0 : $total['total'];
         if ($page < 1) {
@@ -145,8 +142,8 @@ class Product
         }
         $currentPage = ($page - 1) * $limit;
         $query = "SELECT pr.*, cate.name as nameCategory from product as pr 
-            INNER JOIN category as cate on pr.category_id = cate.id where 1
-            $type $shop_id
+            INNER JOIN category as cate on pr.category_id = cate.id where pr.is_deleted = '0'
+            $type AND shop_id ='$shop_id'
            
             ORDER BY pr.created_at DESC 
             limit $currentPage,$limit
@@ -217,20 +214,25 @@ class Product
     }
     public function deleteProduct($id)
     {
+
         $isLogin = Session::get("isLogin");
         if ($isLogin != true) {
             return new Response(true, "success", ["total" => 0, "totalPrice" => 0], "");
         }
-        $role = Session::get("role");
-        if ($role != "adminall") {
-            return new Response(false, "Bạn không có quyền cho hành động này!", "", "");
-        }
         if (empty($id)) {
-            // return "Id product cannot be empty";
             return new Response(false, "Hành động không hợp lệ! Vui lòng thử lại!", "", "?mod=admin&act=manageproduct");
         }
-        $query = "DELETE FROM product WHERE id='$id'";
-        $result = $this->db->delete($query);
+        
+        $user_id = Session::get('id');
+        $shop_id = $this->db->select("SELECT id FROM shop where user_id = '$user_id'")->fetchColumn();
+        $product =$this->db->select("SELECT * FROM product where id = '$id' AND shop_id = '$shop_id'")->fetchAll();
+        if(count($product) <1){
+            return new Response(false, "Sản phẩm không tồn tại trên shop của bạn!", "", "");
+        }
+       
+        
+       
+        $result = $this->db->update("UPDATE product SET is_deleted = 1 WHERE id = '$id'");
         if ($result != false) {
             return new Response(true, "Xóa sản phẩm thành công", "", "?mod=admin&act=manageproduct");
         } else {

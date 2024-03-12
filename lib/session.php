@@ -42,7 +42,7 @@
             self::init();
             if(isset($_SESSION['isLogin']) && $_SESSION['isLogin']==true){
                 if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 76800)) {
-                    session_unset(); 
+                    session_unset();
                     session_destroy();
                     header("Location:/web-demo_php/login.php");
                 }

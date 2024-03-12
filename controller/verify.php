@@ -1,33 +1,36 @@
 <?php
 include_once "model/order.php";
+include_once "model/address.php";
+include_once "helpers/format.php";
 
 extract($_REQUEST);
-if (isset($_GET['act'] )&& $_GET['act']) {
+if (isset($_GET['act']) && $_GET['act']) {
     switch ($_GET['act']) {
         case 'order':
-            if(!isset($_GET['token'])&& !$_GET['token']){
+            $viewTitle = "Thông tin đơn hàng";
+            if (!isset($_GET['code']) && !$_GET['code']) {
                 header("Location: ?page=404");
             }
-            // check token is expire
-            $token = $_GET['token'];
+            $code = $_GET['code'];
             $classOrder = new Order();
-            $id = base64_decode($token);
-            $is_expire = $classOrder->check_link_order($id) ==true ?"expired":"new";
-            // echo $is_expire;
-            // return;
-            if(isset($_POST['submit']) &&$_POST['submit'] ){
-                $classOrder->update_status_order($id,'confirm_delivered');
-                $is_expire = true;
-            }
-            if($is_expire =='new'){
-                // confirm by qrcode
-                if(isset($_GET['qrcode']) && $_GET['qrcode']){
-                    $is_expire="qrcode";
+            $classAddress = new Address();
+            $format = new Format();
+            $order = $classOrder->get_order_detail($code);
+            if (isset($order) && ($order->status == true)&&(($order->result['status']=='Confirmed')||$order->result['status']=='On_Delivery') ) {
+                if (isset($_GET['qrcode']) && $_GET['qrcode'] == "true") {
+                    $classOrder->update_status_order($order->result['id'], 'Completed');
+                    echo ' <script>
+                            setTimeout(function() {
+                                window.location.reload()
+                            }, 2500);
+                        </script>';
                 }
+
             }
             include_once 'view/ordership.php';
             break;
-        
+
+
         default:
             header("Location: ?page=404");
     }
