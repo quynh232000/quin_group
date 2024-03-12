@@ -112,12 +112,6 @@
 
                         </div>
                         <div class="s-order-right">
-                            <!-- <div class="s-orders-user">
-                                <div class="s-orders-title">Tên</div>
-                            </div>
-                            <div class="s-orders-phone">
-                                <div class="s-orders-title">Số ĐT</div>
-                            </div> -->
                             <div class="s-orders-payment">
                                 <div class="s-orders-title">Thanh toán</div>
                             </div>
