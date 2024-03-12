@@ -126,15 +126,16 @@ class Product
             }
         }
     }
-    public function getAllProductSeller($page = 1, $limit = 10, $type = "")
+    public function getAllProductSeller($page = 1, $limit = 10, $type = "",$search="")
     {
         if ($type) {
             $type = " AND pr.status = '$type'";
         }
+        if(!empty($search)) $search =" AND pr.name LIKE '%$search%'";
         $user_id = Session::get('id');
         $shop_id = $this->db->select("SELECT id from shop where user_id = '$user_id'")->fetchColumn();
         
-        $getTotal = $this->db->select("SELECT COUNT(*) AS total from product AS pr WHERE  pr.is_deleted = '0' AND shop_id = '$shop_id' $type");
+        $getTotal = $this->db->select("SELECT COUNT(*) AS total from product AS pr WHERE  pr.is_deleted = '0' AND shop_id = '$shop_id' $type $search");
         $total = $getTotal->fetchAll()[0];
         $total = $total == false ? 0 : $total['total'];
         if ($page < 1) {
@@ -142,9 +143,10 @@ class Product
         }
         $currentPage = ($page - 1) * $limit;
         $query = "SELECT pr.*, cate.name as nameCategory from product as pr 
-            INNER JOIN category as cate on pr.category_id = cate.id where pr.is_deleted = '0'
+            INNER JOIN category as cate on pr.category_id = cate.id 
+            where pr.is_deleted = '0'
             $type AND shop_id ='$shop_id'
-           
+            $search
             ORDER BY pr.created_at DESC 
             limit $currentPage,$limit
         ";
@@ -341,7 +343,21 @@ class Product
         return new Response(true, "Thành công!", $result, "");
 
     }
+    public function get_one_product_seller($id)  {
+        $user_id = Session::get('id');
+        $shop_id = $this->db->select("SELECT id from shop where user_id = '$user_id'")->fetchColumn();
 
+        $query = "SELECT pr.*,
+        cate.name as nameCategory from product as pr INNER JOIN category as cate on pr.category_id = cate.id  WHERE pr.id = $id";
+        $value =  $this->db->select($query)->fetchAll();
+        return new Response(true,'success',$value);
+    }
+    public function get_star_product($product_id = '')
+    {
+        return $this->db->select("SELECT avg(r.level) 
+        FROM product_review  r
+        where r.product_id = '$product_id'")->fetchColumn();
+    }
 }
 
 ?>
