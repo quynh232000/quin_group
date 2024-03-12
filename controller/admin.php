@@ -1,5 +1,8 @@
 <?php
 // include_once "lib/database.php";
+include_once 'model/adminlogin.php';
+$classAdmin = new Adminlogin();
+$classAdmin->check_permistion();
 include_once 'model/admin/manage_category.php';
 include_once 'model/admin/manage_product.php';
 $categoryAdmin = new CategoryAdmin();
