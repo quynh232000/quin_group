@@ -7,7 +7,9 @@ include_once "model/order.php";
 include_once "model/comment.php";
 include_once "model/category.php";
 include_once "model/address.php";
+
 $classOrder = new Order();
+
 extract($_REQUEST);
 if (isset($act)) {
     switch ($act) {
@@ -108,11 +110,14 @@ if (isset($act)) {
                         echo json_encode($result, JSON_PRETTY_PRINT);
                         break;
                     default:
+
                         echo json_encode([], JSON_PRETTY_PRINT);
+
                         break;
                 }
             }
             return;
+
         // update status order
         case 'update_status_order':
             if (isset($_GET['id']) && $_GET['id'] && isset($_GET['status']) && $_GET['status']) {
@@ -138,6 +143,7 @@ if (isset($act)) {
 
 
             return;;
+
         default:
             break;
 

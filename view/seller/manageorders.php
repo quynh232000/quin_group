@@ -71,6 +71,7 @@
                     <a href="?mod=seller&act=manageorders&status=Cancelled"
                         class="s-order-nav-item  <?= (isset($_GET['status']) && $_GET['status'] == 'Cancelled') ? 'active' : "" ?>">Đơn
                         hủy</a>
+
                 </div>
                 <div class="s-order-count">
                     <div class="s-order-count-total"><?= $resultOrder->total ?> Đơn hàng</div>
@@ -130,7 +131,9 @@
                 </div>
                 <div class="s-orders-list">
                     <?php
+
                     if (isset($resultOrder) && is_array($resultOrder->result) && count($resultOrder->result) > 0) {
+
                         $status = [
                             'New' => ["s1" => "Chờ nhận đơn", 's2' => 'Chưa thanh toán'],
                             'Processing' => ["s1" => "Đang Xử lý", '0' => 'Chưa thanh toán'],
@@ -177,6 +180,7 @@
                                     <div class="s-orders-user btn-or-action-wrapper">
                                         <?php
                                         if ($value['status'] == 'New') {
+
                                             echo '<button class="btn-or-action btn-orange" onclick="update_status_order(' . $value['id'] . ',' . "'Processing'" . ')" >Nhận đơn</button>';
 
                                         } elseif ($value['status'] == 'Processing') {
@@ -186,13 +190,16 @@
                                             echo '<button class="btn-or-action" disabled>Đã hủy</button>';
                                         } elseif ($value['status'] == 'On_Delivery') {
                                             echo '<a target="_blank" href="?mod=verify&act=order&code=' .($value['uuid']) . '" title="Xem link" class="btn-or-action"><i class="fa-solid fa-link"></i></a>';
+
                                         } elseif ($value['status'] == 'Completed') {
                                             // '
                                             echo '<button class="btn-or-action" disabled>Đã Giao</button>';
                                         } else {
+
                                             echo '<a target="_blank" href="?mod=verify&act=order&code=' . (($value['uuid'])). '" title="Xem link" class="btn-or-action"><i class="fa-solid fa-link"></i></a>';
                                         }
                                         ?>
+
                                     </div>
                                 </div>
                             </div>

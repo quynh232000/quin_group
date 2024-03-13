@@ -7,7 +7,7 @@
 </style>
 <main class="shop-main">
     <!-- content -->
-    <form method="POST" action="<?= $_SERVER['REQUEST_URI'] ?>"  class="shop-profile">
+    <form method="POST" action="?mod=seller&act=manage_voucher" class="shop-profile">
         <div class="shop-title"><span>Quản lý Vouchers </span>
             <div class="shop-title-small">
                 Xem trạng thái và voucher cho Shop
@@ -28,9 +28,12 @@
                 <div class="voucher-group">
                     <div class="voucher-label">Mã voucher</div>
                     <div class="voucher-input">
-                        <span class="voucher-input-name">QUIN</span>
+                        <span class="voucher-input-name">
+                            <?= $name_code ?>
+                        </span>
                         <i class="fa-solid fa-store"></i>
-                        <input type="text" placeholder="Nhập 5 số (0-9)" name="code" value="<?= $_POST['code'] ?? '' ?>">
+                        <input type="number" placeholder="Nhập 5 số (0-9)" name="code"
+                            value="<?= $_POST['code'] ?? '' ?>">
                     </div>
                 </div>
             </div>
@@ -77,28 +80,28 @@
                     <div class="voucher-label">Số lượng</div>
                     <div class="voucher-input">
                         <i class="fa-solid fa-money-bill-wave"></i>
-                        <input type="number" placeholder="0" name="quantity"
-                            value="<?= $_POST['quantity'] ?? '' ?>">
+                        <input type="number" placeholder="0" name="quantity" value="<?= $_POST['quantity'] ?? '' ?>">
                     </div>
                 </div>
             </div>
             <div class=" voucher-group-btn ">
-                <button type="submit" class="voucher-btn">
+                <input type="submit" name="submit" value="Xác nhận" class="voucher-btn">
+                <!-- <input type="submit" class="voucher-btn">
                     Xác nhận
-                </button>
+                </input> -->
             </div>
 
         </div>
     </form>
     <!-- list voucher -->
-    <div class="shop-profile" style="margin-top:20px">
+    <div class="shop-profile" style="margin-top:20px" id="list-order">
         <div class="shop-title"><span>Danh sách mã giảm giá</span>
             <div class="shop-title-small">
                 Tạo mã giảm giá ngay bây giờ để thu hút người mua.
             </div>
         </div>
 
-        <div class="s-profile-content" style="margin-top:20px">
+        <div class="s-profile-content" style="margin-top:20px" >
             <div class="s-order-nav">
                 <a href="?mod=seller&act=manage_voucher#list-order"
                     class="s-order-nav-item <?= !isset($_GET['status']) ? "active" : "" ?>">Tất cả</a>
@@ -114,9 +117,8 @@
                     class="s-order-nav-item  <?= (isset($_GET['status']) && $_GET['status'] == 'finished') ? 'active' : "" ?>">Đã
                     kết thúc
                 </a>
-
             </div>
-            <div class="voucher-body" id="list-order">
+            <div class="voucher-body" >
                 <div class="s-orders-body">
                     <div class="s-ordes-nav">
                         <div class="s-order-item">
@@ -153,125 +155,69 @@
                     </div>
                     <div class="s-orders-list">
 
+                        <?php
+                        if (isset($vouchers) && ($vouchers->status == true) && (count($vouchers->result) > 0)) {
+                            foreach ($vouchers->result as $key => $value) { ?>
+                                <div class="s-order-item">
+                                    <div class="s-order-left">
 
-                        <div class="s-order-item">
-                            <div class="s-order-left">
+                                        <div class="s-orders-time">
+                                            <div class="v-item-label"><?=$value['label'] ?></div>
+                                            <div class="v-item-code"><?=$value['code'] ?></div>
+                                        </div>
 
-                                <div class="s-orders-time">
-                                    <div class="v-item-label">Giảm lớn</div>
-                                    <div class="v-item-code">QUIN-23456</div>
-                                </div>
+                                        <div class="s-orders-code fm-price">
+                                        <?=$value['minimum_price'] ?>
+                                        </div>
 
-                                <div class="s-orders-code fm-price">
-                                    500000
-                                </div>
+                                    </div>
+                                    <div class="s-order-right">
+                                        <div class="s-orders-payment green fm-price">
+                                        <?=$value['discount_amount'] ?>
+                                        </div>
+                                        <div class="s-orders-status success ">
+                                        <?=$value['quantity'] ?>
+                                        </div>
 
-                            </div>
-                            <div class="s-order-right">
-                                <div class="s-orders-payment green ">
-                                    20000
-                                </div>
-                                <div class="s-orders-status success ">
-                                    20
-                                </div>
+                                        <div class="s-orders-total-price s-orders-status">
+                                            <?=$classVoucher->count_voucher_used($value['id']) ?>
+                                        </div>
+                                        <div class="s-orders-status ">
+                                            <div class="s-orders-title voucher">
 
-                                <div class="s-orders-total-price s-orders-status">
-                                    7
-                                </div>
-                                <div class="s-orders-status ">
-                                    <div class="s-orders-title voucher">
-                                        <div class="v-status">Đang diễn ra</div>
-                                        <div class="v-date">From: 23/07/2033</div>
-                                        <div class="v-date">To: 23/07/2033</div>
+                                                <?php 
+                                                $date1 = new DateTime($value['date_start']);
+                                                $date2 = new DateTime($value['date_end']);
+                                                $now = new DateTime();
+
+                                                if(($now < $date2) && ($now > $date1))
+                                                    echo '<div class="v-status green">Đang diễn ra</div>';
+                                                elseif ($now < $date1) {
+                                                    echo '<div class="v-status orange">Sắp diễn ra</div>';
+                                                } elseif ($now > $date2) {
+                                                    echo '<div class="v-status">Đã diễn ra</div>';
+                                                } 
+                                                
+                                                ?>
+
+
+                                                
+                                                <div class="v-date">From: <?=explode(" ",$value['date_start'])[0] ?></div>
+                                                <div class="v-date">To:  <?=explode(" ",$value['date_end'])[0] ?></div>
+                                            </div>
+                                        </div>
+                                        <form method="POST" action="<?= $_SERVER['REQUEST_URI'] ?>" class="s-orders-user btn-or-action-wrapper">
+                                            <input type="text" value="<?=$value['id']?>" name="id" hidden>
+                                            <input type="submit" class="btn-or-action" name="submit_delete" value="Xóa" style="background-color:ưhite">
+                                        </form>
                                     </div>
                                 </div>
-                                <div class="s-orders-user btn-or-action-wrapper">
-                                    <!-- <button class="btn-or-action btn-orange">Nhận đơn</button> -->
-                                    <button class="btn-or-action">Hủy</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="s-order-item">
-                            <div class="s-order-left">
-
-                                <div class="s-orders-time">
-                                    <div class="v-item-label">Giảm lớn</div>
-                                    <div class="v-item-code">QUIN-23456</div>
-                                </div>
-
-                                <div class="s-orders-code fm-price">
-                                    500000
-                                </div>
-
-                            </div>
-                            <div class="s-order-right">
-                                <div class="s-orders-payment green ">
-                                    20000
-                                </div>
-                                <div class="s-orders-status success ">
-                                    20
-                                </div>
-
-                                <div class="s-orders-total-price s-orders-status">
-                                    7
-                                </div>
-                                <div class="s-orders-status ">
-                                    <div class="s-orders-title voucher">
-                                        <div class="v-status">Đang diễn ra</div>
-                                        <div class="v-date">From: 23/07/2033</div>
-                                        <div class="v-date">To: 23/07/2033</div>
-                                    </div>
-                                </div>
-                                <div class="s-orders-user btn-or-action-wrapper">
-                                    <!-- <button class="btn-or-action btn-orange">Nhận đơn</button> -->
-                                    <button class="btn-or-action">Hủy</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="s-order-item">
-                            <div class="s-order-left">
-
-                                <div class="s-orders-time">
-                                    <div class="v-item-label">Giảm lớn</div>
-                                    <div class="v-item-code">QUIN-23456</div>
-                                </div>
-
-                                <div class="s-orders-code fm-price">
-                                    500000
-                                </div>
-
-                            </div>
-                            <div class="s-order-right">
-                                <div class="s-orders-payment green ">
-                                    20000
-                                </div>
-                                <div class="s-orders-status success ">
-                                    20
-                                </div>
-
-                                <div class="s-orders-total-price s-orders-status">
-                                    7
-                                </div>
-                                <div class="s-orders-status ">
-                                    <div class="s-orders-title voucher">
-                                        <div class="v-status">Đang diễn ra</div>
-                                        <div class="v-date">From: 23/07/2033</div>
-                                        <div class="v-date">To: 23/07/2033</div>
-                                    </div>
-                                </div>
-                                <div class="s-orders-user btn-or-action-wrapper">
-                                    <!-- <button class="btn-or-action btn-orange">Nhận đơn</button> -->
-                                    <button class="btn-or-action">Hủy</button>
-                                </div>
-                            </div>
-                        </div>
-
-
-
+                            <?php }
+                        } else {
+                            echo '<div class="no-voucher" style="text-align:center">Không có mã giảm giá nào!</div>';
+                        }
+                        ?>
                     </div>
-                    <!-- // echo '<div class="no-orders">Không có đơn hàng nào!</div>'; -->
                 </div>
             </div>
 

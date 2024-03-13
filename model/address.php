@@ -26,6 +26,7 @@ class Address
     public function get_ward($id){
         return $this->db->select("SELECT * FROM address_ward where maqh = '$id'")->fetchAll();
     }
+
     public function get_address_by_shop($id) {
        
         return $this->db->select("SELECT pr.name as province, di.name as district, wa.name as ward
@@ -53,6 +54,7 @@ class Address
         ")->fetch();
         
     }
+
 }
 
 

@@ -12,16 +12,19 @@ class Tool
     public function uploadFile($file,$path ="" )
     {
         // path = "foldername/"
-        $fileDir = "./assest/upload/".$path;
+        $fileDir = "assest/upload/".$path;
+
         if (isset($file) && $file['error'] == 0) {
             $fileName = basename($file['name']);
             if (!file_exists($fileDir)) {
                 mkdir($fileDir, 0, true);
             }
+
             $fileNameNew =self::GUID() . "." . (explode(".", $fileName)[1]);
             $fileDir = $fileDir . $fileNameNew;
             if (move_uploaded_file($file['tmp_name'], $fileDir)) {
                 return  $path.$fileNameNew;
+
             } else {
                 return false;
             }
@@ -58,6 +61,7 @@ class Tool
 
         return $slug;
     }
+    
     function path()
     {
         $url = $_SERVER['HTTP_HOST'];
