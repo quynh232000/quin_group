@@ -1,3 +1,8 @@
+<?php
+$isProductsExist = (count($productPagination) <= 0) ? false : true;
+$updatedHTML = "<th>Updated</th>";
+?>
+
 <div class="container-scroller">
 
     <div class="container-fluid page-body-wrapper">
@@ -115,7 +120,8 @@
                 <div class="tab-pane fade" id="chats-section" role="tabpanel" aria-labelledby="chats-section">
                     <div class="d-flex align-items-center justify-content-between border-bottom">
                         <p class="settings-heading border-top-0 mb-3 pl-3 pt-0 border-bottom-0 pb-0">Friends</p>
-                        <small class="settings-heading border-top-0 mb-3 pt-0 border-bottom-0 pb-0 pr-3 fw-normal">See All</small>
+                        <small class="settings-heading border-top-0 mb-3 pt-0 border-bottom-0 pb-0 pr-3 fw-normal">See
+                            All</small>
                     </div>
                     <ul class="chat-list">
                         <li class="list active">
@@ -277,18 +283,29 @@
                                             <div class="table-responsive">
                                                 <!-- table -->
                                                 <table class="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Shop Owner</th>
-                                                            <th>Name</th>
-                                                            <th>Image</th>
-                                                            <th>Brand</th>
-                                                            <th>Shop</th>
-                                                            <th>Category</th>
-                                                            <th>Status</th>
-                                                            <th>Created</th>
-                                                        </tr>
-                                                    </thead>
+                                                    <?php
+                                                    if ($isProductsExist) {
+                                                    ?>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Shop Owner</th>
+                                                                <th>Name</th>
+                                                                <th>Image</th>
+                                                                <th>Brand</th>
+                                                                <th>Shop</th>
+                                                                <th>Category</th>
+                                                                <th>Status</th>
+                                                                <th>Created</th>
+                                                                <?php
+                                                                echo ((isset($_GET["status"]) && ($_GET["status"] == "Activated" || $_GET["status"] == "Rejected"))) ? $updatedHTML : "";
+                                                                ?>
+                                                            </tr>
+                                                        </thead>
+                                                    <?php
+                                                    } else {
+                                                        echo "";
+                                                    }
+                                                    ?>
                                                     <tbody>
                                                         <?php
                                                         if (isset($productPagination) && count($productPagination) > 0) {
@@ -327,14 +344,16 @@
                                                                         ?>
                                                                     </td>
                                                                     <td><?= $created_at ?></td>
+                                                                    <?php echo ((isset($_GET["status"]) && $_GET["status"] == "Activated")) ? "<td>$updated</td>" : (((isset($_GET["status"])) && $_GET["status"] == "Rejected") ? "<td>$updated</td>" : ""); ?>
                                                                 </tr>
                                                         <?php  }
+                                                        } else {
+                                                            echo '<h3 style="color: red; text-align:center;">No record...</h3>';
                                                         }
                                                         ?>
                                                     </tbody>
                                                 </table>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -342,16 +361,16 @@
                                 <?php
                                 $pageHTML = "";
                                 $countPage = ceil(count($products) / 10);
-
                                 $page = isset($_GET["page"]) ? intval($_GET["page"]) : 1;
+                                $statusParam = isset($_GET["status"]) ? "&status=" . $_GET["status"] . "" : "";
                                 $previousPage = $page > 1 ? $page - 1 : false;
                                 $nextPage = $page + 1;
 
-                                $previous = '<li class="page-item ' . ($page == 1 ? "disabled" : "") . '" style="' . ($page == 1 ? "cursor: not-allowed;" : "") . '"> <!--  disabled active class when needs -->
-                                                <a ' . ($page == 1 ? "aria-disabled='true'" : "") . ' class="page-link" href="?mod=admin&act=mn_all_products&page=' . $previousPage . '">Previous</a> <!-- add aria-disabled="true" when you want to disabled -->
+                                $previous = '<li class="page-item ' . ((($page == 1) || (!$isProductsExist)) ? "disabled" : "") . '" style="' . ((($page == 1) || (!$isProductsExist)) ? "cursor: not-allowed;" : "") . '"> <!--  disabled active class when needs -->
+                                                <a class="page-link" href="?mod=admin&act=mn_all_products' . $statusParam . '&page=' . $previousPage . '">Previous</a> <!-- add aria-disabled="true" when you want to disabled -->
                                             </li>';
-                                $next = '<li class="page-item ' . ($page == $countPage ? "disabled" : "") . '" style="' . ($page == $countPage ? "cursor: not-allowed;" : "") . '">
-                                            <a ' . ($page == $countPage ? "aria-disabled='true'" : "") . ' class="page-link" href="?mod=admin&act=mn_all_products&page=' . $nextPage . '">Next</a>
+                                $next = '<li class="page-item ' . ((($page == $countPage) || (!$isProductsExist)) ? "disabled" : "") . '" style="' . ((($page == $countPage) || (!$isProductsExist)) ? "cursor: not-allowed;" : "") . '">
+                                            <a class="page-link" href="?mod=admin&act=mn_all_products' . $statusParam . '&page=' . $nextPage . '">Next</a>
                                         </li>';
                                 function paginationHTML($i, $isActive, $status = "")
                                 {

@@ -592,7 +592,7 @@ if ($is_expire == 'expired') { ?>
     $currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     
     ?>
-    <input id="text" hidden type="text" value="<?=$currentUrl?>&qrcode=true" style="width:80%" /><br />
+    <input id="text" hidden type="text" value="https://quin.mr-quynh.com/?mod=verify&act=order&code=<?=$_GET['code']?>&qrcode=true" style="width:80%" /><br />
 
     <div id="snackbar"></div>
     <!-- qr code -->
