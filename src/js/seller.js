@@ -184,11 +184,6 @@ function update_status_order_all(status) {
 
 // address
 function select_address(el, type) {
-  console.log(el);
-  console.log(el.value);
-  console.log(type);
-  
-
   $.ajax({
     url: `?mod=request&act=get_address&id=${el.value}&type=${type}`,
   }).done((data) => {
@@ -212,5 +207,4 @@ function select_address(el, type) {
 function get_param(paramName) {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get(paramName);
-
 }
