@@ -6,6 +6,7 @@ include_once 'model/entity.php';
 include_once 'model/category.php';
 include_once 'model/comment.php';
 include_once 'model/user.php';
+include_once 'model/shop.php';
 
 include_once "model/cart.php";
 $cate = new Category();
@@ -19,7 +20,7 @@ $cartResult = $classCart->getCartUser();
 
 
 extract($_REQUEST);
-if (isset($_GET['act'] )&& $_GET['act']) {
+if (isset($_GET['act']) && $_GET['act']) {
     switch ($_GET['act']) {
         case 'home':
             $allCategory = $cate->getAllCate();
@@ -37,15 +38,15 @@ if (isset($_GET['act'] )&& $_GET['act']) {
             break;
         case 'collection':
             $allCategory = $cate->getAllCate();
-            $page =1;
-            if(isset($_GET['page']) && $_GET['page']){
+            $page = 1;
+            if (isset($_GET['page']) && $_GET['page']) {
                 $page = $_GET['page'];
             }
-            if (isset($_GET['category']) && !empty($_GET['category']) && is_numeric($_GET['category']) ) {
-                $collectionPro = $product->filterProduct("category", $_GET['category'],8,$page);
+            if (isset($_GET['category']) && !empty($_GET['category']) && is_numeric($_GET['category'])) {
+                $collectionPro = $product->filterProduct("category", $_GET['category'], 8, $page);
                 $infoCate = $cate->getInfoCate($_GET['category']);
             } else {
-                $collectionPro = $product->filterProduct('','',8,$page);
+                $collectionPro = $product->filterProduct('', '', 8, $page);
             }
             if (isset($infoCate))
                 $viewTitle = $infoCate['nameCate'];
@@ -56,20 +57,20 @@ if (isset($_GET['act'] )&& $_GET['act']) {
         case 'detail':
             if (isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id'])) {
                 $infoPro = $product->filterProduct("detail", $_GET['id']);
-                
+
                 if (isset($infoPro) && $infoPro->status == true) {
                     $productInfo = $infoPro->result;
-                    if(!isset($productInfo[0]['namePro'])){
+                    if (!isset($productInfo[0]['namePro'])) {
                         header("Location: ?page=404");
                     }
                     $page = 1;
-                    if(isset($_GET['page']) && $_GET['page']){
+                    if (isset($_GET['page']) && $_GET['page']) {
                         $page = $_GET['page'];
                     }
-                    $listCmt = $classComment->getAllCommentById( $_GET['id'],$page);
-                    
+                    $listCmt = $classComment->getAllCommentById($_GET['id'], $page);
+
                     $viewTitle = $productInfo[0]['namePro'];
-                }else{
+                } else {
                     header("Location: ?page=404");
                 }
             } else {
@@ -81,12 +82,11 @@ if (isset($_GET['act'] )&& $_GET['act']) {
             include_once 'view/inc/footer.php';
             break;
         case 'cart':
-            if(Session::get("isLogin") == true){
+            if (Session::get("isLogin") == true) {
                 include_once 'view/inc/header.php';
                 include_once 'view/cart.php';
                 include_once 'view/inc/footer.php';
-
-            }else{
+            } else {
                 header('location: ./');
             }
             break;
@@ -94,9 +94,8 @@ if (isset($_GET['act'] )&& $_GET['act']) {
             $cartcheckout = $classCart->getCartUser('checked');
             $classUser = new User();
             $getUserInfo = $classUser->getAddress();
-            if($getUserInfo->status ==true){
+            if ($getUserInfo->status == true) {
                 $userInfo = $getUserInfo->result;
-                
             }
 
             if (isset($_POST['nameReceiver']) && !empty($_POST['nameReceiver'])) {
@@ -127,8 +126,24 @@ if (isset($_GET['act'] )&& $_GET['act']) {
             include_once 'view/checkout.php';
             include_once 'view/inc/footer.php';
             break;
+        case 'shop':
+            //  code
+            $shop = new Shop();
+            if (isset($_GET['uuid']) && $_GET['uuid']) {
+                $shop_info = $shop->get_info_shop($_GET['uuid']);
+                if ($shop_info->status) {
+                    $shop_info = $shop_info->result;
+                } else {
+                    header('location:?page=404');
+                }
+            }
+
+            include_once 'view/inc/header.php';
+            include_once 'view/shop.php';
+            include_once 'view/inc/footer.php';
+
+            break;
         default:
             header("Location: ?page=404");
     }
 }
-?>
