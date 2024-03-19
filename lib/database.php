@@ -12,8 +12,8 @@ class Database
 
 
      public $host = "localhost";
-    public $user = "quingroup";
-    public $pass = "Quingroup123.";
+    public $user = "root";
+    public $pass = "123456";
     
     // public $dbname = "quinshop";
     public $dbname = "quingroup";
