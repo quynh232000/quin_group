@@ -207,5 +207,4 @@ function select_address(el, type) {
 function get_param(paramName) {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get(paramName);
-
 }

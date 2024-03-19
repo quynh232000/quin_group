@@ -11,9 +11,9 @@ class Database
     // public $dbname = DB_NAME;
 
 
-    public $host = "localhost:8111";
+    public $host = "localhost";
     public $user = "root";
-    public $pass = "";
+    public $pass = "123456";
 
     // public $dbname = "quinshop";
 

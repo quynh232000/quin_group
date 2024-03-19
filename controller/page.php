@@ -27,11 +27,12 @@ if (isset($_GET['act']) && $_GET['act']) {
             if ($allCategory == false) {
                 $allCategory = array();
             }
-            $megaPro = $product->filterProduct("random");
-            $newPro = $product->filterProduct("", "", 8);
-            $salePro = $product->filterProduct("random");
+            $randomCate = $cate->get_cate_random();
+            $megaPro = $product->filterProduct("by_type",'Flash Sale');
+            $newPro = $product->filterProduct("by_type", "New", 8);
+            $salePro = $product->filterProduct("by_type",'Hot');
             $bestPro = $product->filterProduct("random", "", 10);
-            $suggestionPro = $product->filterProduct("random", "", 10);
+            $suggestionPro = $product->filterProduct("category", $randomCate[0]['slug'] );
             include_once 'view/inc/header.php';
             include_once 'view/home.php';
             include_once 'view/inc/footer.php';
@@ -39,17 +40,33 @@ if (isset($_GET['act']) && $_GET['act']) {
         case 'collection':
             $allCategory = $cate->getAllCate();
             $page = 1;
+            $category="";
+            $min_price = "";
+            $max_price = "";
+            $type = "";
+            if(isset($_GET['category'])&& $_GET['category']){
+                $category = $_GET['category'];
+            }
+            if(isset($_GET['min_price'])&& $_GET['min_price'] && isset($_GET['max_price'])&& $_GET['max_price']){
+                $min_price = $_GET['min_price'];
+                $max_price = $_GET['max_price'];
+            }
+            if(isset($_GET['type'])&& $_GET['type']){
+                $type = $_GET['type'];
+            }
+            
             if (isset($_GET['page']) && $_GET['page']) {
                 $page = $_GET['page'];
             }
-            if (isset($_GET['category']) && !empty($_GET['category']) && is_numeric($_GET['category'])) {
-                $collectionPro = $product->filterProduct("category", $_GET['category'], 8, $page);
-                $infoCate = $cate->getInfoCate($_GET['category']);
-            } else {
-                $collectionPro = $product->filterProduct('', '', 8, $page);
-            }
+            $collectionPro = $product->filter_product_collection($category,$min_price,$max_price,$type, 8, $page);
+            $infoCate = $cate->getInfoCate($_GET['category']);
+            // if (isset($_GET['category']) && !empty($_GET['category'])) {
+            // } else {
+            //     $collectionPro = $product->filterProduct('', '', 8, $page);
+            // }
             if (isset($infoCate))
-                $viewTitle = $infoCate['nameCate'];
+                $viewTitle = $infoCate['name'];
+
             include_once 'view/inc/header.php';
             include_once 'view/collection.php';
             include_once 'view/inc/footer.php';
