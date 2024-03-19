@@ -44,7 +44,6 @@ class Shop
             ($name == "") || ($phone_number == "") || ($address_detail == ""
                 || ($province == "")
                 || ($district == "")
-
             )
         ) {
 
@@ -65,7 +64,7 @@ class Shop
         address_detail = '$address_detail' ,
         province = '$province',
         district = '$district',
-        updated_at = now() 
+        updated_at = CURRENT_TIMESTAMP
         $queryicon 
         WHERE id = '$shop_id' ");
 
@@ -81,7 +80,7 @@ class Shop
              ship_south = '$ship_south',
             ship_mid_north = '$ship_mid_north',
              ship_mid_south = '$ship_mid_south',
-             updated_at = now()
+             updated_at = CURRENT_TIMESTAMP()
             WHERE shop_id = '$shop_id'
             ");
         } else {
@@ -117,7 +116,6 @@ class Shop
             Session::set('checkshop', 'Vui lòng cập nhật đầy đủ thông tin!');
             header("location: ?mod=seller&act=setting");
         }
-
     }
     // get shipping shop setting
     public function get_shipping_shop()
@@ -132,8 +130,41 @@ class Shop
         }
     }
 
+    // get star shop
+    public function get_star_shop($shop_id = '')
+    {
+        if (empty($id)) {
+            $user_id = Session::get('id');
+            $shop_id = $this->db->select("SELECT avg(r.level) FROM shop where user_id = '$user_id'")->fetchColumn();
+        }
+        return $this->db->select("SELECT avg(r.level) 
+        FROM product_review  r
+        INNER JOIN product p
+        on p.id = r.product_id
+        where p.shop_id = '$shop_id'")->fetchColumn();
+    }
+    
+
+    // function test
+    public function test($any)
+    {
+        echo "<pre>";
+        var_dump($any);
+        die();
+    }
 
 
+    public function get_info_shop($uuid)
+    {
+        $result = $this->db->select("select * from shop where uuid = '$uuid'")->fetch();
+        // $this->test($result);
+        // return $result;
+        if ($result) {
+            return new Response(true, 'success', $result);
+        } else {
+            return new Response(false, 'fail');
+        }
+    }
 }
 
 

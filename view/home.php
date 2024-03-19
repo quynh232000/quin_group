@@ -61,7 +61,7 @@
             <div class="wrapper ">
                 <div class=" categories-wrapper">
                     <?php foreach ($allCategory as $key => $value) { ?>
-                        <a href="?mod=page&act=collection&category=<?= $value['id'] ?>" class="cate-item">
+                        <a href="?mod=page&act=collection&category=<?= $value['slug'] ?>" class="cate-item">
                             <div class="cate-item-body">
                                 <div class="cate-img">
                                     <img src="assest/upload/<?= $value['icon'] ?>" alt="">
@@ -70,7 +70,7 @@
                                     <?= $value['name'] ?>
                                 </div>
                                 <div class="cate-count">
-                                    <?=$value['count'] ?> sản phẩm
+                                    <?= $value['count'] ?> sản phẩm
                                 </div>
                             </div>
                         </a>
@@ -89,20 +89,21 @@
                 <div class="mega-top-wrapper">
                     <div class="mega-top-date">
                         <span>02</span>
-                        <p>DAYS</p>
+                        <p>Ngày</p>
                     </div>
                     <div class="mega-top-date">
                         <span class="mega-time" type="hour">12</span>
-                        <p>HOUR</p>
+                        <p>Giờ</p>
                     </div>
                     <div class="mega-top-date">
                         <span class="mega-time" type="minute">12</span>
-                        <p>MINUES</p>
+                        <p>Phút</p>
                     </div>
                     <div class="mega-top-date">
                         <span class="mega-time" type="second">12</span>
-                        <p>SECOND</p>
+                        <p>Giây</p>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -115,13 +116,14 @@
                         <div class="swiper-wrapper">
                             <!-- Slides -->
                             <?php
-                            if (isset($megaPro) && $megaPro->status && is_array($megaPro->result)) {
+                            if (isset ($megaPro) && $megaPro->status && is_array($megaPro->result)) {
                                 foreach ($megaPro->result as $key => $value) { ?>
 
                                     <div class="swiper-slide">
                                         <div class="product" id="pro<?= $value['id'] ?>">
                                             <div class="product-wrapper">
-                                                <a href="?mod=page&act=detail&id=<?= $value['id'] ?>" class="product-info">
+                                                <a href="?mod=page&act=detail&product=<?= $value['slug'] ?>"
+                                                    class="product-info">
                                                     <div class="product-sale-label">
                                                         <svg width="48" height="50" viewBox="0 0 48 50" fill="none"
                                                             xmlns="http://www.w3.org/2000/svg">
@@ -164,12 +166,25 @@
                                                         <?= $value['name'] ?>
                                                     </div>
                                                     <div class="product-stars">
-                                                        <i class="fa-solid fa-star"></i>
-                                                        <i class="fa-solid fa-star"></i>
-                                                        <i class="fa-solid fa-star"></i>
-                                                        <i class="fa-solid fa-star"></i>
-                                                        <i class="fa-solid fa-star"></i>
-                                                        <span>(1.1k)</span>
+                                                        <?php $avg_rate = $product->get_star_product($value['id']) ?? 0; ?>
+                                                        <div class="list-star">
+                                                            <?php
+                                                            if ($avg_rate == 0) {
+                                                                for ($i = 0; $i < 5; $i++) {
+                                                                    echo '<i class="fa-solid fa-star gray"></i>';
+                                                                }
+                                                            }
+                                                            for ($i = 0; $i < floor($avg_rate); $i++) {
+                                                                echo '<i class="fa-solid fa-star"></i>';
+                                                            }
+                                                            if (($avg_rate - floor($avg_rate)) > 0) {
+                                                                echo '<i class="fa-regular fa-star-half-stroke"></i>';
+                                                            }
+                                                            ?>
+                                                        </div>
+                                                        <span>(
+                                                            <?= round($avg_rate, 2) ?>)
+                                                        </span>
                                                     </div>
                                                     <div class="product-price">
                                                         <div class="product-price-sale fm-price">
@@ -180,7 +195,8 @@
                                                         </del>
                                                     </div>
                                                 </a>
-                                                <div idpro="<?= $value['id'] ?>" data-price= "<?= $value['price'] ?>" class="product-btn">
+                                                <div idpro="<?= $value['id'] ?>" data-price="<?= $value['price'] ?>"
+                                                    class="product-btn">
                                                     <i class="fa-solid fa-cart-plus"></i>
                                                     <span>Thêm giỏ hàng</span>
                                                 </div>
@@ -221,12 +237,12 @@
                         <img src="./assest/images/new pro big.svg" alt="">
                     </div>
                     <?php
-                    if (isset($newPro) && $newPro->status && is_array($newPro->result)) {
+                    if (isset ($newPro) && $newPro->status && is_array($newPro->result)) {
                         foreach ($newPro->result as $key => $value) { ?>
 
                             <div class="product">
                                 <div class="product-wrapper">
-                                    <a href="?mod=page&act=detail&id=<?= $value['id'] ?>" class="product-info">
+                                    <a href="?mod=page&act=detail&product=<?= $value['slug'] ?>" class="product-info">
                                         <div class="product-sale-label">
                                             <svg width="48" height="50" viewBox="0 0 48 50" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -269,12 +285,25 @@
                                             <?= $value['name'] ?>
                                         </div>
                                         <div class="product-stars">
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <span>(1.1k)</span>
+                                            <?php $avg_rate = $product->get_star_product($value['id']) ?? 0; ?>
+                                            <div class="list-star">
+                                                <?php
+                                                if ($avg_rate == 0) {
+                                                    for ($i = 0; $i < 5; $i++) {
+                                                        echo '<i class="fa-solid fa-star gray"></i>';
+                                                    }
+                                                }
+                                                for ($i = 0; $i < floor($avg_rate); $i++) {
+                                                    echo '<i class="fa-solid fa-star"></i>';
+                                                }
+                                                if (($avg_rate - floor($avg_rate)) > 0) {
+                                                    echo '<i class="fa-regular fa-star-half-stroke"></i>';
+                                                }
+                                                ?>
+                                            </div>
+                                            <span>(
+                                                <?= round($avg_rate, 2) ?>)
+                                            </span>
                                         </div>
                                         <div class="product-price">
                                             <div class="product-price-sale fm-price">
@@ -285,7 +314,7 @@
                                             </del>
                                         </div>
                                     </a>
-                                    <div class="product-btn" idpro="<?= $value['id'] ?>" data-price= "<?= $value['price'] ?>">
+                                    <div class="product-btn" idpro="<?= $value['id'] ?>" data-price="<?= $value['price'] ?>">
                                         <i class="fa-solid fa-cart-plus"></i>
                                         <span>Thêm giỏ hàng</span>
                                     </div>
@@ -319,12 +348,12 @@
                 <div class="best-selling-body">
                     <div class="best-selling-list">
                         <?php
-                        if (isset($bestPro) && $bestPro->status && is_array($bestPro->result)) {
+                        if (isset ($bestPro) && $bestPro->status && is_array($bestPro->result)) {
                             foreach ($bestPro->result as $key => $value) { ?>
 
                                 <div class="product">
                                     <div class="product-wrapper">
-                                        <a href="?mod=page&act=detail&id=<?= $value['id'] ?>" class="product-info">
+                                        <a href="?mod=page&act=detail&product=<?= $value['slug'] ?>" class="product-info">
                                             <div class="product-sale-label">
                                                 <svg width="48" height="50" viewBox="0 0 48 50" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -367,12 +396,25 @@
                                                 <?= $value['name'] ?>
                                             </div>
                                             <div class="product-stars">
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <span>(1.1k)</span>
+                                                <?php $avg_rate = $product->get_star_product($value['id']) ?? 0; ?>
+                                                <div class="list-star">
+                                                    <?php
+                                                    if ($avg_rate == 0) {
+                                                        for ($i = 0; $i < 5; $i++) {
+                                                            echo '<i class="fa-solid fa-star gray"></i>';
+                                                        }
+                                                    }
+                                                    for ($i = 0; $i < floor($avg_rate); $i++) {
+                                                        echo '<i class="fa-solid fa-star"></i>';
+                                                    }
+                                                    if (($avg_rate - floor($avg_rate)) > 0) {
+                                                        echo '<i class="fa-regular fa-star-half-stroke"></i>';
+                                                    }
+                                                    ?>
+                                                </div>
+                                                <span>(
+                                                    <?= round($avg_rate, 2) ?>)
+                                                </span>
                                             </div>
                                             <div class="product-price">
                                                 <div class="product-price-sale fm-price">
@@ -383,7 +425,8 @@
                                                 </del>
                                             </div>
                                         </a>
-                                        <div class="product-btn" idpro="<?= $value['id'] ?>" data-price= "<?= $value['price'] ?>">
+                                        <div class="product-btn" idpro="<?= $value['id'] ?>"
+                                            data-price="<?= $value['price'] ?>">
                                             <i class="fa-solid fa-cart-plus"></i>
                                             <span>Thêm giỏ hàng</span>
                                         </div>
@@ -393,41 +436,7 @@
                             <?php }
                         } ?>
 
-                        <!-- item -->
-                        <!-- <div class="product ">
-                            <div class="product-wrapper">
-                                <a href="?mod=page&act=detail" class="product-info">
 
-                                    <div class="product-img">
-                                        <img src="https://images.fpt.shop/unsafe/fit-in/240x215/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/8/14/638276090577696669_msiI-modern-14-c7m-221vn-r7-7730u-dd.jpg"
-                                            alt="">
-                                    </div>
-                                    <div class="product-brand">
-                                        IPHONE
-                                    </div>
-                                    <div class="product-name">
-                                        Stainless Steel Dual Basket ProFry...
-                                    </div>
-                                    <div class="product-stars">
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <span>(1.1k)</span>
-                                    </div>
-                                    <div class="product-price">
-                                        <div class="product-price-sale">$500</div>
-                                        <del class="product-price-old">$700</del>
-                                        <div class="product-price-sale-percent">-25%</div>
-                                    </div>
-                                </a>
-                                <div class="product-btn">
-                                    <i class="fa-solid fa-cart-plus"></i>
-                                    <span>Thêm giỏ hàng</span>
-                                </div>
-                            </div>
-                        </div> -->
                     </div>
                     <div class="best-selling-btn-body">
                         <div class="best-selling-content">
@@ -446,30 +455,27 @@
             <div class="home-title">Sản phẩm gợi ý</div>
             <div class="suggestion-nav">
                 <div class="suggestion-nav-left">
-                    <div class="suggestion-nav-item active" cateid = '16'>
-                        Laptop
-                    </div>
-                    <div class="suggestion-nav-item" cateid = '22'>
-                        Túi ví nữ
-                    </div>
-                    <div class="suggestion-nav-item" cateid = '17'>
-                        Đồng hồ
-                    </div>
+                    <?php
+                    foreach ($randomCate as $key => $value) {
+                        echo '<div class="suggestion-nav-item '.($key ==0?"active":"").'" cateid="'.$value['slug'].'">'.$value['name'].'</div>';
+                    }
+                    ?>
+                    
 
                 </div>
-                <a href="?mod=page&act=collection" class="suggestion-nav-right sg-btn-more" >
+                <a href="?mod=page&act=collection" class="suggestion-nav-right sg-btn-more">
                     Xem thêm
                     <i class="fa-solid fa-chevron-right"></i>
                 </a>
             </div>
             <div class="suggest-list-products">
                 <?php
-                if (isset($suggestionPro) && $suggestionPro->status && is_array($suggestionPro->result)) {
+                if (isset ($suggestionPro) && $suggestionPro->status && is_array($suggestionPro->result)) {
                     foreach ($suggestionPro->result as $key => $value) { ?>
 
                         <div class="product">
                             <div class="product-wrapper">
-                                <a href="?mod=page&act=detail&id=<?= $value['id'] ?>" class="product-info">
+                                <a href="?mod=page&act=detail&product=<?= $value['slug'] ?>" class="product-info">
                                     <div class="product-sale-label">
                                         <svg width="48" height="50" viewBox="0 0 48 50" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -510,12 +516,25 @@
                                         <?= $value['name'] ?>
                                     </div>
                                     <div class="product-stars">
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <span>(1.1k)</span>
+                                        <?php $avg_rate = $product->get_star_product($value['id']) ?? 0; ?>
+                                        <div class="list-star">
+                                            <?php
+                                            if ($avg_rate == 0) {
+                                                for ($i = 0; $i < 5; $i++) {
+                                                    echo '<i class="fa-solid fa-star gray"></i>';
+                                                }
+                                            }
+                                            for ($i = 0; $i < floor($avg_rate); $i++) {
+                                                echo '<i class="fa-solid fa-star"></i>';
+                                            }
+                                            if (($avg_rate - floor($avg_rate)) > 0) {
+                                                echo '<i class="fa-regular fa-star-half-stroke"></i>';
+                                            }
+                                            ?>
+                                        </div>
+                                        <span>(
+                                            <?= round($avg_rate, 2) ?>)
+                                        </span>
                                     </div>
                                     <div class="product-price">
                                         <div class="product-price-sale fm-price">
@@ -526,7 +545,7 @@
                                         </del>
                                     </div>
                                 </a>
-                                <div class="product-btn" idpro="<?= $value['id'] ?>" data-price= "<?= $value['price'] ?>">
+                                <div class="product-btn" idpro="<?= $value['id'] ?>" data-price="<?= $value['price'] ?>">
                                     <i class="fa-solid fa-cart-plus"></i>
                                     <span>Thêm giỏ hàng</span>
                                 </div>
@@ -581,7 +600,7 @@
             <!-- news -->
             <div class="news">
                 <div class="news-top">
-                    <div class="home-title">Lastest News</div>
+                    <div class="home-title">Tin mới nhất</div>
                     <a href="?mod=page&act=collection" class="suggestion-nav-right">
                         Xem thêm
                         <i class="fa-solid fa-chevron-right"></i>
@@ -599,7 +618,7 @@
                             </div>
                             <div class="new-item-content">
                                 <div class="new-item-text1">
-                                    Create Your Free Account
+                                    Tạo tài khoản
                                 </div>
                                 <div class="new-item-text2">
                                     You can create a completely free account using either your Gmail or phone number.

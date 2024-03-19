@@ -14,6 +14,7 @@
             $this->total = $total;
         }
     }
+    
    
    
 ?>

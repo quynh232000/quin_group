@@ -1,5 +1,8 @@
 <?php
 // include_once "lib/database.php";
+include_once 'model/adminlogin.php';
+$classAdmin = new Adminlogin();
+$classAdmin->check_permistion();
 include_once 'model/admin/manage_category.php';
 include_once 'model/admin/manage_product.php';
 $categoryAdmin = new CategoryAdmin();
@@ -66,7 +69,7 @@ if (isset($act) && $act) {
             $products = $productAdmin->getProducts($status, 0, 0);
             if (isset($_GET["page"]) && $_GET["page"]) {
                 $page = $_GET["page"];
-                $productPagination = $productAdmin->getProducts($status, 10, ($page - 1) * 9);
+                $productPagination = $productAdmin->getProducts($status, 10, ($page));
             } else {
                 echo "Page is not found";
             }
@@ -77,12 +80,12 @@ if (isset($act) && $act) {
             if (isset($_POST["approve"]) && $_POST["approve"]) {
                 $idProduct = $_POST["id_product"];
                 $productAdmin->updateProduct("Activated", $idProduct);
-                header("location: ?mod=admin&act=mn_all_products");
+                header("location: ?mod=admin&act=mn_all_products&status=Activated&page=1");
             } else if (isset($_POST["reject"]) && $_POST["reject"] && isset($_POST["reason"])) {
                 $idProduct = $_POST["id_product"];
                 $reason = $_POST["reason"];
                 $productAdmin->updateProduct("Rejected", $idProduct, $reason);
-                header("location: ?mod=admin&act=mn_all_products");
+                header("location: ?mod=admin&act=mn_all_products&status=Rejected&page=1");
             }
             include_once "view/admin/component/header.php";
             include_once "view/admin/pages/manage_product/all_products.php";

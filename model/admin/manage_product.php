@@ -11,15 +11,16 @@ class ProductAdmin
         $this->db = new Database();
     }
 
-    public function getProducts($status = "", $limit = "", $offset = "")
+    public function getProducts($status = "", $limit = 10, $page = 1)
     {
         $pagination = "";
         if (!empty($status)) {
             $status = " AND p.status = '$status'";
         }
-
-        if (!empty($limit) && !empty($offset)) {
-            $pagination = " LIMIT $limit OFFSET $offset";
+        $offset = ($page - 1) * $limit;
+        $pagination = " LIMIT $offset, $limit";
+        if ($page == 0) {
+            $pagination = "";
         }
         $query = "    SELECT
                             p.id,
@@ -34,7 +35,8 @@ class ProductAdmin
                             p.created_at,
                             u.full_name as shop_owner,
                             u.id as user_id,
-                            p.reason as reason
+                            p.reason as reason,
+                            p.updated_at as updated
                         FROM
                             product p
                         JOIN
@@ -54,7 +56,7 @@ class ProductAdmin
         if (!empty($reason)) {
             $reason = ", reason = '$reason'";
         }
-        $query = "UPDATE `product` SET status = '$status' $reason where id = '$idProduct'";
+        $query = "UPDATE `product` SET status = '$status', updated_at = CURRENT_TIMESTAMP() $reason where id = '$idProduct'";
         $this->db->insert($query);
     }
 }
