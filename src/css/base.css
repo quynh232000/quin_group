@@ -399,3 +399,9 @@ select{
   .fa-star-half-stroke{
     color: var(--orange);
 }
+.fa-star.gray{
+  color: rgba(22,22,24,.2);
+}
+.product-stars{
+  display: flex;
+}

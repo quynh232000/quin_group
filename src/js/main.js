@@ -568,17 +568,17 @@ $().ready(function () {
                             </defs>
                         </svg>
                         <span>-%
-                           ${item.salePercent}
+                           ${item.percent_sale}
                         </span>
                     </div>
                     <div class="product-img">
-                        <img src="./assest/upload/${item.image}" alt="">
+                        <img src="./assest/upload/${item.image_cover}" alt="">
                     </div>
                     <div class="product-brand">
                         ${item.brand}
                     </div>
                     <div class="product-name">
-                        ${item.namePro}
+                        ${item.name}
                     </div>
                     <div class="product-stars">
                         <i class="fa-solid fa-star"></i>
@@ -593,7 +593,7 @@ $().ready(function () {
                         ${item.price}
                         </div>
                         <del class="product-price-old fm-price">
-                        ${item.price * (1 + item.salePercent / 100)}
+                        ${item.price * (1 + item.percent_sale / 100)}
                            
                         </del>
                     </div>
