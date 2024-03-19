@@ -405,3 +405,11 @@ select{
 .product-stars{
   display: flex;
 }
+.product-price{
+    overflow: hidden;
+    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    font-size: 1.5rem !important;
+}

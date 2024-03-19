@@ -254,7 +254,7 @@ class Product
             return new Response(true, "Successcully", $result, "", $total);
         }
     }
-    public function filter_product_collection($slug_cate = "", $min_price = "", $max_price = "", $type = 'New', $limit = 20, $page = 1)
+    public function filter_product_collection($slug_cate = "", $min_price = "", $max_price = "", $type = '', $limit = 20, $page = 1)
     {
         if ($page < 1) {
             $page = 1;
@@ -266,41 +266,46 @@ class Product
         if (($min_price != "") && ($max_price != "")) {
             $whereQuery .= " AND pr.price > $min_price AND pr.price < $max_price ";
         }
+        if($type !=""){
+            $whereQuery .=" AND pr.type = '$type' ";
+        }
 
 
-        $isDelete = ' AND pr.is_deleted = 0 ';
+        $isDelete = ' pr.is_deleted = 0 ';
+
         $id_cate = $this->db->select("SELECT id from category where slug = '$slug_cate'")->fetchColumn();
-
-        // select total
-        $sqlTotal = $this->db->select("SELECT count(*) as total
+        if (empty ($id_cate)) {
+            // select total
+            $sqlTotal = $this->db->select("SELECT count(*) as total
                 FROM product as pr
                 WHERE
-                pr.type = '$type'
                 $isDelete
                 $whereQuery
-                AND category_id IN 
-                 (WITH RECURSIVE CTE AS (
-                    SELECT id
-                    FROM category
-                    WHERE id = '$id_cate'
-                    UNION ALL
-                    SELECT t.id
-                    FROM category t
-                    INNER JOIN CTE ON t.parent_id = CTE.id
-                    )
-                SELECT * FROM CTE)
-                 
                 ");
 
-        $total = $sqlTotal->fetchColumn();
+            $total = $sqlTotal->fetchColumn();
 
-        // select data
-        $query = "SELECT pr.id, pr.brand, pr.name ,pr.category_id, pr.quantity, pr.image_cover, pr.origin, pr.price, pr.percent_sale, pr.slug,
-                 cate.name as nameCategory from product as pr 
-                 INNER JOIN category as cate on 
-                 pr.category_id = cate.id  
-                 WHERE pr.category_id  IN 
-                    (WITH RECURSIVE CTE AS (
+            // select data
+            $query = "SELECT pr.id, pr.brand, pr.name ,pr.category_id, pr.quantity, pr.image_cover, pr.origin, pr.price, pr.percent_sale, pr.slug,
+                cate.name as nameCategory from product as pr 
+                INNER JOIN category as cate on 
+                pr.category_id = cate.id  
+                WHERE 
+                $isDelete  
+                $whereQuery
+                limit $currentPage,$limit";
+
+            // ================================
+            $result = $this->db->select($query)->fetchAll();
+        } else {
+            // select total
+            $sqlTotal = $this->db->select("SELECT count(*) as total
+                    FROM product as pr
+                    WHERE
+                    $isDelete
+                    $whereQuery
+                    AND category_id IN 
+                     (WITH RECURSIVE CTE AS (
                         SELECT id
                         FROM category
                         WHERE id = '$id_cate'
@@ -309,14 +314,38 @@ class Product
                         FROM category t
                         INNER JOIN CTE ON t.parent_id = CTE.id
                         )
-                    SELECT * FROM CTE) 
-                AND pr.type = '$type'
-                $isDelete  
-                $whereQuery
-                limit $currentPage,$limit";
+                    SELECT * FROM CTE)
+                     
+                    ");
 
-        // ================================
-        $result = $this->db->select($query)->fetchAll();
+            $total = $sqlTotal->fetchColumn();
+
+            // select data
+            $query = "SELECT pr.id, pr.brand, pr.name ,pr.category_id, pr.quantity, pr.image_cover, pr.origin, pr.price, pr.percent_sale, pr.slug,
+                     cate.name as nameCategory from product as pr 
+                     INNER JOIN category as cate on 
+                     pr.category_id = cate.id  
+                     WHERE pr.category_id  IN 
+                        (WITH RECURSIVE CTE AS (
+                            SELECT id
+                            FROM category
+                            WHERE id = '$id_cate'
+                            UNION ALL
+                            SELECT t.id
+                            FROM category t
+                            INNER JOIN CTE ON t.parent_id = CTE.id
+                            )
+                        SELECT * FROM CTE) 
+                    AND
+                    $isDelete  
+                    $whereQuery
+                    limit $currentPage,$limit";
+
+            // ================================
+            $result = $this->db->select($query)->fetchAll();
+
+        }
+
         if ($result == false) {
 
             return new Response(false, "Error", "", "");
