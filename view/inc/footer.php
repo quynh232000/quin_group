@@ -50,19 +50,19 @@
                     Cộng đồng
                 </div>
                 <div class="l-list-community" style="display:flex">
-                    <a href="#" class="l-footer-child">
+                    <a href="https://www.facebook.com/quynh232000/" class="l-footer-child">
                         <i class="fa-brands fa-facebook"></i>
                     </a>
-                    <a href="#" class="l-footer-child">
+                    <a href="https://mr-quynh.com/" class="l-footer-child">
                         <i class="fa-brands fa-instagram"></i>
                     </a>
-                    <a href="#" class="l-footer-child">
+                    <a href="https://mr-quynh.com/" class="l-footer-child">
                         <i class="fa-brands fa-twitter"></i>
                     </a>
-                    <a href="#" class="l-footer-child">
+                    <a href="https://mr-quynh.com/" class="l-footer-child">
                         <i class="fa-brands fa-google"></i>
                     </a>
-                    <a href="#" class="l-footer-child">
+                    <a href="https://mr-quynh.com/" class="l-footer-child">
                         <i class="fa-brands fa-youtube"></i>
                     </a>
                 </div>
@@ -71,7 +71,7 @@
 
         </div>
         <div class="footer-copy">
-            Copyright © 2023 Mr Quynh
+            Copyright © 2024 <a href="https://www.facebook.com/quynh232000/">Mr Quynh</a>
         </div>
     </div>
 </footer>

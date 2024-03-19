@@ -266,8 +266,8 @@ class Product
         if (($min_price != "") && ($max_price != "")) {
             $whereQuery .= " AND pr.price > $min_price AND pr.price < $max_price ";
         }
-        if($type !=""){
-            $whereQuery .=" AND pr.type = '$type' ";
+        if ($type != "") {
+            $whereQuery .= " AND pr.type = '$type' ";
         }
 
 
@@ -500,6 +500,48 @@ class Product
         FROM product_review  r
         where r.product_id = '$product_id'")->fetchColumn();
     }
+    // =============================NHUNG============================================================================//
+    // chức năng lấy chi tiết thông tin 1 sản phẩm
+    public function get_product_detail($slug)
+    {
+
+        //$slug gần giống id, đùng slug để url được đẹp 
+
+        // select thông tin bảng product với điều kiên slug = $slug truyền vào, và mình join với bảng category để lấy thêm tên danh mục(vì trong product chỉ có category_id)
+        // pr.* là lấy tất cả thông tin của bảng product
+        // pr là product <=> (product as pro)
+        // lấy tên của categry = category.name lưu vào biến namCategry vì sản phẩm cũng có name đặt vậy để k bị trùng
+        $query = "SELECT product.*,
+                category.name as nameCategory, category.slug as slugCategory from product 
+                INNER JOIN category
+                on product.category_id = category.id  
+                WHERE product.slug = '$slug'";
+        // dùng câu lệnh select để chọc vào database
+        $thong_tin_sp = $this->db->select($query)->fetch();
+        // check xem sản phẩm này có tồn tại không nếu không tồn tại thì return false
+        //thong_tin_san_pham tượng trưng cho 1 sản phẩm nhé
+
+        if (count($thong_tin_sp) <= 0) {
+            return new Response(false, 'Sản phẩm không tồn tại');
+        }
+        // lấy id product trong thong_tin_sp
+        $product_id = $thong_tin_sp['id'];
+        $danh_sach_anh = $this->db->select("SELECT link FROM listimage WHere product_id = '$product_id'")->fetchAll();
+        //biến data lưu lại mảng product
+        $data['product'] = $thong_tin_sp;
+        //biến data lưu lại mảng danh sách ảnh thuộc product đó
+        $data['listimage'] = $danh_sach_anh;
+        // return để trả về keets quả cho function
+        return new Response(true, 'success', $data);
+    }
+    public function get_productSuggestion()
+    {
+        $query = "SELECT pr.id, pr.brand, pr.name ,pr.category_id, pr.quantity , pr.image_cover, pr.origin, pr.price, pr.percent_sale, pr.slug,
+       cate.name as nameCategory from product as pr INNER JOIN category as cate on pr.category_id = cate.id  ORDER BY RAND() LIMIT 8";
+        $data = $this->db->select($query)->fetchAll();
+        return new Response(true, 'success', $data);
+    }
+    // =============================NHUNG=====================================================================//
 }
 
 ?>

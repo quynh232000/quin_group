@@ -457,10 +457,10 @@
                 <div class="suggestion-nav-left">
                     <?php
                     foreach ($randomCate as $key => $value) {
-                        echo '<div class="suggestion-nav-item '.($key ==0?"active":"").'" cateid="'.$value['slug'].'">'.$value['name'].'</div>';
+                        echo '<div class="suggestion-nav-item ' . ($key == 0 ? "active" : "") . '" cateid="' . $value['slug'] . '">' . $value['name'] . '</div>';
                     }
                     ?>
-                    
+
 
                 </div>
                 <a href="?mod=page&act=collection" class="suggestion-nav-right sg-btn-more">
@@ -560,40 +560,40 @@
             <a href="?mod=page&act=collection" class="sugestion-btn-more">
                 <div class="suggestion-btn-more-body ">Xem thêm</div>
             </a>
-            <div class="more-info">
+            <div class="more-info more-info-edit">
                 <div class="more-info-item">
                     <div class="more-infor-wrapper">
                         <div class="more-info-img"><img src="./assest/images/xe 1.svg" alt=""></div>
-                        <div class="more-info-text1">Free Delivery</div>
-                        <div class="more-info-text2">Free shipping on all order</div>
+                        <div class="more-info-text1">Giao hàng miễn phí</div>
+                        <div class="more-info-text2">Miễn phí vận chuyển các tỉnh</div>
                     </div>
                 </div>
                 <div class="more-info-item">
                     <div class="more-infor-wrapper">
                         <div class="more-info-img"><img src="./assest/images/save 1.svg" alt=""></div>
-                        <div class="more-info-text1">Big Saving Shop</div>
-                        <div class="more-info-text2">save Big Every Day</div>
+                        <div class="more-info-text1">Mua hàng tiết kiệm</div>
+                        <div class="more-info-text2">Chương trình Flash Sale mỗi ngày</div>
                     </div>
                 </div>
                 <div class="more-info-item">
                     <div class="more-infor-wrapper">
                         <div class="more-info-img"><img src="./assest/images/online.svg"></div>
-                        <div class="more-info-text1">Online Support 24/7</div>
-                        <div class="more-info-text2">Support online 24 hours a day</div>
+                        <div class="more-info-text1">Hỗ trợ 24/7</div>
+                        <div class="more-info-text2">Hỗ trợ giải đáp thắc mắc 24/7</div>
                     </div>
                 </div>
                 <div class="more-info-item">
                     <div class="more-infor-wrapper">
                         <div class="more-info-img"><img src="./assest/images/money.svg" alt=""></div>
-                        <div class="more-info-text1">Money Back Return</div>
-                        <div class="more-info-text2">Back guarantee under 7 day</div>
+                        <div class="more-info-text1">Chính sách hoàn tiền đơn hàng</div>
+                        <div class="more-info-text2">Hoàn trả đơn hàng trong 7 ngày</div>
                     </div>
                 </div>
                 <div class="more-info-item">
                     <div class="more-infor-wrapper">
                         <div class="more-info-img"><img src="./assest/images/member.svg" alt=""></div>
-                        <div class="more-info-text1">Member Discount</div>
-                        <div class="more-info-text2">Onevery order over $120.000</div>
+                        <div class="more-info-text1">Chính sách thành viên</div>
+                        <div class="more-info-text2">Deal Sale cho khách hàng thành viên</div>
                     </div>
                 </div>
             </div>
