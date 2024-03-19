@@ -104,7 +104,8 @@
 .detail-rate-star{
     display: flex;
     gap: 4px;
-    color: var(--bg-yellow);
+    color: var(--orange);
+    margin-right: 6px;
 }
 .detail-rate-right{
     display: flex;
@@ -347,7 +348,7 @@ button.detail-btn.detail-btn-add.detail-btn-buy:hover {
     gap: 20px;
 }
 .detail-des{
-    width: 60%;
+    width: 100%;
    
 }
 .detail-description-body{
@@ -570,3 +571,207 @@ button.detail-btn.detail-btn-add.detail-btn-buy:hover {
     }
     
 }
+/* Hồng Nhung---------------------------------------------------------------------------- */
+.detail-review-wrapper {
+    border-radius: 12px;
+    box-shadow: 0px 0px 4px var(--box-shadows);
+    font-size: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    font-weight: 400;
+    margin-top: 24px;
+    margin-bottom: 68px;
+}
+.detail-review-overiew-header {
+    padding: 32px 20px 0px 20px;
+}
+.detail-review-overiew-heading{
+    color: var(--primary);
+    font-size: 2.4rem;
+    margin-bottom: 16px;
+}
+.detail-review-overiew-body {
+    display: flex;
+}
+
+.detail-review-overiew-star {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.detail-review-overiew-text {
+    display: flex;
+}
+.detail-review-overiew-list-star{
+    margin-right: 48px;
+    margin-left: 12px;
+    color: #F5C144;
+}
+.detail-review-overiew-star span {
+    font-size: 2rem;
+    color: var(--primary);
+    margin-right: 6px;
+}
+.detail-star__bar {
+    margin: 24px 0;
+    padding: 10px 24px;
+}
+.detail-star__listbar{
+    background-color: #F9F9F9;
+    display: flex;
+    text-align: center;
+    justify-content: space-around;
+}
+.detail-star__tool-bar {
+    text-align: center;
+}
+.detail-review-user__avatar{
+    font-size: 2.6rem;
+    color: var(--text-color);
+    /* margin-right: 8px; */
+    display: flex;
+    align-items: center;
+}
+.review_user-img{
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.detail-review-user__info-day {
+    display: flex;
+    align-items: center;
+}
+.detail-review-user__info {
+    margin-left: 16px;
+}
+.detail-review-overiew-quantity{
+    margin-right: 16px;
+}
+.detail-review-user__inforeview {
+    align-items: center;
+    display: flex;
+}
+.detail-review-user__name {
+    font-size: 16px;
+    color: #404040;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+.detail-review-user__review-star {
+    font-size: 12px;
+    color: #F5C144;
+}
+.detail-review-user__day {
+    margin: 0 32px;
+}
+.detail-review-user {
+    border-bottom: 1px solid #ccc;
+    padding: 24px 20px;
+    margin: 0 20px;
+}
+.detail-review-user__body{
+    margin-top: 24px;
+}
+.detail-review-user-active {
+    padding: 24px 20px;
+}
+.detail-review-user-active__star-quantity {
+    color: #F5C144;
+    display: flex;
+    font-size: 2rem;
+    align-items: center;
+    justify-content: center;
+}
+.detail-review-user-active__list {
+    text-align: center;
+}
+.detail-review-user-active__list-star {
+    font-size: 2.4rem;
+}
+.detail-review-user-active__star-quantity p {
+    padding: 0 4px;
+}
+.detail-review-user-active__input {
+    padding: 50px 20px;
+    width: 100%;
+    border-radius: 8px;
+}
+.detail-review-user-active__btn {
+    background-color: #F5C144;
+    font-weight: 500;
+    border-radius: 8px;
+    color: white;
+    padding: 10px 32px;
+    margin-top: 24px;
+    text-align: center;
+    transition: .3s ease;
+}
+.detail-review-user-active__btn:hover{
+    cursor: pointer;
+    /* opacity: .8; */
+    background-color: #dea92f;
+}
+a.detail-review-user-active__link {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+.detail-review-list-pagination {
+    display: flex;
+    justify-content: end;
+    padding: 0 20px 24px 20px 
+}
+a.detail-review-pagination-link {
+    display: block;
+    border-radius: 4px;
+    padding: 16px;
+    border: 1px solid #ccc;
+    margin: 0 4px;
+}
+a.detail-review-pagination-link:hover {
+    background-color: #dcdcdc;
+}
+a.detail-review-pagination-active{
+    background-color: #F5C144;
+    color: white;
+}
+.detail-star__bar-active{
+    border-bottom: 1px solid #F5C144;
+    color: #F5C144;
+}
+.detail-shop{
+    margin: 24px 0 !important;
+}
+.fa-star.active{
+    color: var(--orange);
+}
+.detail-review-user-active__list-star {
+    color: gray;
+    justify-content: center;
+    display: flex;
+    font-size: 3rem;
+}
+.detail-review-user-active__list-star i{
+    cursor: pointer;
+    transition: .3s ease;
+}
+.detail-review-user-active__list-star i:hover{
+    opacity: .8;
+}
+.pagination-body-edit {
+    display: flex;
+    justify-content: end;
+    margin: 20px 0;
+}
+.no-review-product{
+    text-align: center;
+    margin: 20px 0;
+    color: red;
+}
+.detail-review-user-active__link{
+    display: flex;
+    justify-content: flex-end;
+}
+/* ===========nhung========== */

@@ -12,9 +12,7 @@ function countTime(time,element=".time-count-body",title ='.time-count-title') {
       }
     },1000)
   }
-  function loghello() {
-    console.log(1234);
-  }
+  
   function selectCategory(_this,id) {
     // ===
     $(_this).closest(".modal-cate-group").nextAll()?.remove();
