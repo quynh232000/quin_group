@@ -199,7 +199,7 @@
                             </div>
                         </div>
                         <div class="shop-info-btn-wrapper">
-                            <a href="?mod=page&act=shop$uuid=<?=$thong_tin_shop['shop_info']['uuid']?>" class="shop-btn">
+                            <a href="?mod=page&act=shop&uuid=<?=$thong_tin_shop['shop_info']['uuid']?>" class="shop-btn">
                             <i class="fa-solid fa-shop"></i>
                                 Xem shop
                             </a>
