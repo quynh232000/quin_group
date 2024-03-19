@@ -15,6 +15,7 @@ include_once 'model/shop.php';
 include_once 'model/address.php';
 include_once 'model/voucher.php';
 include_once 'helpers/tool.php';
+include_once 'model/product_review.php';
 $classShop = new Shop();
 $shop_info = $classShop->get_shop_info();
 
@@ -84,7 +85,11 @@ if (isset($act)) {
             if (isset($_GET['page']) && $_GET['page']) {
                 $page = $_GET['page'];
             }
-            $allProduct = $classPro->getAllProductSeller($page, 10, "");
+            $search ="";
+            if(isset($_POST['submitsearch'])&& $_POST['submitsearch']){
+                $search = $_POST['search'];
+            }
+            $allProduct = $classPro->getAllProductSeller($page, 10, "",$search);
             $cate = new Category();
             if ((isset($_GET['type']) && isset($_GET['idPro'])) && ($_GET['type']) && $_GET['idPro']) {
                 $type = $_GET['type'];
@@ -160,9 +165,7 @@ if (isset($act)) {
                     $_GET['status'] == 'Cancelled')
             ) {
                 $status = $_GET['status'];
-
                 $param = "&status=" . $_GET['status'];
-
             }
             // get page
             $page = 1;
@@ -180,7 +183,6 @@ if (isset($act)) {
             break;
         case 'detailorder':
             $classOrder = new Order();
-
             $resultOrder = $classOrder->getAllInvoince();
 
             if (isset($_GET['id']) && $_GET['id']) {
@@ -244,8 +246,6 @@ if (isset($act)) {
                     }
                 }
             }
-
-
 
             $viewTitle = 'Quản lý user';
             include_once 'view/inc/headerAdmin.php';
@@ -322,9 +322,7 @@ if (isset($act)) {
             break;
         case 'manage_voucher':
             $classVoucher = new Voucher();
-
             $viewTitle = 'Quản lý vouchers';
-            
             $tool = new Tool();
             $classShop = new Shop();
             $shop = $classShop->get_shop_info();
@@ -332,7 +330,6 @@ if (isset($act)) {
             $name_shop_code_arr = explode("-", $slug_name);
             $name_shop_code_str = implode("", $name_shop_code_arr);
             $name_code = strtoupper(substr($name_shop_code_str, 0, 5));
-
             // return;
             if (isset($_POST['submit']) && $_POST['submit']) {
                 $label = $_POST['label'] ?? "";
@@ -366,8 +363,31 @@ if (isset($act)) {
                 }
 
             }
+            $status = "";
+            $page = 1;
+            if (isset($_GET['status']) && (($_GET['status'] == 'continuing') || ($_GET['status'] == 'upcoming') || ($_GET['status'] == 'finished'))) {
+                $status == $_GET['status'];
+            }
+            // delete voucher
+            if (isset($_POST['submit_delete']) && $_POST['submit_delete']) {
+                $delete_voucher = $classVoucher->delete_voucher($_POST['id']);
+                if ($delete_voucher->status == true) {
+                    echo '<div id="toast" mes-type="success" mes-title="Thành công!" mes-text="' . $delete_voucher->message . '"></div>';
+                    echo ' <script>
+                    setTimeout(function() {
+                        window.location.href="?mod=seller&act=manage_voucher#list-order";
+                    }, 2000);
+                </script>';
 
-            $vouchers = $classVoucher->get_voucher();
+                } else {
+                    echo '<div id="toast" mes-type="error" mes-title="Thất bại!" mes-text="' . $delete_voucher->message . '"></div>';
+                }
+            }
+            $search ="";
+            if(isset($_POST['submitsearch'])&& $_POST['submitsearch']){
+                $search = $_POST['search'];
+            }
+            $vouchers = $classVoucher->get_voucher($status,"","",$search);
             include_once 'view/inc/headerAdmin.php';
             include_once 'view/inc/sidebarAdmin.php';
             include_once 'view/seller/shopmanagevoucher.php';
@@ -375,7 +395,65 @@ if (isset($act)) {
 
 
             break;
+        case 'manage_review':
+            $viewTitle = "Quản lý đánh giá";
+            $classPro = new Product();
+            $classReview = new ProductReview();
+            $page = 1;
+            if (isset($_GET['page']) && $_GET['page']) {
+                $page = $_GET['page'];
+            }
+            $search ="";
+            if(isset($_POST['submitsearch'])&& $_POST['submitsearch']){
+                $search = $_POST['search'];
+            }
+            $allProduct = $classPro->getAllProductSeller($page, 10, "",$search);
+            $cate = new Category();
 
+            include_once 'view/inc/headerAdmin.php';
+            include_once 'view/inc/sidebarAdmin.php';
+            include_once 'view/seller/managereview.php';
+            include_once 'view/inc/footer.php';
+
+            break;
+
+            case 'review_detail':
+                $viewTitle = "Đánh giá chi tiết";
+                $classPro = new Product();
+                if(isset($_GET['id'])&& $_GET['id']){
+                    $result = $classPro->get_one_product_seller($_GET['id']);
+                    if($result->status){
+                        $product= $result->result[0];
+                    }else{
+                        header("Location: ?page=404");
+                    }
+                }else{
+                    header("Location: ?page=404");
+                }
+                $avg_rate= $classPro->get_star_product($product['id'])??0;
+                
+                $cate = new Category();
+                $clasReview = new ProductReview();
+
+                $star = '';
+                if(isset($_GET['star'])&&$_GET['star']){
+                    $star = $_GET['star'];
+                }
+                $page = 1;
+                $limit = 10;
+                if(isset($_GET['page']) && $_GET['page']){
+                    $page = $_GET['page'];
+                }
+
+                $listReview = $clasReview->get_all_review_product($product['id'],$star,$page,$limit);
+                include_once 'view/inc/headerAdmin.php';
+                include_once 'view/inc/sidebarAdmin.php';
+                include_once 'view/seller/reviewdetail.php';
+                include_once 'view/inc/footer.php';
+    
+                break;
+
+            
         default:
             header('Location: ?page=404');
     }

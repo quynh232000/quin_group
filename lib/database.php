@@ -9,9 +9,13 @@ class Database
     // public $user   = DB_USER;
     // public $pass   = DB_PASS;
     // public $dbname = DB_NAME;
-    public $host = "localhost:3308";
-    public $user = "root";
-    public $pass = "12345678";
+
+
+     public $host = "localhost";
+    public $user = "quingroup";
+    public $pass = "Quingroup123.";
+    
+    // public $dbname = "quinshop";
     public $dbname = "quingroup";
 
 
@@ -43,7 +47,7 @@ class Database
         $stmt->execute();
         // $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
-        
+
         return $stmt;
     }
 
