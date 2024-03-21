@@ -9,6 +9,7 @@ include_once 'model/user.php';
 include_once 'model/shop.php';
 include_once 'model/like_product.php';
 include_once 'model/product_review.php';
+
 include_once 'helpers/format.php';
 
 include_once "model/cart.php";
@@ -191,14 +192,29 @@ if (isset($_GET['act']) && $_GET['act']) {
             break;
         case 'shop':
             //  code
+            $tool = new Format();
             $shop = new Shop();
             if (isset($_GET['uuid']) && $_GET['uuid']) {
                 $shop_info = $shop->get_info_shop($_GET['uuid']);
                 if ($shop_info->status) {
                     $shop_info = $shop_info->result;
+                    $shop_brands = $shop->get_brands_shop($shop_info['uuid'])->result;
+                    // $shop->test($shop_brands);
+                    $shop_products = $shop->get_products_shop($shop_info['id']);
+                    $shop_sale_products = $shop->get_products_shop($shop_info['id'], true);
+                    $shop_categories = $shop->get_categories_shop($shop_info['id']);
+                    $shop_product_count = $shop->get_product_count_shop($shop_info['id']);
+                    $shop_followers = count($shop->get_followers_shop($shop_info['id']));
+                    $shop_rating = $shop->get_rating_shop($shop_info['id']);
+                    $shop_voucher = $shop->get_voucher_shop($shop_info['id']);
+                    $shop_category_menus = $shop->get_category_menus_shop($shop_info['id']);
+                    $shop_products_all = $shop->get_products_shop_response($shop_info['id']);
+                    $shop_filtered_products = $shop->get_filtered_products_shop($shop_info['id']);
                 } else {
                     header('location:?page=404');
                 }
+            } else {
+                header('location:?page=404');
             }
             include_once 'view/inc/header.php';
             include_once 'view/shop.php';

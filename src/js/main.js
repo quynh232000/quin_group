@@ -190,7 +190,7 @@ function Validator(selector, options) {
             }
             return values;
           },
-          {});
+            {});
           options.onSubmit(formValues);
         }
       }
@@ -225,7 +225,7 @@ function handleCreateProduct() {
       console.log($(this).attr("checkLast"));
     });
   });
-  $(".modal-cate-item").click(function () {});
+  $(".modal-cate-item").click(function () { });
   //add attribute
   $(".create-btn-add-attibute").click(function () {
     const attrHtml = `<div class="attr-item">
@@ -446,9 +446,8 @@ $().ready(function () {
             return `
             <div class="product">
             <div class="product-wrapper">
-                <a href="?mod=page&act=detail&id=${
-                  item.id
-                }" class="product-info">
+                <a href="?mod=page&act=detail&id=${item.id
+              }" class="product-info">
                     <div class="product-sale-label">
                         <svg width="48" height="50" viewBox="0 0 48 50" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -506,9 +505,11 @@ $().ready(function () {
                         </del>
                     </div>
                 </a>
+
                 <div onclick="update_cart_user('add','${item.id}',1)" class="product-btn" idpro="${item.id}" data-price= "${
               item.price
             }">
+
                     <i class="fa-solid fa-cart-plus"></i>
                     <span>Thêm giỏ hàng</span>
                 </div>
@@ -560,6 +561,7 @@ $().ready(function () {
       }
     });
   }
+
   // btn add cart user in detail page
   $('.detail_btn_add').click(function () {
     const type = $(this).attr('data_type')
@@ -597,6 +599,7 @@ $().ready(function () {
     })
   })
   
+
   // ==========================================================================================================================//
 });
 // =================funtions====================//
@@ -621,7 +624,7 @@ function fetchCategory(id, callBack) {
     url: "?mod=request&act=get-all-category&idCate=" + id,
   }).done((data) => {
     data = JSON.parse(data);
-    renderCategory(data,callBack)
+    renderCategory(data, callBack)
   });
 }
 function renderCategory(data, callBack) {
@@ -630,17 +633,15 @@ function renderCategory(data, callBack) {
       .map((item) => {
         return `
             <div class="modal-cate-item"
-                idCate="${item.id}" checkLast="${
-          item?.children?.length > 0 ? "has" : "no"
-        }">
+                idCate="${item.id}" checkLast="${item?.children?.length > 0 ? "has" : "no"
+          }">
                 <p>
                     ${item.name}
                 </p>
-                ${
-                  item?.children?.length > 0
-                    ? `<i class="fa-solid fa-chevron-right"></i>`
-                    : ""
-                }
+                ${item?.children?.length > 0
+            ? `<i class="fa-solid fa-chevron-right"></i>`
+            : ""
+          }
             </div>
           `;
       })
@@ -681,17 +682,15 @@ function selectCategory() {
               .map((item) => {
                 return `
                     <div class="modal-cate-item"
-                        idCate="${item.id}" checkLast="${
-                  item?.children?.length > 0 ? "has" : "no"
-                }">
+                        idCate="${item.id}" checkLast="${item?.children?.length > 0 ? "has" : "no"
+                  }">
                         <p>
                             ${item.name}
                         </p>
-                        ${
-                          item?.children?.length > 0
-                            ? `<i class="fa-solid fa-chevron-right"></i>`
-                            : ""
-                        }
+                        ${item?.children?.length > 0
+                    ? `<i class="fa-solid fa-chevron-right"></i>`
+                    : ""
+                  }
                     </div>
                   `;
               })
@@ -951,3 +950,9 @@ if (searchInput) {
     }
   }, 1000);
 }
+
+
+
+
+
+

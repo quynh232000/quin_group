@@ -1,4 +1,4 @@
-.shop{
+.shop {
     box-shadow: 1px 1px 4px var(--box-shadows);
     padding: 24px 20px;
     border-radius: 10px;
@@ -8,20 +8,25 @@
     font-size: 1.6rem;
     gap: 20px;
 }
-.shop-img img{
+
+.shop-img img {
     width: 80px;
     height: 80px;
     border-radius: 50%;
     object-fit: cover;
 }
-.shop-top{
+
+.shop-top {
     display: flex;
     align-items: center;
 }
-.shop-group-info,.shop-group{
+
+.shop-group-info,
+.shop-group {
     width: 33.334%;
 }
-.shop-info{
+
+.shop-info {
     display: flex;
     flex-direction: column;
     background-color: var(--primary);
@@ -29,15 +34,18 @@
     border-radius: 12px;
     color: var(--white);
 }
-.shop-body{
+
+.shop-body {
     display: flex;
     gap: 20px;
     align-items: center;
 }
-.shop-info-left{
+
+.shop-info-left {
     position: relative;
 }
-.shop-name1{
+
+.shop-name1 {
     position: absolute;
     background-color: rgba(255, 255, 255, 1);
     border-radius: 2px;
@@ -52,12 +60,14 @@
     text-align: center;
     font-weight: 500;
 }
-.shop-online{
+
+.shop-online {
     margin-top: 5px;
     font-size: 1.4rem;
     font-weight: 300;
 }
-.shop-img{
+
+.shop-img {
     padding: 6px;
     background-color: rgba(218, 236, 255, 1);
     border-radius: 50%;
@@ -65,12 +75,14 @@
     justify-content: center;
     align-items: center;
 }
-.shop-info-btn-wrapper{
+
+.shop-info-btn-wrapper {
     margin-top: 20px;
     display: flex;
     justify-content: space-between;
 }
-.shop-btn{
+
+.shop-btn {
     border: 1px solid rgba(255, 255, 255, 1);
     padding: 5px 20px;
     display: flex;
@@ -81,60 +93,73 @@
     cursor: pointer;
     width: 48%;
 }
-.shop-group{
+
+.shop-group {
     padding-left: 40px;
     display: flex;
     flex-direction: column;
     gap: 40px;
 }
-.shop-item{
+
+.shop-item {
     display: flex;
     align-items: center;
     gap: 5px;
 }
-.shop-item-info{
+
+.shop-item-info {
     color: var(--primary);
 
 }
-.shop-bottom{
+
+.shop-bottom {
     display: flex;
     justify-content: space-between;
 }
-.shop-bottom-item{
+
+.shop-bottom-item {
     cursor: pointer;
     transition: .3s ease;
 }
-.shop-bottom-item:hover{
+
+.shop-bottom-item:hover {
     color: var(--primary);
 }
-.shop-bottom-seemore{
+
+.shop-bottom-seemore {
     color: var(--primary);
 }
+
 /* voucher */
-.shop-voucher{
+.shop-voucher {
     font-size: 1.6rem;
     display: flex;
     flex-direction: column;
     gap: 12px;
     padding: 24px 0;
 }
-.shop-voucher-title{
+
+.shop-voucher-title {
     font-weight: 600;
 }
-.shop-voucher-body{
+
+.shop-voucher-body {
     display: flex;
     width: 100%;
 
 }
-.shop-voucher-item{
+
+.shop-voucher-item {
     padding: 10px;
     width: 33.334%;
 }
-.shop-voucher-wrapper{
-    background-color:rgba(187, 221, 255,.6) ;
-    padding:10px ;
+
+.shop-voucher-wrapper {
+    background-color: rgba(187, 221, 255, .6);
+    padding: 10px;
 }
-.shop-voucher-boder{
+
+.shop-voucher-boder {
     border: 1px dashed var(--primary);
     padding: 20px;
     color: var(--primary);
@@ -143,58 +168,69 @@
     align-items: center;
     justify-content: space-between;
 }
-.shop-voucher-left{
+
+.shop-voucher-left {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    border-right: 1px  dashed var(--primary);
+    border-right: 1px dashed var(--primary);
     padding-right: 60px;
 }
-.shop-voucher-text1{
+
+.shop-voucher-text1 {
     font-size: 1.6rem;
     font-weight: 500;
 }
-.shop-voucher-text4{
+
+.shop-voucher-text4 {
     font-weight: 1.2rem;
 }
-.shop-voucher-text3{
+
+.shop-voucher-text3 {
     border: 1px solid var(--primary);
     padding: 3px;
     border-radius: 3px;
     display: block !important;
 }
-.shop-voucher-right{
-    
+
+.shop-voucher-right {
+
     height: 100%;
     justify-content: center;
     align-items: center;
     padding-left: 20px;
 }
-.shop-voucher-btn{
+
+.shop-voucher-btn {
     background-color: var(--bg-yellow);
     padding: 5px 20px;
     font-size: 1.4rem;
     border-radius: 5px;
     color: var(--white);
 }
-.shop-voucher-btn:hover{
+
+.shop-voucher-btn:hover {
     opacity: .8;
     cursor: pointer;
 }
-.shop-best-seling-body{
+
+.shop-best-seling-body {
     display: flex;
     flex-wrap: wrap;
 }
-.shop-best-sale-product .product{
+
+.shop-best-sale-product .product {
     width: 16.667%;
 }
-.shop-best-sale-product{
+
+.shop-best-sale-product {
     padding: 24px 20px;
-    box-shadow:  0 0 8px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
     border-radius: 2px;
     margin: 40px 0;
 }
-.shop-best-sale-product .wrapper{
+
+.shop-best-sale-product .wrapper {
     width: 100%;
 }
 
@@ -207,69 +243,157 @@
 
 
 
-@media screen and (max-width:1100px){
-    .shop-top{
+@media screen and (max-width:1100px) {
+    .shop-top {
         flex-wrap: wrap;
         /* flex-direction: column; */
         /* align-items: flex-start; */
         justify-content: space-between;
         gap: 40px;
     }
-    .shop-group{
+
+    .shop-group {
         width: 50%;
         padding-left: 0;
         display: flex;
     }
-    .shop-group-info{
+
+    .shop-group-info {
         width: 50%;
     }
-    .shop-voucher-body{
+
+    .shop-voucher-body {
         flex-wrap: wrap;
     }
-    .shop-voucher-item{
+
+    .shop-voucher-item {
         width: 50%;
     }
-    .shop-best-sale-product .product{
+
+    .shop-best-sale-product .product {
         width: 20%;
     }
 }
-@media screen and (max-width:860px){
-    .shop-top{
+
+@media screen and (max-width:860px) {
+    .shop-top {
         flex-wrap: wrap;
         justify-content: space-between;
         gap: 20px;
     }
-    .shop-group{
+
+    .shop-group {
         width: 100%;
         padding-left: 0;
     }
-    .shop-group-info{
+
+    .shop-group-info {
         width: 100%;
     }
-    .shop-btn{
+
+    .shop-btn {
         width: 180px;
     }
-    .shop-info-btn-wrapper{
+
+    .shop-info-btn-wrapper {
         justify-content: flex-start;
         gap: 20px;
     }
-    .shop-bottom{
+
+    .shop-bottom {
         display: none;
     }
-    .shop-best-sale-product .product{
+
+    .shop-best-sale-product .product {
         width: 25%;
     }
 }
-@media screen and (max-width:760px){
-    .shop-voucher-item{
+
+@media screen and (max-width:760px) {
+    .shop-voucher-item {
         width: 100%;
     }
-    .shop-best-sale-product .product{
+
+    .shop-best-sale-product .product {
         width: 33.334%;
     }
 }
-@media screen and (max-width:510px){
-    .shop-best-sale-product .product{
+
+@media screen and (max-width:510px) {
+    .shop-best-sale-product .product {
         width: 50%;
     }
+}
+
+/* Vinh */
+
+/* Dropdown Button */
+.dropbtn {
+    background-color: #3498DB;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Dropdown button on hover & focus */
+.dropbtn:hover,
+.dropbtn:focus {
+    background-color: #2980B9;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {
+    display: block;
+}
+
+/* Vinh */
+
+.g-nav-item_down {
+    position: relative;
+}
+
+.dropdown {
+    width: 100%;
+    top: 110%;
+    font-size: 1.6rem !important;
+}
+
+.dropdown .flex.items-center label {
+    color: var(--text-color);
+}
+
+/* VINH */
+.g-nav-item_down button {
+    /* min-width: 120px; */
 }

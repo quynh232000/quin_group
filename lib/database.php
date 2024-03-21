@@ -10,10 +10,9 @@ class Database
     // public $pass   = DB_PASS;
     // public $dbname = DB_NAME;
 
-
-     public $host = "localhost";
-    public $user = "root";
-    public $pass = "123456";
+ public $host = "localhost";
+    public $user = "quingroup";
+    public $pass = "Quingroup123.";
     
     // public $dbname = "quinshop";
     public $dbname = "quingroup";
