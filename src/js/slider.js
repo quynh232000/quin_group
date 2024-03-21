@@ -1,10 +1,12 @@
+
+
 const swiper = new Swiper('.swipper-banner', {
     // Optional parameters
     // direction: 'vertical',
     loop: true,
     autoplay: {
         delay: 5000,
-      },
+    },
 
     // If we need pagination
     pagination: {
@@ -28,7 +30,7 @@ const swiperCollection = new Swiper('.swipper-banner-collection', {
     loop: true,
     autoplay: {
         delay: 5000,
-      },
+    },
 
     // If we need pagination
     pagination: {
@@ -94,7 +96,7 @@ const swiperMegaSale = new Swiper(".mega-swipper-products", {
         delay: 5000,
         disableOnInteraction: false,
     },
-    loop:true,
+    loop: true,
     loopedSlides: 50,
     pagination: {
         el: ".swiper-pagination",
@@ -131,7 +133,7 @@ const swiperMegaSale = new Swiper(".mega-swipper-products", {
         }
     }
 
-   
+
 });
 const swiperCollectionBrand = new Swiper('.swiper-collection-brand', {
     // Optional parameters
