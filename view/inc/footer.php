@@ -16,7 +16,7 @@
                 <div class="l-footer-child">
                     <i class="fa-solid fa-location-dot"></i>
                     <div class="l-footer-child-info">
-                       Cv phần mềm Quang Trung, Q.12, HCM, VN
+                        Cv phần mềm Quang Trung, Q.12, HCM, VN
                     </div>
                 </div>
                 <div class="l-footer-child">
@@ -43,7 +43,7 @@
                 <a href="#" class="l-footer-child">
                     Tin tức
                 </a>
-               
+
             </div>
             <div class="l-footer-item">
                 <div class="l-footer-title">
@@ -84,17 +84,18 @@
 
 <script>
     const VND = new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
+        style: "currency",
+        currency: "VND",
     });
-    const prices =document.querySelectorAll(".fm-price")
-    prices.forEach(item=>{
-      item.textContent =VND.format(item.textContent)
+    const prices = document.querySelectorAll(".fm-price")
+    prices.forEach(item => {
+        item.textContent = VND.format(item.textContent)
     })
 </script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 <script src="./src/js/main.js" type="module"></script>
 <script src="./src/js/slider.js"></script>
+<script src="./src/js/vinh.js"></script>
 
 </body>
 

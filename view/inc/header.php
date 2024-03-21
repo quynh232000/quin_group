@@ -19,13 +19,9 @@ if (empty($viewTitle)) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
-        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./src/css/base.css">
     <link rel="stylesheet" href="./src/css/style.css">
     <link rel="stylesheet" href="./src/css/home.css">
@@ -38,6 +34,8 @@ if (empty($viewTitle)) {
     <link rel="stylesheet" href="./src/css/shopcustom.css">
     <link rel="stylesheet" href="./src/css/shopdashboard.css">
     <link rel="stylesheet" href="./src/css/orderhistory.css">
+    <script src="./src/js/seller.js"></script>
+    <script src="./src/js/define.js"></script>
 
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
 
@@ -81,7 +79,7 @@ if (empty($viewTitle)) {
                             Quản trị
                         </a>
                         <div class="sidebar-bottom">
-                           
+
 
 
                             <a href="?mod=page&act=home&action=logout" class="sidebar-item action">
@@ -126,10 +124,10 @@ if (empty($viewTitle)) {
                         <div class="m-header-top-space"></div>
                         <a href="?mod=admin&act=dashboard" class="header-top-item">
                             <div class="header-top-item-body">
-                            <i class="fa-solid fa-user-tie"></i>
+                                <i class="fa-solid fa-user-tie"></i>
                             </div>
                             <div class="header-top-item-title">
-                               Quản trị
+                                Quản trị
                             </div>
                         </a>
                     </div>
@@ -225,8 +223,7 @@ if (empty($viewTitle)) {
                             <!-- login -->
                             <div class="header-search-item header-search-account">
                                 <div class="header-search-item-icon">
-                                    <img src="<?php echo "./assest/upload/" . Session::get("avatar"); ?>" class="img-user"
-                                        alt="">
+                                    <img src="<?php echo "./assest/upload/" . Session::get("avatar"); ?>" class="img-user" alt="">
                                 </div>
                                 <!-- if (str_contains(Session::get("avatar"), "http")) {
                                         echo Session::get('avatar');
@@ -286,12 +283,10 @@ if (empty($viewTitle)) {
                         <div class="header-search-item header-cart">
                             <div class="header-search-item-icon icon-cart">
                                 <i class="fa-solid fa-cart-plus"></i>
-                                <div class="cart-count view-total-count"
-                                    view-total-count="<?= ($getCartInfo->result['total']) ?>">
+                                <div class="cart-count view-total-count" view-total-count="<?= ($getCartInfo->result['total']) ?>">
                                     <?php
                                     if (empty(($getCartInfo->result['total']))) {
                                         echo "0";
-
                                     } else {
                                         echo $getCartInfo->result['total'];
                                     }
@@ -300,8 +295,7 @@ if (empty($viewTitle)) {
                             </div>
                             <a href="?mod=page&act=cart" class="header-search-info">
                                 <span>Giỏ hàng</span>
-                                <div class="header-search-text-s fm-price view-total-cart"
-                                    view-total-cart=" <?= ($getCartInfo->result['totalPrice']) ?>">
+                                <div class="header-search-text-s fm-price view-total-cart" view-total-cart=" <?= ($getCartInfo->result['totalPrice']) ?>">
                                     <?= ($getCartInfo->result['totalPrice']) ?>
                                 </div>
                             </a>
@@ -316,8 +310,7 @@ if (empty($viewTitle)) {
                                     if ($cartResult->status && count($cartResult->result) > 0) {
                                         foreach ($cartResult->result as $key => $value) { ?>
                                             <li class="header__cart-item">
-                                                <img src="./assest/upload/<?= $value['image'] ?>" alt=""
-                                                    class="header__cart-img">
+                                                <img src="./assest/upload/<?= $value['image'] ?>" alt="" class="header__cart-img">
                                                 <div class="header__cart-item-info">
                                                     <div class="header__cart-item-head">
                                                         <h5 class="header__cart-item-name">
@@ -343,7 +336,7 @@ if (empty($viewTitle)) {
                                                 </div>
                                             </li>
 
-                                        <?php }
+                                    <?php }
                                     }
                                     ?>
                                 </ul>
