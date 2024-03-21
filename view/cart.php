@@ -38,7 +38,7 @@
             </div>
         </div>
 
-        <div class="cart-list-shop">
+        <div class="cart-list-shop" id="cart-list-shop">
             <!-- shop  -->
             <?php
             foreach ($data as $key => $cart_shop) { 
@@ -49,16 +49,15 @@
                     <div class="cart-group">
                         <div class="cart-shop">
                             <div class="cart-checkbox">
-                                <!-- <input type="checkbox" checked> -->
                             </div>
-                            <div class="cart-shop-info">
+                            <a href="?mod=page&act=shop&uuid=<?=$cart_shop[0]['shop_info']['uuid']?>" class="cart-shop-info">
                                 <div class="cart-shop-img">
-                                    <img src="./assest/upload/<?= $value['shop_info']['icon'] ?>" alt="">
+                                    <img src="./assest/upload/<?= $cart_shop[0]['shop_info']['icon'] ?>" alt="">
                                 </div>
                                 <div class="cart-shop-name">
-                                    <?= strtoupper($value['shop_info']['name']) ?>
+                                    <?= strtoupper($cart_shop[0]['shop_info']['name']) ?>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                         <div class="cart-product">
                             <?php
@@ -71,18 +70,17 @@
                                     pricepro="<?= $value['product_info']['price'] ?>">
                                     <div class="cart-info">
                                         <div class="cart-checkbox">
-                                            <!-- <input type="checkbox "  <?= $value['check'] ? "checked" : "" ?> > -->
-                                            <input class="item-cart-checkbox" <?= ($value['check'] ? "checked" : "") ?>
-                                                type="checkbox">
+                                            <input class="item-cart-checkbox" <?= (($value['check'] ==true) ? "checked" : "") ?>
+                                                type="checkbox" onchange="update_cart_user('<?=$value['check'] ?'uncheck':'check'?>', '<?=$value['product_info']['id']?>', 1, true)">
                                         </div>
                                         <div class="cart-item-pro">
                                             <div class="cart-item-img">
-                                                <img src="./assest/upload/<?= $value['product_info']['image_cover'] ?>" alt="">
+                                                <img src="./assest/upload/<?=$value['product_info']['image_cover'] ?>" alt="">
                                             </div>
                                             <div class="cart-info-right">
-                                                <div class="cart-item-name">
+                                                <a href="?mod=page&act=detail&product=<?=$value['product_info']['slug'];?>" class="cart-item-name">
                                                     <?= $value['product_info']['name']; ?>
-                                                </div>
+                                                </a>
                                                 <div class="cart-item-note">
                                                     <?= $value['product_info']['brand']; ?> -
                                                     <?= $value['product_info']['origin']; ?>
@@ -98,11 +96,11 @@
                                     <div class="cart-quantity">
 
                                         <div class="cart-item-count">
-                                            <div class="cart-count-btn cart-btn-action" type-btn="minus"><i
+                                            <div class="cart-count-btn " type-btn="minus" onclick="update_cart_user('minus', '<?=$value['product_info']['id']?>', 1, true)"><i
                                                     class="fa-solid fa-minus"></i></div>
                                             <input type="text" class="cart-count-input" readonly
                                                 value="<?= $value['quantity'] ?>">
-                                            <div class="cart-count-btn cart-btn-action" type-btn="plus"><i
+                                            <div class="cart-count-btn " onclick="update_cart_user('plus', '<?=$value['product_info']['id']?>', 1, true)" ><i
                                                     class="fa-solid fa-plus"></i></div>
                                         </div>
                                     </div>
@@ -116,7 +114,7 @@
                                         <div class="cart-item-action-icon">
                                             <i class="fa-regular fa-heart"></i>
                                         </div>
-                                        <div class="cart-item-action-icon cart-btn-action" type-btn="delete">
+                                        <div class="cart-item-action-icon " onclick="update_cart_user('delete', '<?=$value['product_info']['id']?>', 1, true)">
                                             <i class="fa-solid fa-trash-can"></i>
                                         </div>
                                     </div>

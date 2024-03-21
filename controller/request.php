@@ -7,6 +7,7 @@ include_once "model/order.php";
 include_once "model/comment.php";
 include_once "model/category.php";
 include_once "model/address.php";
+include_once "model/like_product.php";
 
 $classOrder = new Order();
 
@@ -145,7 +146,17 @@ if (isset ($act)) {
             $quantity = isset ($_GET['quantity']) ? $_GET['quantity'] : "";
             echo json_encode($classCart->update_cart_user($_GET['type'], $_GET['product_id'], $quantity), JSON_PRETTY_PRINT);
             return;
-
+        case 'like_product':
+            $classLike = new LikeProduct();
+            if(isset ($_GET['type']) && $_GET['type'] && isset ($_GET['product_id']) && $_GET['product_id'])
+            $type =  $_GET['type'] ;
+            $product_id =  $_GET['product_id'] ;
+            if($type == 'like'){
+                echo json_encode($classLike->like_product($product_id), JSON_PRETTY_PRINT);
+            }else{
+                echo json_encode($classLike->unlike_product($product_id), JSON_PRETTY_PRINT);
+            }
+            return;
         default:
             break;
 

@@ -122,7 +122,7 @@ class User
             return new Response(false, "Something wrong! Your are not login", "", "?mod=profile&act=login");
         }
 
-        $checkPassSql = $this->db->select("SELECT * from user where id = '$userId' and pass = '$pass'");
+        $checkPassSql = $this->db->select("SELECT * from user where id = '$userId' and password = '$pass'");
         $user = $checkPassSql->fetchAll();
         if(empty($user)){
             return new Response(false, "Mật khẩu cũ không chính xác. Vui lòng nhập lại!", "", "");
@@ -136,7 +136,7 @@ class User
         if ($isLogin != true) {
             return new Response(false, "Something wrong! Your are not login", "", "?mod=profile&act=login");
         }
-        $this->db->update("UPDATE  user SET pass='$newPass', updatedAt = NOW() WHERE id = '$userId'");
+        $this->db->update("UPDATE  user SET user.password = '$newPass', user.updated_at = CURRENT_TIMESTAMP WHERE id = '$userId'");
 
         return new Response(true, "success", "", "");
     }

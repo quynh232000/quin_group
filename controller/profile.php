@@ -8,17 +8,20 @@ include_once "model/adminlogin.php";
 include_once "model/cart.php";
 include_once "model/order.php";
 include_once "model/user.php";
+
 $classCart = new Cart();
 $classUser = new Adminlogin();
-$getCartInfo = $classCart->getCartView();
-$cartResult = $classCart->getCartUser();
+$cart_user = $classCart->get_cart_user();
 extract($_REQUEST);
 if (isset($act)) {
     switch ($act) {
         case 'profile':
+            if(Session::get('isLogin')==false){
+                header("Location: ?mod=profile&act=login");
+            }
             $viewTitle = 'Hồ sơ';
-            if (isset($_POST['username']) && $_POST['username']) {
-                $updateUser = $classUser->updateProfile($_POST["fullName"], $_FILES['avatar'], $_POST["phone"], $_POST["email"]);
+            if (isset($_POST['email']) && $_POST['email']) {
+                $updateUser = $classUser->updateProfile($_POST["full_name"], $_FILES['avatar'], $_POST["phone_number"],$_POST["address"]);
                 if (isset($updateUser)) {
                     if ($updateUser->status) {
 
@@ -73,7 +76,8 @@ if (isset($act)) {
             $viewTitle = 'Lịch sử đơn hàng';
             $classOrder = new Order();
 
-            $allOrder = $classOrder->getAllOrder();
+            // $allOrder = $classOrder->getAllOrder();
+            $allOrder = $classOrder->get_order_user();
 
             include_once 'view/inc/header.php';
             include_once 'view/inc/profilesidebar.php';
@@ -190,12 +194,15 @@ if (isset($act)) {
                 }
 
             }
-
-
-
             include_once 'view/forgotpassword.php';
             break;
-
+        case 'address':
+            $viewTitle = "Quản lý địa chỉ";
+            include_once 'view/inc/header.php';
+            include_once 'view/inc/profilesidebar.php';
+            include_once 'view/sercurity.php';
+            include_once 'view/inc/footer.php';
+            break;
         default:
             include_once 'view/inc/header.php';
             include_once 'view/error.php';

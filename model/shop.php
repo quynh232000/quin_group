@@ -156,7 +156,7 @@ class Shop
         }
     }
     public function get_shop_cart_by_product_id($product_id) {
-        return $this->db->select("SELECT shop.id,shop.name,shop.icon from product 
+        return $this->db->select("SELECT shop.id,shop.uuid,shop.name,shop.icon from product 
         INNER JOIN shop 
         ON product.shop_id = shop.id
         WHERE product.id = '$product_id'
@@ -208,6 +208,7 @@ class Shop
         WHERE shop_follow.shop_id = '$shop_id'
         ")->fetchColumn() ?? 0;
     }
+   
     // ================================ NHUNG ====================================//
 
 }
