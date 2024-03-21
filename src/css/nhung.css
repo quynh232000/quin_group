@@ -400,9 +400,16 @@ label.form-label {
 .detail-info-sale{
     color: #FFC200;
 }
-a.detail-btn.detail-btn-cart{
+button.detail-btn.detail-btn-cart{
     background-color: white;
     color: #0080FF;
+    border: 1px solid #0080FF;
+    text-align: center;
+    transition: .3s ease;
+}
+button.detail-btn.detail-btn-cart:hover{
+    background-color: rgb(242, 248, 251);
+    color: var(--primary);
     border: 1px solid #0080FF;
     text-align: center;
 }

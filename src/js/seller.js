@@ -122,35 +122,10 @@ function selectCategory(_this, id) {
   $(".modal-cate-selected").html(htmlCateSelect);
 
 }
+
+
 // accept order
 function update_status_order(id,status) {
-  console.log(status);
-  return
-  $.ajax({
-    url: `?mod=request&act=update_status_cate&id=${id}&type=accept`,
-  }).done((data) => {
-    data = JSON.parse(data);
-    if(data.status){
-      window.location.href ="?mod=seller&act=manageorders#order"+id;
-    }
-  });
-  
-}
-// cancel order
-function order_cancel(id) {
-  console.log(id);
-}
-// address
-function select_address(el,type) {
-  console.log(el.value);
-  console.log(type);
-  const id = el.value
-
-}
-// accept order
-function update_status_order(id,status) {
-
- 
   $.ajax({
     url: `?mod=request&act=update_status_order&id=${id}&status=${status}` ,
   }).done((data) => {

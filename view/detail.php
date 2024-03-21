@@ -160,7 +160,8 @@
                         <div class="detail-info-quantity">
                             <div class="detail-amount">
                                 <div class="detail-info-quantity-item detail-btn-count" type="minus"><i class="fa-solid fa-minus"></i></div>
-                                <input class="detail-info-quantity-item detail-input-quantity" type="text" value="1" readonly />
+                                <input id="input_quantity" class="detail-info-quantity-item detail-input-quantity" type="text" value="1"  />
+                                
                                 <div class="detail-info-quantity-item detail-btn-count" type="plus"><i class="fa-solid fa-plus"></i></div>
                             </div>
                             <div class="detail-amount-total">
@@ -169,11 +170,11 @@
                         </div>
                     </div>
                     <div class="detail-btn-body detail-btn-body-edit" style="margin-top:30px">
-                        <a href="?mod=page&act=cart" class="detail-btn detail-btn-cart">
+                        <button  class="detail-btn detail-btn-cart detail_btn_add" data_type="add_cart" product_id="<?= $san_pham['product']['id'] ?>">
                             <i class="fa-solid fa-cart-plus"></i>
                             Thêm vào giỏ hàng
-                        </a>
-                        <button class=" detail-btn  detail-btn-add detail-btn-buy" idpro="<?= $san_pham['product']['id'] ?>" data-price="<?= $san_pham['product']['price'] ?>">
+                        </button>
+                        <button class=" detail-btn  detail-btn-add detail-btn-buy detail_btn_add" data_type="buy_now" product_id="<?= $san_pham['product']['id'] ?>" >
                             <!-- <i class="fa-solid fa-cart-plus"></i> -->
                             <span>Mua ngay</span>
                         </button>

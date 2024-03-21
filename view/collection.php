@@ -165,10 +165,10 @@
                             <input type="hidden" name="act" value="<?= $act ?>">
                             <input  type="hidden" name="category" value="<?= $category ?>">
                             <input id="min-price" type="number" name="min_price" value="<?= $min_price ?>" placeholder="đ Từ"
-                                min="0" />
+                            min="0" />
                             <p>-</p>
                             <input id="max-price" type="number" name="max_price" value="<?= $max_price ?>" placeholder="đ Đến"
-                                min="0" />
+                            min="0" />
                         </div>
                         <span id="ms-input-price" style="color:red"></span>
 
@@ -339,7 +339,7 @@
                                             </del>
                                         </div>
                                     </a>
-                                    <div class="product-btn" idpro="<?= $value['id'] ?>" data-price="<?= $value['price'] ?>">
+                                    <div onclick="update_cart_user('plus','<?=$value['id']?>',1)" class="product-btn" idpro="<?= $value['id'] ?>" data-price="<?= $value['price'] ?>">
                                         <i class="fa-solid fa-cart-plus"></i>
                                         <span>Thêm giỏ hàng</span>
                                     </div>

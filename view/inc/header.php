@@ -11,6 +11,7 @@ if (empty($viewTitle)) {
 
 <head>
     <meta charset="UTF-8">
+    <meta property="og:image" content="./assest/images/logo-no-text.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="./assest/images/logo-no-text.png">
     <title>QUIN-
@@ -43,6 +44,8 @@ if (empty($viewTitle)) {
 
     <!-- swiper -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    <script src="./src/js/define.js"></script>
+    <script src="./src/js/shop.js"></script>
 </head>
 
 <body>
@@ -286,23 +289,16 @@ if (empty($viewTitle)) {
                         <div class="header-search-item header-cart">
                             <div class="header-search-item-icon icon-cart">
                                 <i class="fa-solid fa-cart-plus"></i>
-                                <div class="cart-count view-total-count"
-                                    view-total-count="<?= ($getCartInfo->result['total']) ?>">
-                                    <?php
-                                    if (empty(($getCartInfo->result['total']))) {
-                                        echo "0";
-
-                                    } else {
-                                        echo $getCartInfo->result['total'];
-                                    }
-                                    ?>
+                                <div id="cart-count" class="cart-count view-total-count"
+                                    view-total-count="">
+                                    <?=$cart_user->total['count']?>
                                 </div>
                             </div>
                             <a href="?mod=page&act=cart" class="header-search-info">
                                 <span>Giỏ hàng</span>
-                                <div class="header-search-text-s fm-price view-total-cart"
-                                    view-total-cart=" <?= ($getCartInfo->result['totalPrice']) ?>">
-                                    <?= ($getCartInfo->result['totalPrice']) ?>
+                                <div id="cart-total" class="header-search-text-s fm-price view-total-cart"
+                                    view-total-cart="">
+                                    <?=$cart_user->total['total']?>
                                 </div>
                             </a>
                             <!-- no cart :: header__cart-list--no-cart -->
@@ -311,34 +307,36 @@ if (empty($viewTitle)) {
 
 
                                 <p class="header__cart-heading">Sản phẩm đã thêm</p>
-                                <ul class="header__cart-list-item">
+                                <ul class="header__cart-list-item" id="list_product_cart">
                                     <?php
-                                    if ($cartResult->status && count($cartResult->result) > 0) {
-                                        foreach ($cartResult->result as $key => $value) { ?>
+                                    if ($cart_user->status && count($cart_user->result) > 0) {
+                                        foreach ($cart_user->result as $key => $value) { 
+                                            $product_info = $value['product_info'];
+                                            ?>
                                             <li class="header__cart-item">
-                                                <img src="./assest/upload/<?= $value['image'] ?>" alt=""
+                                                <img src="./assest/upload/<?= $value['product_info']['image_cover'] ?>" alt=""
                                                     class="header__cart-img">
                                                 <div class="header__cart-item-info">
                                                     <div class="header__cart-item-head">
                                                         <h5 class="header__cart-item-name">
-                                                            <?= $value['namePro'] ?>
+                                                            <?= $product_info['name'] ?>
                                                         </h5>
                                                         <div class="header__cart-item-price-wrap">
                                                             <span class="header__cart-item-price fm-price">
-                                                                <?= $value['price'] ?>
+                                                                <?= $product_info['price'] ?>
                                                             </span>
                                                             <span class="header__cart-item-multiple">x</span>
                                                             <span class="header__cart-item-qnt">
-                                                                <?= $value['count'] ?>
+                                                                <?= $value['quantity'] ?>
                                                             </span>
                                                         </div>
                                                     </div>
                                                     <div class="header__cart-item-body">
                                                         <span class="header__cart-item-description">
-                                                            <?= $value['brand'] ?> -
-                                                            <?= $value['origin'] ?>
+                                                            <?= $product_info['brand'] ?> -
+                                                            <?= $product_info['origin'] ?>
                                                         </span>
-                                                        <span class="header__cart-item-remmove">Delete</span>
+                                                        <span onclick="update_cart_user('delete',<?=$product_info['id']?>)" class="header__cart-item-remmove">Delete</span>
                                                     </div>
                                                 </div>
                                             </li>

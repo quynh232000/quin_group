@@ -195,7 +195,7 @@
                                                         </del>
                                                     </div>
                                                 </a>
-                                                <div idpro="<?= $value['id'] ?>" data-price="<?= $value['price'] ?>"
+                                                <div onclick="update_cart_user('plus','<?=$value['id']?>',1)" idpro="<?= $value['id'] ?>" data-price="<?= $value['price'] ?>"
                                                     class="product-btn">
                                                     <i class="fa-solid fa-cart-plus"></i>
                                                     <span>Thêm giỏ hàng</span>
@@ -314,7 +314,7 @@
                                             </del>
                                         </div>
                                     </a>
-                                    <div class="product-btn" idpro="<?= $value['id'] ?>" data-price="<?= $value['price'] ?>">
+                                    <div onclick="update_cart_user('plus','<?=$value['id']?>',1)" class="product-btn"  idpro="<?= $value['id'] ?>" data-price="<?= $value['price'] ?>">
                                         <i class="fa-solid fa-cart-plus"></i>
                                         <span>Thêm giỏ hàng</span>
                                     </div>
@@ -425,7 +425,7 @@
                                                 </del>
                                             </div>
                                         </a>
-                                        <div class="product-btn" idpro="<?= $value['id'] ?>"
+                                        <div onclick="update_cart_user('plus','<?=$value['id']?>',1)" class="product-btn" idpro="<?= $value['id'] ?>"
                                             data-price="<?= $value['price'] ?>">
                                             <i class="fa-solid fa-cart-plus"></i>
                                             <span>Thêm giỏ hàng</span>
@@ -545,7 +545,7 @@
                                         </del>
                                     </div>
                                 </a>
-                                <div class="product-btn" idpro="<?= $value['id'] ?>" data-price="<?= $value['price'] ?>">
+                                <div onclick="update_cart_user('plus','<?=$value['id']?>',1)" class="product-btn" idpro="<?= $value['id'] ?>" data-price="<?= $value['price'] ?>">
                                     <i class="fa-solid fa-cart-plus"></i>
                                     <span>Thêm giỏ hàng</span>
                                 </div>
