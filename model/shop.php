@@ -44,7 +44,6 @@ class Shop
             ($name == "") || ($phone_number == "") || ($address_detail == ""
                 || ($province == "")
                 || ($district == "")
-
             )
         ) {
 
@@ -65,7 +64,7 @@ class Shop
         address_detail = '$address_detail' ,
         province = '$province',
         district = '$district',
-        updated_at = now() 
+        updated_at = CURRENT_TIMESTAMP
         $queryicon 
         WHERE id = '$shop_id' ");
 
@@ -81,7 +80,7 @@ class Shop
              ship_south = '$ship_south',
             ship_mid_north = '$ship_mid_north',
              ship_mid_south = '$ship_mid_south',
-             updated_at = now()
+             updated_at = CURRENT_TIMESTAMP()
             WHERE shop_id = '$shop_id'
             ");
         } else {
@@ -130,14 +129,25 @@ class Shop
             return new Response(false, 'fail');
         }
     }
+
     /**--------------------------------------------------VINH CAO--------------------------------------------------------------------------- */
 
     // function test
-    public function test($any)
+
+
+    // get star shop
+    public function get_star_shop($shop_id = '')
+
     {
-        echo "<pre>";
-        var_dump($any);
-        die();
+        if (empty ($id)) {
+            $user_id = Session::get('id');
+            $shop_id = $this->db->select("SELECT avg(r.level) FROM shop where user_id = '$user_id'")->fetchColumn();
+        }
+        return $this->db->select("SELECT avg(r.level) 
+        FROM product_review  r
+        INNER JOIN product p
+        on p.id = r.product_id
+        where p.shop_id = '$shop_id'")->fetchColumn();
     }
 
     // shop info: name, icon
@@ -152,6 +162,7 @@ class Shop
             return new Response(false, 'fail');
         }
     }
+
     public function get_brands_shop($uuid)
     {
         $result = $this->db->select("
@@ -470,6 +481,63 @@ SELECT * FROM CTE;
             return new Response(true, 'Đã lưu voucher thành công');
         }
     }
+
+    public function get_shop_cart_by_product_id($product_id) {
+        return $this->db->select("SELECT shop.id,shop.name,shop.icon from product 
+        INNER JOIN shop 
+        ON product.shop_id = shop.id
+        WHERE product.id = '$product_id'
+        ")->fetch();
+    }
+    // ================================ NHUNG ====================================//
+    public function get_shop_by_id_product($product_id)
+    {
+        // Tìm và lấy id shop từ sản phẩm chuyền vào product_id
+        $shop_id = $this->db->select("SELECT shop_id FROM product WHERE id = '$product_id'")->fetchColumn();
+        // select thông tin shop
+        $shop_info = $this->db->select("SELECT * from shop where id = '$shop_id'")->fetch();
+        // lấy số lượng sản phẩm của shop
+        // self:: là thuộc tính gọi lại các function nằm trong cùng 1 class (ở đây là class Shop) (self:: giống this)
+        $count_product = self::dem_san_pham_shop($shop_id);
+        // tính xếp hạng sao
+        $tb_sao = self::dem_sao_shop($shop_id);
+        // người theo dõi
+        $follow = self::dem_nguoi_theo_doi_shop($shop_id);
+        //  dán nó vòa biến data với các tên tương ứng
+        $data['shop_info'] = $shop_info;
+        $data['count_product'] = $count_product;
+        $data['tb_sao'] = $tb_sao;
+        $data['follow'] = $follow;
+        // sau đó trả về theo định dạng response cùng với biến data
+        return new Response(true, 'success', $data);
+
+    }
+    public function dem_san_pham_shop($shop_id)
+    {
+        //  đếm tất cả sản phẩm có shop_id = shop_id. Nếu không có thì trả về đếm số sản phẩm là 0
+        // ?? 0: nếu câu lệnh select không có kết quả thì gán mặc định bằng 0
+        return $this->db->select("SELECT count(*) FROM product where shop_id = '$shop_id' AND is_deleted = 0 ")->fetchColumn() ?? 0;
+    }
+    public function dem_sao_shop($shop_id)
+    {
+        // tính trung bình sao đánh giá level trong bảng product_preview join với bản product với điều kiện shop_id trong product = $shop_id
+        return $this->db->select("SELECT avg(product_review.level)
+        FROM product_review
+        INNER JOIN product
+        ON product.id = product_review.product_id
+        WHERE product.shop_id = '$shop_id'
+        ")->fetchColumn() ?? 0;
+    }
+    public function dem_nguoi_theo_doi_shop($shop_id)
+    {
+        return $this->db->select("SELECT count(*)
+        FROM shop_follow
+        WHERE shop_follow.shop_id = '$shop_id'
+        ")->fetchColumn() ?? 0;
+    }
+    // ================================ NHUNG ====================================//
+
+
 }
 
 

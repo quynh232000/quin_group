@@ -95,8 +95,6 @@
                             echo '<option value="">--Chọn</option>';
                         }
                         ?>
-
-
                     </select>
                 </div>
                 <!-- <input type="text" placeholder="Aa..." name="address"

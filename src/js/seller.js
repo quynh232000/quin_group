@@ -120,34 +120,12 @@ function selectCategory(_this, id) {
   $(".modal-cate-selected").html(htmlCateSelect);
 
 }
+
+
+
 // accept order
-function update_status_order(id, status) {
-  console.log(status);
-  return
-  $.ajax({
-    url: `?mod=request&act=update_status_cate&id=${id}&type=accept`,
-  }).done((data) => {
-    data = JSON.parse(data);
-    if (data.status) {
-      window.location.href = "?mod=seller&act=manageorders#order" + id;
-    }
-  });
 
-}
-// cancel order
-function order_cancel(id) {
-  console.log(id);
-}
-// address
-function select_address(el, type) {
-  console.log(el.value);
-  console.log(type);
-  const id = el.value
-
-}
-// accept order
-function update_status_order(id, status) {
-
+function update_status_order(id,status) {
 
   $.ajax({
     url: `?mod=request&act=update_status_order&id=${id}&status=${status}`,
@@ -182,39 +160,28 @@ function update_status_order_all(status) {
 
 // address
 function select_address(el, type) {
-  console.log(el.value);
-  console.log(type);
-  const id = el.value;
-
   $.ajax({
     url: `?mod=request&act=get_address&id=${el.value}&type=${type}`,
   }).done((data) => {
     data = JSON.parse(data);
 
-    let html = data.map(item => {
+    let html = data.map(item=>{
+      if(type =='district'){
+        console.log(item.maqh);
+      }else{
+        console.log(item.xaid);
+      }
       return `
-        <option value="${type == 'province' ? item.matp : item.maqh}">${item.name}</option>
+        <option value="${(type == 'district')? item.maqh+"" : item.xaid+""}">${item.name}</option>
       `
     })
     html.unshift('option value="">--Chọn--</option>')
-    $('#' + type).html(html)
-
+    $('#'+type).html(html.join(''))
+    
   });
-
-
-  let html = data.map((item) => {
-    return `
-        <option value="${type == "province" ? item.matp : item.maqh}">${item.name
-      }</option>
-      `;
-  });
-  html.unshift('option value="">--Chọn--</option>');
-  $("#" + type).html(html);
-};
-
+}
 // get param 
 function get_param(paramName) {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get(paramName);
-
 }

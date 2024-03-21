@@ -4,8 +4,8 @@
     --text-color:#ADADAD;
     --white: #ffffff;
     --black:#161618;
-    /* --bg-yellow:#FFC200; */
-    --bg-yellow:#ff2600;
+    --bg-yellow:#FFC200;
+    /* --bg-yellow:#ff2600; */
     /* --bg-yellow:orangered; */
     --bg-hover:rgba(22,22,24,.06);
     --box-shadows:rgba(0, 0, 0, 0.12);
@@ -395,3 +395,21 @@ select{
     font-size: 16px;
     padding: 30px 0;
   }
+  /*  */
+  .fa-star-half-stroke{
+    color: var(--orange);
+}
+.fa-star.gray{
+  color: rgba(22,22,24,.2);
+}
+.product-stars{
+  display: flex;
+}
+.product-price{
+    overflow: hidden;
+    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    font-size: 1.5rem !important;
+}

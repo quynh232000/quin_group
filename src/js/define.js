@@ -1,6 +1,7 @@
 // function  count time
 
 
+
 function toastVinh(text, type = true) {
   var x = document.getElementById("snackbar");
 
@@ -29,6 +30,25 @@ function countTime(time, element = ".time-count-body", title = '.time-count-titl
 function loghello() {
   console.log(1234);
 }
+
+function countTime(
+  time,
+  element = ".time-count-body",
+  title = ".time-count-title"
+) {
+  let timeNow = time;
+  let id = setInterval(function () {
+    if (timeNow == 0) {
+      clearInterval(id);
+      $(title).text("Mã xác nhận đã hết hạn!").css("color", "red");
+    } else {
+      timeNow--;
+      $(element).text(timeNow + "s");
+    }
+  }, 1000);
+}
+
+
 function selectCategory(_this, id) {
   // ===
   $(_this).closest(".modal-cate-group").nextAll()?.remove();
@@ -51,8 +71,11 @@ function selectCategory(_this, id) {
           .map((item) => {
             return `
                   <div class="modal-cate-item"
-                      idCate="${item.id}" checkLast="${item?.children?.length > 0 ? "has" : "no"
-              }">
+
+                      idCate="${item.id}" checkLast="${
+              item?.children?.length > 0 ? "has" : "no"
+            }">
+
                       <p>
                           ${item.name}
                       </p>
@@ -80,17 +103,19 @@ function selectCategory(_this, id) {
   // ===
 }
 
-// format vnd price
+function format_price(element_parent="") {
 
-function format_price() {
   const VND = new Intl.NumberFormat("vi-VN", {
     style: "currency",
     currency: "VND",
   });
-  const prices = document.querySelectorAll(".fm-price")
-  prices.forEach(item => {
-    item.textContent = VND.format(item.textContent)
+  element_parent = element_parent? element_parent+" ":"";
+  const prices =document.querySelectorAll(element_parent+".fm-price")
+  prices.forEach(item=>{
+    item.textContent =VND.format(item.textContent)
   })
+  
+  
 }
 
 // console.log(123);
@@ -148,3 +173,9 @@ function save_voucher(_this, voucher_id) {
  * 
  * 
  * VINH */ 
+
+  
+}
+
+
+

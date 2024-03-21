@@ -3,12 +3,8 @@
         <div class="shop-sidebar-menu">
             <!--shop-sidebar item -->
             <div class="shop-sidebar-item  <?php if (
-                ($act != "manageproduct") &&
-                ($act != "manageorders") &&
-                ($act != "addproduct") &&
-                ($act != "manageuser") &&
-                ($act != "managecategory") &&
-                ($act != "delivery")
+                $act == "dashboard"
+
             ) {
                 echo "active";
             } ?>">
@@ -61,9 +57,20 @@
             } ?>">
                 <a href="?mod=seller&act=manage_voucher" class="shop-sidebar-link">
                     <div class="shop-sidebar-icon">
-                    <i class="fa-solid fa-ticket"></i>
+                        <i class="fa-solid fa-gift"></i>
                     </div>
                     <span class="shop-sidebar-title">Vouchers</span>
+                </a>
+            </div>
+
+            <div class="shop-sidebar-item <?php if (($act == "manage_review")) {
+                echo "active";
+            } ?>">
+                <a href="?mod=seller&act=manage_review" class="shop-sidebar-link">
+                    <div class="shop-sidebar-icon">
+                    <i class="fa-solid fa-arrows-to-eye"></i>
+                    </div>
+                    <span class="shop-sidebar-title">Đánh giá SP</span>
                 </a>
             </div>
 
