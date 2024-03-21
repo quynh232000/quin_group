@@ -128,6 +128,10 @@ class Product
     }
     public function getAllProductSeller($page = 1, $limit = 10, $type = "", $search = "")
     {
+        $isLogin = Session::get('isLogin');
+        if($isLogin ==false){
+            return new Response(false,'Vui lòng đăng nhập');
+        }
         if ($type) {
             $type = " AND pr.status = '$type'";
         }
@@ -274,7 +278,7 @@ class Product
         $isDelete = ' pr.is_deleted = 0 ';
 
         $id_cate = $this->db->select("SELECT id from category where slug = '$slug_cate'")->fetchColumn();
-        if (empty ($id_cate)) {
+        if (empty($id_cate)) {
             // select total
             $sqlTotal = $this->db->select("SELECT count(*) as total
                 FROM product as pr
@@ -499,6 +503,18 @@ class Product
         return $this->db->select("SELECT avg(r.level) 
         FROM product_review  r
         where r.product_id = '$product_id'")->fetchColumn();
+    }
+    public function get_product_by_id($product_id) {
+        return $this->db->select("SELECT product.name,product.image_cover,product.price,product.percent_sale,
+        product.brand,product.quantity,product.origin,product.id,
+         category.name as name_cate 
+        from product 
+        INNER JOIN category 
+        ON category.id = product.category_id
+        where product.id = '$product_id'")->fetch();
+    }
+    public function get_remain_quantity($product_id){
+        return $this->db->select("SELECT quantity - quantity_sold FROM product WHERE id = '$product_id'")->fetchColumn();
     }
     // =============================NHUNG============================================================================//
     // chức năng lấy chi tiết thông tin 1 sản phẩm

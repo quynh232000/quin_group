@@ -205,7 +205,7 @@ function formartPrice(number) {
   return VND.format(number);
 }
 
-// -----------------------------------------------------admdin------------------------------//
+// -----------------------------------------------------seller------------------------------//
 function handleCreateProduct() {
   let num = 0;
 
@@ -355,66 +355,8 @@ $().ready(function () {
       }
     }
   });
-  // add to cart
-  $(".product-btn").click(function () {
-    const id = $(this).attr("idpro");
-    const price = $(this).attr("data-price");
-    if (id) {
-      $.ajax({
-        url: "?mod=request&act=cart&type=addcart&idpro=" + id,
-      }).done((data) => {
-        data = JSON.parse(data);
-        toastjs(data.message, data.status);
-        if (data.status) {
-          let newCount = +$(".view-total-count").attr("view-total-count") + 1;
-          $(".view-total-count").attr("view-total-count", newCount);
-          $(".view-total-count").text(newCount + "");
-          let newPrice =
-            +price + +$(".view-total-cart").attr("view-total-cart");
-          $(".view-total-cart").attr("view-total-cart", newPrice);
-          $(".view-total-cart").text(formartPrice(newPrice));
-
-          setTimeout(() => {
-            location.href = "?mod=page&act=cart";
-          }, 2000);
-        }
-      });
-    }
-  });
-  // add to cart detail
-  $(".detail-btn-add").click(function () {
-    const count = $(".detail-input-quantity").val();
-    const price = $(this).attr("data-price");
-    const idpro = $(this).attr("idpro");
-    $.ajax({
-      url:
-        "?mod=request&act=cart&type=add" +
-        "&idpro=" +
-        idpro +
-        "&count=" +
-        count,
-    }).done((data) => {
-      data = JSON.parse(data);
-      toastjs(data.message, data.status);
-      if (data.status) {
-        const currentCountView =
-          +$(".view-total-count").attr("view-total-count");
-        const currentTotalView = +$(".view-total-cart").attr("view-total-cart");
-        $(".view-total-count").attr(
-          "view-total-count",
-          currentCountView + +count
-        );
-        $(".view-total-count").text(currentCountView + +count + "");
-        $(".view-total-cart").attr(
-          "view-total-cart",
-          currentTotalView + +price * +count
-        );
-        $(".view-total-cart").text(
-          formartPrice(+currentTotalView + +price * +count)
-        );
-      }
-    });
-  });
+  
+  
   // update cart
   $(".cart-btn-action").click(function () {
     const type = $(this).attr("type-btn");
@@ -483,40 +425,6 @@ $().ready(function () {
   $(".detail-des-btn-more").click(function () {
     $(".detail-description-body").css("height", "fit-content");
     $(".detail-des-btn-more-wrapper").css("display", "none");
-  });
-  // submit comment
-  $("#form-cmt").on("submit", function (e) {
-    e.preventDefault();
-    const productId = $('#form-cmt input[name="productId"]').val();
-    const content = $('#form-cmt textarea[name="content"]').val();
-    const data = {
-      productId,
-      content,
-    };
-    $.ajax({
-      url: "?mod=request&act=createcomment",
-      type: "POST",
-      data: JSON.stringify(data),
-      cache: false,
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-    }).done((res) => {
-      if (res.status == false) {
-        toastjs(res.message, false);
-      } else {
-        location.href =
-          "?mod=page&act=detail&id=" +
-          productId +
-          "&type=cmt-" +
-          res.result +
-          "#show-list-cmt";
-      }
-    });
-  });
-  // delete comment
-  $(".cmt-show-delete").click(function () {
-    const idCmt = $(this).attr("cmt-id");
-    console.log(12312, idCmt);
   });
   // show product suggesstion
   $(".suggestion-nav-item").click(function () {
@@ -598,7 +506,7 @@ $().ready(function () {
                         </del>
                     </div>
                 </a>
-                <div class="product-btn" idpro="${item.id}" data-price= "${
+                <div onclick="update_cart_user('add','${item.id}',1)" class="product-btn" idpro="${item.id}" data-price= "${
               item.price
             }">
                     <i class="fa-solid fa-cart-plus"></i>
@@ -652,15 +560,43 @@ $().ready(function () {
       }
     });
   }
-  // =========================================================================================================================//
-  // ========================Seller===================//
-  // ================================================//
-
-  // get address
+  // btn add cart user in detail page
+  $('.detail_btn_add').click(function () {
+    const type = $(this).attr('data_type')
+    const id = $(this).attr('product_id')
+    const quantity = $('#input_quantity').val()
+    if(isNaN(quantity)){
+      toastjs("Số lượng phải là số",false)
+      return
+    }
+    if(quantity >20){
+      toastjs("Vui lòng liên hệ với cửa hàng để nhập giá sỉ!")
+      return
+    }
+    if(quantity <=0){
+      toastjs("Số lượng sản phẩm không hợp lệ. Vui lòng chọn lại!",false)
+      return
+    }
+    if(type =='add_cart'){
+      update_cart_user('plus',id,quantity)
+      return
+    }
+    if(type =='buy_now'){
+      update_cart_user('plus',id,quantity)
+      setTimeout(() => {
+        window.location.href = "?mod=page&act=cart"
+      }, 2500);
+    }
+  })
+  // show voucher cart
+  $(".cart_voucher_add").click(function (params) {
+    const data = $(this).attr("data-togle")
+    $("."+data).css({
+      display:"block",
+      height:"fit-content"
+    })
+  })
   
-
-  // ================================================//
-  // =====================Seller=====================//
   // ==========================================================================================================================//
 });
 // =================funtions====================//
@@ -962,10 +898,6 @@ function toastjs(text, type = true) {
   setTimeout(function () {
     x.className = x.className.replace("show", "");
   }, 3000);
-}
-
-function getData() {
-  console.log("Data Fetched");
 }
 
 // funstion debounse

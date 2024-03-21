@@ -144,16 +144,6 @@ class Shop
         where p.shop_id = '$shop_id'")->fetchColumn();
     }
 
-
-    // function test
-    public function test($any)
-    {
-        echo "<pre>";
-        var_dump($any);
-        die();
-    }
-
-
     public function get_info_shop($uuid)
     {
         $result = $this->db->select("select * from shop where uuid = '$uuid'")->fetch();
@@ -164,6 +154,13 @@ class Shop
         } else {
             return new Response(false, 'fail');
         }
+    }
+    public function get_shop_cart_by_product_id($product_id) {
+        return $this->db->select("SELECT shop.id,shop.name,shop.icon from product 
+        INNER JOIN shop 
+        ON product.shop_id = shop.id
+        WHERE product.id = '$product_id'
+        ")->fetch();
     }
     // ================================ NHUNG ====================================//
     public function get_shop_by_id_product($product_id)

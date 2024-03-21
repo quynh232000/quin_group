@@ -15,9 +15,11 @@ $cate = new Category();
 $product = new Product();
 $classCart = new Cart();
 $classComment = new Comment();
-$getCartInfo = $classCart->getCartView();
+$cart_user = $classCart->get_cart_user();
 $cartResult = $classCart->getCartUser();
 $classProductReview = new ProductReview();
+
+
 // print_r($cartResult);
 // return;
 
@@ -141,13 +143,14 @@ if (isset($_GET['act']) && $_GET['act']) {
             include_once 'view/inc/footer.php';
             break;
         case 'cart':
-            if (Session::get("isLogin") == true) {
-                include_once 'view/inc/header.php';
-                include_once 'view/cart.php';
-                include_once 'view/inc/footer.php';
-            } else {
-                header('location: ./');
+            $viewTitle ='Giỏ hàng';
+            $data=[];
+            foreach ($cart_user->result as $key => $value) {
+               $data[$value['shop_info']['id']][]=$value; 
             }
+            include_once 'view/inc/header.php';
+            include_once 'view/cart.php';
+            include_once 'view/inc/footer.php';
             break;
         case 'checkout':
             $cartcheckout = $classCart->getCartUser('checked');
@@ -156,7 +159,6 @@ if (isset($_GET['act']) && $_GET['act']) {
             if ($getUserInfo->status == true) {
                 $userInfo = $getUserInfo->result;
             }
-
             if (isset($_POST['nameReceiver']) && !empty($_POST['nameReceiver'])) {
                 $nameReceiver = $_POST['nameReceiver'];
                 $city = $_POST['city'];
@@ -196,11 +198,9 @@ if (isset($_GET['act']) && $_GET['act']) {
                     header('location:?page=404');
                 }
             }
-
             include_once 'view/inc/header.php';
             include_once 'view/shop.php';
             include_once 'view/inc/footer.php';
-
             break;
         default:
             header("Location: ?page=404");
