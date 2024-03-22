@@ -775,3 +775,20 @@ a.detail-review-pagination-active{
     justify-content: flex-end;
 }
 /* ===========nhung========== */
+.detail_share_like{
+    display: flex;
+    justify-content: space-between;
+}
+.detail_like{
+    width: 50%;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-left: 1px solid rgba(22,22,24,.12);
+}
+.detail_like_heart{
+    font-size: 2.2rem;
+    color: var(--orange);
+    cursor: pointer;
+}

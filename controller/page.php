@@ -7,6 +7,7 @@ include_once 'model/category.php';
 include_once 'model/comment.php';
 include_once 'model/user.php';
 include_once 'model/shop.php';
+include_once 'model/like_product.php';
 include_once 'model/product_review.php';
 
 include_once 'helpers/format.php';
@@ -17,7 +18,7 @@ $product = new Product();
 $classCart = new Cart();
 $classComment = new Comment();
 $cart_user = $classCart->get_cart_user();
-$cartResult = $classCart->getCartUser();
+// $cartResult = $classCart->getCartUser();
 $classProductReview = new ProductReview();
 
 
@@ -77,6 +78,7 @@ if (isset($_GET['act']) && $_GET['act']) {
             $classFormat = new Format();
             $classProduct = new Product();
             $classShop = new Shop();
+            $classLike = new LikeProduct();
             // kiểm tra xem có slug k - nếu k có slug thì điều hướng tới trang 404
             // !(...) để phủ định lại
             if(!(isset($_GET['product']) && $_GET['product'])){
@@ -197,7 +199,6 @@ if (isset($_GET['act']) && $_GET['act']) {
                 if ($shop_info->status) {
                     $shop_info = $shop_info->result;
                     $shop_brands = $shop->get_brands_shop($shop_info['uuid'])->result;
-                    // $shop->test($shop_brands);
                     $shop_products = $shop->get_products_shop($shop_info['id']);
                     $shop_sale_products = $shop->get_products_shop($shop_info['id'], true);
                     $shop_categories = $shop->get_categories_shop($shop_info['id']);

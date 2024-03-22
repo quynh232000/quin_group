@@ -3,7 +3,7 @@
     <form class="form-update-profile" method="POST" enctype="multipart/form-data">
         <div class="profile-avatar-body">
             <div class="profile-img">
-                <img src="<?php echo "./assest/upload/" . Session::get("avatar");?>" alt="" class="profile-show-img">
+                <img src="<?php echo "./assest/upload/" . Session::get("avatar"); ?>" alt="" class="profile-show-img">
             </div>
             <label for="avatar-input">
                 <i class="fa-regular fa-pen-to-square"></i>
@@ -13,32 +13,32 @@
         </div>
         <div class="profile-wrapper">
             <div class="profile-group">
-                <label for="">Tài khoản</label>
+                <label for="">Email</label>
                 <div class="profile-content">
-                    <input readonly type="text" value="<?= Session::get("userName") ?>" name="username"
-                        class="profile-input">
+                    <input type="email" value="<?= Session::get("email") ?>" readonly name="email" class="profile-input">
                 </div>
             </div>
             <div class="profile-group">
                 <label for="">Họ tên</label>
                 <div class="profile-content">
-                    <input type="text" value="<?= Session::get("fullName") ?>" name="fullName" class="profile-input">
+                    <input type="text" value="<?= Session::get("full_name") ?>" name="full_name" class="profile-input">
                 </div>
             </div>
 
             <div class="profile-group">
                 <label for="">Số điện thoại</label>
                 <div class="profile-content">
-                    <input type="text" value="<?= Session::get("phone") ?>" name="phone" class="profile-input">
+                    <input type="text" value="<?= Session::get("phone_number") ?>" placeholder="Số điện thoại..." name="phone_number" class="profile-input">
                 </div>
             </div>
             <div class="profile-group">
-                <label for="">Email</label>
+                <label for="">Địa chỉ</label>
                 <div class="profile-content">
-                    <input type="email" value="<?= Session::get("email") ?>" name="email" class="profile-input">
+                    <input type="text" value="<?= Session::get("address") ?>" placeholder="Địa chỉ của bạn..." name="address" class="profile-input">
                 </div>
             </div>
-           
+
+
             <div class="profile-eidt-submit">
                 <button class="btn-update-profile" type="submit">
                     Cập nhật

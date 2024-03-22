@@ -18,7 +18,29 @@ class Order
         $this->db = new Database();
         $this->tool = new Tool();
     }
-    public function getAllOrder($type = "")
+    // public function getAllOrder($type = "")
+    // {
+    //     $isLogin = Session::get("isLogin");
+    //     if ($isLogin != true) {
+    //         return new Response(false, "false", "", "");
+    //     }
+    //     $userId = Session::get("id");
+
+    //     $oders = $this->db->select("SELECT de.*, i.status,i.total,i.subTotal ,i.id as 'sku', p.namePro,p.image,p.price
+    //         FROM invoicedetail as de
+    //         INNER JOIN invoice as i
+    //         ON de.invoinceId = i.id
+    //         INNER JOIN product as p
+    //         ON de.productId = p.id
+    //         WHERE i.userId = '$userId'
+    //     ");
+    //     if ($oders == false) {
+    //         return new Response(false, "false", "", "");
+    //     }
+
+    //     return new Response(true, "success", $oders->fetchAll(), "");
+    // }
+    public function get_order_user($type = "")
     {
         $isLogin = Session::get("isLogin");
         if ($isLogin != true) {
@@ -40,6 +62,7 @@ class Order
 
         return new Response(true, "success", $oders->fetchAll(), "");
     }
+
 
     public function getAllInvoince($status = "", $page = 1, $limit = 5)
 

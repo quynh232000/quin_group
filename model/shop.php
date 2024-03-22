@@ -289,14 +289,14 @@ where shop_id = '$id' and product_id = '$pro_id'")->fetch();
     public function get_categories_shop($id)
     {
         $result = $this->db->select("
-select distinct p.shop_id shop_id, c.name category_name from product p cross join category c where shop_id = '$id' order by p.quantity_sold desc limit 4")->fetchAll();
+select p.shop_id shop_id, c.name category_name from product p cross join category c where shop_id = '$id' order by  p.quantity_sold desc limit 4")->fetchAll();
         return $result;
     }
 
 
     public function get_category_menus_shop($id)
     {
-        $query = "select p.brand, p.category_id, c.parent_id, c.name from product p left join category c on p.category_id = c.id where p.shop_id = '$id' and c.is_deleted = 0 group by c.name order by p.quantity_sold desc ";
+        $query = "select p.brand, p.category_id, c.parent_id, c.name from product p left join category c on p.category_id = c.id where p.shop_id = '$id' and c.is_deleted = 0 group by c.name order by  p.quantity_sold desc ";
         $result = $this->db->select($query)->fetchAll();
         // $this->test($result);
         return $result;
@@ -356,7 +356,7 @@ select distinct p.shop_id shop_id, c.name category_name from product p cross joi
         where p.shop_id = '$id_shop' 
         and p.category_id in ($list_id_post) 
          $queryWhere
-        order by p.quantity_sold desc $type_price limit $currentPage,$limit";
+        order by select (p.quantity_sold) desc $type_price limit $currentPage,$limit";
 
 
 
@@ -405,7 +405,7 @@ SELECT * FROM CTE;
         on p.category_id = c.id 
         where p.shop_id = '$id_shop' 
         and p.category_id in ($list_id_post) 
-        order by p.quantity_sold desc";
+        order by  p.quantity_sold desc";
         return new Response(true, "success", $this->db->select($query)->fetchAll());
     }
     // FOLLOW
@@ -483,7 +483,7 @@ SELECT * FROM CTE;
     }
 
     public function get_shop_cart_by_product_id($product_id) {
-        return $this->db->select("SELECT shop.id,shop.name,shop.icon from product 
+        return $this->db->select("SELECT shop.id,shop.uuid,shop.name,shop.icon from product 
         INNER JOIN shop 
         ON product.shop_id = shop.id
         WHERE product.id = '$product_id'
@@ -535,6 +535,7 @@ SELECT * FROM CTE;
         WHERE shop_follow.shop_id = '$shop_id'
         ")->fetchColumn() ?? 0;
     }
+   
     // ================================ NHUNG ====================================//
 
 

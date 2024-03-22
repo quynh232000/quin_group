@@ -321,9 +321,9 @@ if (empty($viewTitle)) {
 
                                                 <div class="header__cart-item-info">
                                                     <div class="header__cart-item-head">
-                                                        <h5 class="header__cart-item-name">
+                                                        <a href="?mod=page&act=detail&product=<?= $value['product_info']['slug'] ?>" class="header__cart-item-name">
                                                             <?= $product_info['name'] ?>
-                                                        </h5>
+                                                        </a>
                                                         <div class="header__cart-item-price-wrap">
                                                             <span class="header__cart-item-price fm-price">
                                                                 <?= $product_info['price'] ?>
@@ -339,7 +339,7 @@ if (empty($viewTitle)) {
                                                             <?= $product_info['brand'] ?> -
                                                             <?= $product_info['origin'] ?>
                                                         </span>
-                                                        <span onclick="update_cart_user('delete',<?=$product_info['id']?>)" class="header__cart-item-remmove">Delete</span>
+                                                        <span onclick="update_cart_user('delete',<?=$product_info['id']?>,1,true)" class="header__cart-item-remmove">Delete</span>
                                                     </div>
                                                 </div>
                                             </li>

@@ -505,7 +505,7 @@ class Product
         where r.product_id = '$product_id'")->fetchColumn();
     }
     public function get_product_by_id($product_id) {
-        return $this->db->select("SELECT product.name,product.image_cover,product.price,product.percent_sale,
+        return $this->db->select("SELECT product.name,product.image_cover,product.price,product.percent_sale,product.slug
         product.brand,product.quantity,product.origin,product.id,
          category.name as name_cate 
         from product 

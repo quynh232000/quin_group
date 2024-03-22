@@ -367,15 +367,15 @@ $().ready(function () {
     updateViewCart(item, type, countpro, pricepro, idpro);
   });
   // check box cart
-  $(".item-cart-checkbox").change(function () {
-    const item = $(this).closest(".cart-item");
-    const idpro = item.attr("idpro");
-    const pricepro = item.attr("pricepro");
-    const countpro = item.attr("countpro");
-    const type = $(this).is(":checked") ? "check" : "uncheck";
-    console.log(type);
-    updateViewCart(item, type, countpro, pricepro, idpro);
-  });
+  // $(".item-cart-checkbox").change(function () {
+  //   const item = $(this).closest(".cart-item");
+  //   const idpro = item.attr("idpro");
+  //   const pricepro = item.attr("pricepro");
+  //   const countpro = item.attr("countpro");
+  //   const type = $(this).is(":checked") ? "check" : "uncheck";
+  //   console.log(type);
+  //   updateViewCart(item, type, countpro, pricepro, idpro);
+  // });
   $(".search-input-product").focus(function (e) {
     $(".header__search-history ").toggle();
   });
@@ -819,15 +819,15 @@ function updateViewCart(_this, type, count, price, idpro) {
       break;
   }
 }
-function ajaxUpdateCart(type, idpro) {
-  $.ajax({
-    url: "?mod=request&act=cart&type=" + type + "&idpro=" + idpro,
-  }).done((data) => {
-    data = JSON.parse(data);
+// function ajaxUpdateCart(type, idpro) {
+//   $.ajax({
+//     url: "?mod=request&act=cart&type=" + type + "&idpro=" + idpro,
+//   }).done((data) => {
+//     data = JSON.parse(data);
 
-    toastjs(data.message);
-  });
-}
+//     toastjs(data.message);
+//   });
+// }
 const toastEl = document.getElementById("toast");
 if (toastEl) {
   const mesType = toastEl.getAttribute("mes-type");
