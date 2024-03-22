@@ -199,7 +199,6 @@ if (isset($_GET['act']) && $_GET['act']) {
                 if ($shop_info->status) {
                     $shop_info = $shop_info->result;
                     $shop_brands = $shop->get_brands_shop($shop_info['uuid'])->result;
-                    // $shop->test($shop_brands);
                     $shop_products = $shop->get_products_shop($shop_info['id']);
                     $shop_sale_products = $shop->get_products_shop($shop_info['id'], true);
                     $shop_categories = $shop->get_categories_shop($shop_info['id']);
