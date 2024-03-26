@@ -18,15 +18,18 @@ if (isset($mod)) {
         case 'admin':
             include_once 'controller/admin.php';
             break;
-        case 'request':
-            include_once 'controller/request.php';
+        case 'admin':
+            include_once 'controller/admin.php';
+            break;
+        case 'requestAdmin':
+            include_once 'controller/requestAdmin.php';
             break;
         case 'redirect-google':
             include_once 'model/redirect-google.php';
             break;
-            case 'verify':
-                include_once 'controller/verify.php';
-                break;
+        case 'verify':
+            include_once 'controller/verify.php';
+            break;
 
         default:
             header("Location: ?page=404");

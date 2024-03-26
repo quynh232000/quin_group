@@ -1,4 +1,3 @@
-
 <!-- plugins:js -->
 <script src="view/admin/vendors/js/vendor.bundle.base.js"></script>
 <!-- endinject -->
@@ -28,11 +27,18 @@
 <script src="view/admin/js/dashboard.js"></script>
 <script src="view/admin/js/Chart.roundedBarCharts.js"></script>
 <!-- End custom js for this page-->
-
+<!-- Custom js for this page-->
+<script src="src/js/admin/user_detail.js"></script>
+<!-- End custom js for this page-->
 
 <!-- modal  -->
 <script src="src/js/admin/app.js"></script>
 <!-- end modal  -->
+
+<!-- mn_order  -->
+<script src="src/js/admin/mn_order.js"></script>
+<!-- end mn order  -->
+
 </body>
 
 </html>
