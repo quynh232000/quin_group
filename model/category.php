@@ -78,18 +78,14 @@ class Category
 
     public function getAllCate($idCate = 0)
     {
-        $query = "SELECT c.*, COUNT(p.category_id) as count
-                from  category as c
-                LEFT JOIN product AS p
-                ON p.category_id = c.id
-                GROUP BY c.id
-        ";
-        $result = $this->db->select($query)->fetchAll();
-        return ($this->buildCategoryTree($result, $idCate));
-    }
-    public function get_category_home()
-    {
-        $query = "SELECT c.*, COUNT(p.category_id) as count
+        // $query = "SELECT c.*, COUNT(DISTINCT p.id) as count
+        //         from  category as c
+        //         LEFT JOIN product AS p
+        //         ON p.category_id = c.id
+        //         WHERE p.is_deleted = 0 AND p.status = 'Activated'
+        //         GROUP BY c.id
+        // ";
+        $query = "SELECT c.*, COUNT(DISTINCT p.id) as count
         FROM  category as c
         LEFT JOIN product AS p
         ON p.category_id 
@@ -103,6 +99,33 @@ class Category
                 INNER JOIN CTE ON t.parent_id = CTE.id
                 )
             SELECT * FROM CTE)
+            AND p.status = 'Activated'
+            AND p.is_deleted = 0
+        
+        GROUP BY c.id;
+        ";
+        $result = $this->db->select($query)->fetchAll();
+        return ($this->buildCategoryTree($result, $idCate));
+    }
+    public function get_category_home()
+    {
+        $query = "SELECT c.*, COUNT(DISTINCT p.id) as count
+        FROM  category as c
+        LEFT JOIN product AS p
+        ON p.category_id 
+        IN (WITH RECURSIVE CTE AS (
+                SELECT id
+                FROM category
+                WHERE id = c.id
+                UNION ALL
+                SELECT t.id
+                FROM category t
+                INNER JOIN CTE ON t.parent_id = CTE.id
+                )
+            SELECT * FROM CTE)
+            AND p.status = 'Activated'
+            AND p.is_deleted = 0
+        WHERE c.parent_id =0 
         GROUP BY c.id;
         ";
         $result = $this->db->select($query)->fetchAll();
@@ -141,7 +164,8 @@ class Category
             return new Response(false, "Xóa danh mục thất bại!", "", "");
         }
     }
-    public function get_cate_random() {
+    public function get_cate_random()
+    {
         return $this->db->select("SELECT * FROM category WHERE parent_id = 0 order by rand() limit 3")->fetchAll();
     }
 }

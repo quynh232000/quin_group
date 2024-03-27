@@ -188,10 +188,10 @@
                                                             <div class="modal-cate-bottom-right" >
                                                             <!-- class="modal-btn-cancel "  -->
                                                                 <button >
-                                                                    Cancel
+                                                                    Hủy
                                                                 </button>
                                                                 <div disabled class="modal-btn-confirm">
-                                                                    Confirm
+                                                                    Xác nhận
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -203,34 +203,7 @@
                                         <div class="form-msg"></div>
                                     </div>
 
-                                    <div class="form-group-body w-30 catelog1">
-                                        <!-- @*<label for="" class="form-label">
-                                                      Catalog <i class="fa-solid fa-circle-info"></i>
-                                                  </label>
-                                                  <div class="shop-form-control">
-                                                      <div class="form-input-body">
-                                                          <select name="cateChildId"
-                                                                  rules="required"
-                                                                  id=""
-                                                                  class="list-categoryChild"></select>
-                                                      </div>
-                                                  </div>
-                                                  <div class="form-msg"></div>*@ -->
-                                    </div>
-                                    <div class="form-group-body w-30 catelog2">
-                                        <!-- @*<label for="" class="form-label">
-                                                      Catalog <i class="fa-solid fa-circle-info"></i>
-                                                  </label>
-                                                  <div class="shop-form-control">
-                                                      <div class="form-input-body">
-                                                          <select name="cateChildId"
-                                                                  rules="required"
-                                                                  id=""
-                                                                  class="list-categoryChild"></select>
-                                                      </div>
-                                                  </div>
-                                                  <div class="form-msg"></div>*@ -->
-                                    </div>
+                                   
                                 </div>
 
 
@@ -283,7 +256,7 @@
                                 <label for="" class="form-label">(%) giảm giá </label>
                                 <div class="shop-form-control">
                                     <div class="form-input-body">
-                                        <input type="text" name="salePercent" class="form-input"
+                                        <input type="text" name="salePercent" id="c_input_sale" class="form-input"
                                             value="<?= isset($productInfo) ? $productInfo[0]['percent_sale'] : "" ?>"
                                             placeholder="0%" />
                                     </div>
@@ -301,6 +274,31 @@
                                             placeholder="0" />
                                     </div>
                                 </div>
+                                <div class="form-msg"></div>
+                            </div>
+                            <div class="form-group-body w-50">
+                                <label for="" class="form-label">
+                                    Loại<i class="fa-solid fa-circle-info"></i>
+                                </label>
+                                <div class="shop-form-control">
+                                    <div class="form-input-body">
+                                        
+                                        <input readonly type="text" name="type" id='c-input-type' class="form-input" 
+                                            value="<?= isset($productInfo) ? $productInfo[0]['type'] : "New" ?>"
+                                            placeholder="0" />
+                                    </div>
+                                </div>
+                                <script>
+                                    $("#c_input_sale").change(function (e) {
+                                        if($(this).val() >=30){
+                                            $("#c-input-type").val("Flash Sale")
+
+                                        }else{
+                                            $("#c-input-type").val("New")
+
+                                        }
+                                    })
+                                </script>
                                 <div class="form-msg"></div>
                             </div>
                         </div>

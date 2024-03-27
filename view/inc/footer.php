@@ -89,7 +89,10 @@
     });
     const prices = document.querySelectorAll(".fm-price")
     prices.forEach(item => {
-        item.textContent = VND.format(item.textContent)
+        if(!isNaN(item.textContent)){
+            item.textContent = VND.format(item.textContent)
+
+        }
     })
 </script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>

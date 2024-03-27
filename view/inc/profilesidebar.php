@@ -20,8 +20,8 @@ extract($_REQUEST);
                 </div>
                 <div class="profile-nav-list">
                     <div class="profile-nav-item  <?php if (
-                        ($act != "orderhistory") &&
-                        ($act != "sercurity")
+                        ($act == "profile")
+                      
                     ) {
                         echo "active";
                     } ?>">
@@ -36,7 +36,7 @@ extract($_REQUEST);
                         </a>
 
                     </div>
-                    <div class="profile-nav-item <?php if (($act == "orderhistory")) {
+                    <div class="profile-nav-item <?php if (in_array($act,["orderhistory",'order_detail'])) {
                         echo "active";
                     } ?>">
                         <a href="?mod=profile&act=orderhistory" class="profile-nav-content">

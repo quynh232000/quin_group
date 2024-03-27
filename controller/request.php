@@ -9,6 +9,7 @@ include_once "model/category.php";
 include_once "model/address.php";
 include_once "model/shop.php";
 include_once "model/like_product.php";
+include_once "model/voucher.php";
 
 
 $classOrder = new Order();
@@ -16,63 +17,15 @@ $classOrder = new Order();
 extract($_REQUEST);
 if (isset ($act)) {
     switch ($act) {
-        case 'cart':
-            $classCart = new Cart();
-            if (isset ($_GET['type']) && isset ($_GET['idpro']) && !empty ($_GET['type']) && !empty ($_GET['idpro'])) {
-                $type = $_GET['type'];
-                $idPro = $_GET['idpro'];
-                $count = isset ($_GET['count']) ? $_GET['count'] : "";
-                $resultUpdateCart = $classCart->updateCart($type, $idPro, $count);
-                $json = json_encode($resultUpdateCart, JSON_PRETTY_PRINT);
-                echo $json;
-                return;
-            }
-        case 'searchproduct':
+       
+        case 'seach_home':
             $classProduct = new Product();
             if (isset ($_GET['keysearch'])) {
-                $valueSearch = $classProduct->seachProduct($_GET['keysearch']);
+                $valueSearch = $classProduct->seach_home($_GET['keysearch']);
                 echo json_encode($valueSearch, JSON_PRETTY_PRINT);
                 return;
             }
             break;
-        case 'updateinvoice':
-
-            $entityBody = file_get_contents('php://input');
-            if (isset ($entityBody)) {
-                $entityBody = json_decode($entityBody, true);
-                if ($entityBody["status"] != "") {
-
-                    $classOrders = new Order();
-                    $result = $classOrders->updateInvoice($_POST["status"], $_POST["listId"]);
-                    echo json_encode($result, JSON_PRETTY_PRINT);
-                    return;
-                } else {
-                    echo json_encode($_POST, JSON_PRETTY_PRINT);
-                    return;
-                }
-            } else {
-                echo json_encode($_POST, JSON_PRETTY_PRINT);
-                return;
-            }
-        case 'createcomment':
-
-            $entityBody = file_get_contents('php://input');
-            if (isset ($entityBody)) {
-                $entityBody = json_decode($entityBody, true);
-                if ($entityBody["productId"] != "") {
-
-                    $classOrders = new Comment();
-                    $result = $classOrders->createComment($_POST["productId"], $_POST["content"]);
-                    echo json_encode($result, JSON_PRETTY_PRINT);
-                    return;
-                } else {
-                    echo json_encode($_POST, JSON_PRETTY_PRINT);
-                    return;
-                }
-            } else {
-                echo json_encode($_POST, JSON_PRETTY_PRINT);
-                return;
-            }
         case 'fillterproduct':
             if (isset ($_GET['id']) && $_GET['id']) {
                 $classProduct = new Product();
@@ -206,6 +159,21 @@ if (isset ($act)) {
             }else{
                 echo json_encode($classLike->unlike_product($product_id), JSON_PRETTY_PRINT);
             }
+            return;
+        case "check_code_voucher":
+            $classVoucher = new Voucher();
+            if(isset($_GET['code'])&& isset($_GET['shop_id'])){
+                echo json_encode( $classVoucher->check_code_voucher($_GET['code'], $_GET['shop_id']), JSON_PRETTY_PRINT);
+            }else{
+                echo json_encode(['status'=>false,'message'=>"Missing parameter"], JSON_PRETTY_PRINT);
+            }
+            return;
+        case "get_voucher_user":
+            $classVoucher = new Voucher();
+            $type = $_GET['type']??"";
+            $search = isset($_GET['search'])? $_GET['search']:"";
+            $shop_id = isset($_GET['shop_id'])?$_GET['shop_id']:"";
+            echo json_encode($classVoucher->get_voucher_user($type,$search, $shop_id), JSON_PRETTY_PRINT);
             return;
         default:
             break;

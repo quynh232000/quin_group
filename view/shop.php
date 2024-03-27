@@ -355,7 +355,7 @@
                             $menu_tmp = [];
                             // --
                             foreach ($shop_category_menus as $category) {
-                                if ((int) $category['parent_id'] == (int) $parent_id) {
+                                if ( $category['parent_id'] ==  $parent_id) {
                                     $menu_tmp[] = $category;
                                 }
                             }

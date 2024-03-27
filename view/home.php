@@ -227,7 +227,7 @@
                     <div class="new-product-title">
                         Sản phẩm mới
                     </div>
-                    <a href="?mod=page&act=collection" class="new-product-more">
+                    <a href="?mod=page&act=collection&type=New" class="new-product-more">
                         Xem thêm
                         <i class="fa-solid fa-chevron-right"></i>
                     </a>
@@ -440,7 +440,7 @@
                     </div>
                     <div class="best-selling-btn-body">
                         <div class="best-selling-content">
-                            <a href="?mod=page&act=collection" class="best-selling-btn">
+                            <a href="?mod=page&act=collection&Type=Flash%20Sale" class="best-selling-btn">
                                 Xem thêm
                             </a>
                         </div>
@@ -621,7 +621,7 @@
                                     Tạo tài khoản
                                 </div>
                                 <div class="new-item-text2">
-                                    You can create a completely free account using either your Gmail or phone number.
+                                    Tạo tài khoản và bắt đầu trở thành nhà bán hàng với QuinShop
                                 </div>
                             </div>
                         </div>
@@ -632,10 +632,10 @@
                             </div>
                             <div class="new-item-content">
                                 <div class="new-item-text1">
-                                    Create Your Free Account
+                                    Iphone mới ra mắt
                                 </div>
                                 <div class="new-item-text2">
-                                    You can create a completely free account using either your Gmail or phone number.
+                                   Chọn ngay ưu đãi để sở hữu Iphone mới nhất .
                                 </div>
                             </div>
                         </div>
@@ -646,10 +646,10 @@
                             </div>
                             <div class="new-item-content">
                                 <div class="new-item-text1">
-                                    Create Your Free Account
+                                    Appe watch thế hệ mới
                                 </div>
                                 <div class="new-item-text2">
-                                    You can create a completely free account using either your Gmail or phone number.
+                                    Tính năng mới nhất từ apple Watch
                                 </div>
                             </div>
                         </div>
@@ -664,13 +664,13 @@
 
         <div class="signup-wrapper">
             <div class="sign-up-left">
-                <div class="sign-up-left-big">Sign up for Newsletter</div>
-                <div class="sign-up-left-small">...and reveive $20 coupon for first shopping and free delivery.</div>
+                <div class="sign-up-left-big">Đăng kí để nhận nhiều Voucher ưu đãi</div>
+                <div class="sign-up-left-small">...tặng mã giảm giá khi giới thiệu với vạn bè.</div>
             </div>
             <div class="sign-up-left">
-                <div class="bottom-btn-signup">
-                    Get Started
-                </div>
+                <a href="?mod=profile&act=register" class="bottom-btn-signup">
+                    Đăng kí ngay
+                </a>
             </div>
         </div>
     </div>

@@ -21,6 +21,7 @@ class Product
         $this->db_name = DB_NAME;
     }
     public function updateProduct(
+        $typePro ='New',
         $name = '',
         $description = '',
         $category_id = '',
@@ -28,12 +29,32 @@ class Product
         $origin = '',
         $brand = '',
         $price = '',
-        $percent_sale = '',
+        $percent_sale = 0,
         $image = '',
         $listImage = '',
         $type = '',
         $id = ''
     ) {
+        // validate
+        
+        if(empty($name)){
+            return new Response(false,'Vui lòng nhập tên sản phẩm!');
+        }elseif(empty($description)){
+            return new Response(false,'Vui lòng nhập mô tả sản phẩm!');
+
+        }elseif(empty($category_id)){
+            return new Response(false,'Vui lòng chọn danh mục cho sản phẩm!');
+
+        }elseif(empty($quantity)){
+            return new Response(false,'Vui lòng nhập số lượng sản phẩm sản phẩm!');
+
+        }elseif(empty($origin)){
+            return new Response(false,'Vui lòng nhập nguồn gốc sản phẩm!');
+
+        }elseif(empty($brand)){
+            return new Response(false,'Vui lòng nhập thương hiệu sản phẩm!');
+
+        }
         // edit
 
         if ($type == 'edit' && $id != '') {
@@ -67,12 +88,12 @@ class Product
             // get shop id
             $user_id = Session::get('id');
             $shop_id = $this->db->select("SELECT id FROM shop WHERE user_id ='$user_id'")->fetchColumn();
-
+            
             $slug = $this->tool->slug($name);
-            $fileResult = $this->tool->uploadFile($image, "/product/");
+            $fileResult = $this->tool->uploadFile($image, "product/");
             $query = "INSERT INTO product (product.name, product.description, product.category_id,product.status,
             product.quantity,product.brand,product.image_cover,origin,price,
-            percent_sale,slug,created_at,shop_id) VALUES
+            percent_sale,slug,created_at,shop_id,type) VALUES
                 (
                     '$name',
                     '$description',
@@ -86,7 +107,8 @@ class Product
                     '$percent_sale',
                     '$slug',
                     NOW(),
-                    '$shop_id'
+                    '$shop_id',
+                    '$typePro'
                 )
             ";
             $result = $this->db->insert($query);
@@ -102,7 +124,7 @@ class Product
             $totalFile = count($listImage['name']);
             $querylistImg = "";
             for ($i = 0; $i < $totalFile; $i++) {
-                $fileDir = "./assest/upload/" . '/product/';
+                $fileDir = "./assest/upload/" . 'product/';
                 if (isset ($listImage['error'][$i]) && $listImage['error'][$i] == 0) {
                     $fileName = basename($listImage['name'][$i]);
                     if (!file_exists($fileDir)) {
@@ -176,14 +198,15 @@ class Product
         $query = "";
         $total = 0;
         $idDelete = ' AND pr.is_deleted = 0 ';
+        $isActive = " AND pr.status = 'Activated' ";
         switch ($key) {
             case 'random':
                 $query = "SELECT pr.id, pr.brand, pr.name ,pr.category_id, pr.quantity , pr.image_cover, pr.origin, pr.price, pr.percent_sale, pr.slug,
-                 cate.name as nameCategory from product as pr INNER JOIN category as cate on pr.category_id = cate.id $idDelete ORDER BY RAND() LIMIT $limit";
+                 cate.name as nameCategory from product as pr INNER JOIN category as cate on pr.category_id = cate.id $idDelete $isActive ORDER BY RAND() LIMIT $limit";
                 break;
             case 'detail':
                 $query = "SELECT pr.*,
-                 cate.name as nameCategory from product as pr INNER JOIN category as cate on pr.category_id = cate.id  WHERE pr.id = $value $idDelete";
+                 cate.name as nameCategory from product as pr INNER JOIN category as cate on pr.category_id = cate.id  WHERE pr.id = $value $idDelete ";
                 break;
             case 'category':
                 $id_cate = $this->db->select("SELECT id from category where slug = '$value'")->fetchColumn();
@@ -200,6 +223,7 @@ class Product
                     INNER JOIN CTE ON t.parent_id = CTE.id
                     )
                 SELECT * FROM CTE)
+                AND product.status = 'Activated'
                 ");
 
                 $total = $sqlTotal->fetchColumn();
@@ -220,22 +244,23 @@ class Product
                         )
                     SELECT * FROM CTE) 
                 $idDelete  
+                $isActive
                 limit $currentPage,$limit";
                 break;
             case 'by_type':
-                $sqlTotal = $this->db->select("SELECT count(*) from product as pr where pr.type = '$value'");
+                $sqlTotal = $this->db->select("SELECT count(*) from product as pr where pr.type = '$value' $idDelete $isActive");
                 $total = $sqlTotal->fetchColumn();
                 $query = "SELECT pr.id, pr.brand, pr.name ,pr.category_id, pr.quantity, pr.image_cover, pr.origin, pr.price, pr.percent_sale, pr.slug,
                  cate.name as nameCategory from product as pr 
                  INNER JOIN category as cate on pr.category_id = cate.id  
-                 WHERE pr.type = '$value' $idDelete  
+                 WHERE pr.type = '$value' $idDelete  $isActive
                  limit $currentPage,$limit";
                 break;
             default:
-                $sqlTotal = $this->db->select("SELECT count(*) from product ");
+                $sqlTotal = $this->db->select("SELECT count(pr.*) from product pr $idDelete $isActive ");
                 $total = $sqlTotal->fetchColumn();
                 $query = "SELECT pr.id, pr.brand, pr.name ,pr.category_id, pr.quantity, pr.image_cover, pr.origin, pr.price, pr.percent_sale, pr.slug,
-                 cate.name as nameCategory from product as pr INNER JOIN category as cate on pr.category_id = cate.id  ORDER BY pr.created_at limit $currentPage,$limit";
+                 cate.name as nameCategory from product as pr INNER JOIN category as cate on pr.category_id = cate.id WHERE 1 $idDelete $isActive  ORDER BY pr.created_at limit $currentPage,$limit";
                 break;
         }
 
@@ -285,6 +310,7 @@ class Product
                 WHERE
                 $isDelete
                 $whereQuery
+                AND pr.status = 'Activated'
                 ");
 
             $total = $sqlTotal->fetchColumn();
@@ -294,9 +320,11 @@ class Product
                 cate.name as nameCategory from product as pr 
                 INNER JOIN category as cate on 
                 pr.category_id = cate.id  
-                WHERE 
+                WHERE
+
                 $isDelete  
                 $whereQuery
+                AND pr.status = 'Activated'
                 limit $currentPage,$limit";
 
             // ================================
@@ -308,6 +336,7 @@ class Product
                     WHERE
                     $isDelete
                     $whereQuery
+                    AND pr.status = 'Activated'
                     AND category_id IN 
                      (WITH RECURSIVE CTE AS (
                         SELECT id
@@ -343,6 +372,7 @@ class Product
                     AND
                     $isDelete  
                     $whereQuery
+                    AND pr.status = 'Activated'
                     limit $currentPage,$limit";
 
             // ================================
@@ -386,19 +416,21 @@ class Product
             return new Response(false, "Hành động không hợp lệ! Vui lòng thử lại!", "", "?mod=admin&act=manageproduct");
         }
     }
-    public function seachProduct($value = "")
+    public function seach_home($search = "")
     {
-        $resultSql = $this->db->select("SELECT p.id, p.name, p.brand,p.image FROM product AS p 
+        $products = $this->db->select("SELECT p.id,p.slug, p.name,p.origin, p.brand,p.image_cover FROM product AS p 
                 WHERE p.name 
-                LIKE '%$value%'
+                LIKE '%$search%'
+                AND p.is_deleted = 0
+                AND p.status = 'Activated'
                 ORDER BY p.created_at
-                LIMIT 10
-        ");
-        if ($resultSql == false) {
-            return new Response(false, "Fail", [], "");
-        }
-        $result = $resultSql->fetchAll();
-        return new Response(true, "Successcully", $result, "");
+                LIMIT 6
+        ")->fetchAll();
+        $shops = $this->db->select("SELECT uuid, name, icon FROM shop WHERE name like '%$search%'
+            AND is_deleted = 0 limit 3
+         ")->fetchAll();
+        
+        return new Response(true, "Successcully", ['products'=>$products,'shops'=>$shops], "");
 
     }
     public function dashboard()
@@ -505,7 +537,7 @@ class Product
         where r.product_id = '$product_id'")->fetchColumn();
     }
     public function get_product_by_id($product_id) {
-        return $this->db->select("SELECT product.name,product.image_cover,product.price,product.percent_sale,product.slug
+        return $this->db->select("SELECT product.name,product.image_cover,product.price,product.percent_sale,product.slug,
         product.brand,product.quantity,product.origin,product.id,
          category.name as name_cate 
         from product 

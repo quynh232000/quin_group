@@ -12,190 +12,13 @@ class Cart
     private $db;
     private $tool;
     private $response;
+    private $db_name;
 
     public function __construct()
     {
         $this->db = new Database();
         $this->tool = new Tool();
-    }
-    public function getCartUser($type = "")
-    {
-        $isLogin = Session::get("isLogin");
-        if ($isLogin != true) {
-            return new Response(false, "false", "", "");
-        }
-        $userId = Session::get("id");
-        if ($type == "checked") {
-            $type = "AND c.is_check = '1'";
-        } else {
-            $type = "";
-        }
-        $cartUser = $this->db->select("SELECT c.*,
-        p.name, p.image_cover, p.brand, p.price, p.quantity, p.origin
-        from cart AS c INNER JOIN product AS p  ON c.product_id = p.id WHERE c.user_id = '$userId'  $type");
-        if ($cartUser == false) {
-            return new Response(false, "false", "", "");
-        } else {
-            // $result = [];
-            // while ($row = mysqli_fetch_array($cartUser)) {
-            //     $result[] = $row;
-            // }
-            return new Response(true, "success", $cartUser->fetchAll(), "");
-        }
-    }
-    public function getCartView()
-    {
-        $isLogin = Session::get("isLogin");
-        if ($isLogin == true) {
-            //    get cart login
-            $userId = Session::get("id");
-            $checkCart = $this->db->select("SELECT * FROM cart WHERE user_id = '$userId' ");
-            if ($checkCart == false) {
-                return new Response(true, "success", ["total" => "0", "totalPrice" => 0], "");
-            }
-            $query = "select SUM(c.quantity * p.price) as totalPrice, SUM(c.quantity) as total from cart as c inner join product as p on c.product_id = p.id where c.user_id = '$userId' AND c.is_check = '1';";
-            $resultGetCart = $this->db->select($query);
-            if ($resultGetCart == false) {
-                return new Response(true, "success", ["total" => "0", "totalPrice" => 0], "");
-            } else {
-
-                $result = $resultGetCart->fetchAll()[0];
-
-                return new Response(true, "success", $result, "");
-            }
-        } else {
-            //  get cart not login
-
-        }
-
-    }
-    public function updateCart($key = "", $value = "", $count)
-    {
-        $isLogin = Session::get("isLogin");
-        if ($isLogin == false) {
-            return new Response(false, "Vui lòng đăng nhập!", "", "");
-        }
-        $userId = Session::get("id");
-        $carts = $this->db->select("SELECT * from cart  as c WHERE c.userId = '$userId' AND c.productId = '$value'");
-        $checkCart = count($carts->fetchAll()) > 0 ? true : false;
-        // return new Response(true, "Đã thêm sản phẩm vào giỏ hàng thành công!", "", "");
-        switch ($key) {
-            case 'minus':
-                if ($checkCart == false) {
-                    return new Response(false, "Thêm sản phẩm thất bại!", "", "");
-                } else {
-                    $updateCart = $this->db->update("UPDATE cart set count = count -1 where userId = '$userId' AND productId = '$value'");
-                    if ($updateCart == false) {
-                        return new Response(false, "Cập nhật giỏ hàng thất bại thất bại!", "", "");
-                    } else {
-                        return new Response(true, "Cập nhật giỏ hàng thành công!", "", "");
-                    }
-                }
-            case 'delete':
-                if ($checkCart == false) {
-                    return new Response(false, "Xóa sản phẩm thất bại!", "", "");
-                } else {
-                    $updateCart = $this->db->delete("DELETE FROM cart where userId = '$userId' AND productId = '$value'");
-                    if ($updateCart == false) {
-                        return new Response(false, "Cập nhật giỏ hàng thất bại thất bại!", "", "");
-                    } else {
-                        return new Response(true, "Cập nhật giỏ hàng thành công!", "", "");
-                    }
-                }
-            case 'is_check':
-                if ($checkCart == false) {
-                    return new Response(false, "Check sản phẩm thất bại!", "", "");
-                } else {
-                    $updateCart = $this->db->delete("UPDATE cart SET cart.is_check = '1' where userId = '$userId' AND productId = '$value'");
-                    if ($updateCart == false) {
-                        return new Response(false, "Cập nhật giỏ hàng thất bại thất bại!", "", "");
-                    } else {
-                        return new Response(true, "Cập nhật giỏ hàng thành công!", "", "");
-                    }
-                }
-            case 'uncheck':
-                if ($checkCart == false) {
-                    return new Response(false, "Uncheck sản phẩm thất bại!", "", "");
-                } else {
-                    $updateCart = $this->db->delete("UPDATE cart SET cart.is_check = '0' where userId = '$userId' AND productId = '$value'");
-                    if ($updateCart == false) {
-                        return new Response(false, "Cập nhật giỏ hàng thất bại thất bại!", "", "");
-                    } else {
-                        return new Response(true, "Cập nhật giỏ hàng thành công!", "", "");
-                    }
-                }
-
-            default:
-                if ($checkCart == false) {
-                    if (empty ($count)) {
-                        $createCart = $this->db->insert("INSERT INTO cart (userId,productId) VALUE ('$userId', '$value')");
-
-                    } else {
-                        $createCart = $this->db->insert("INSERT INTO cart (userId,productId,count) VALUE ('$userId', '$value', '$count')");
-                    }
-                    if ($createCart == false) {
-                        return new Response(false, "Thêm sản phẩm thất bại123!", "", "");
-                    } else {
-                        return new Response(true, "Đã thêm sản phẩm vào giỏ hàng thành công!", "", "");
-                    }
-                } else {
-                    if (empty ($count)) {
-                        $updateCart = $this->db->update("UPDATE cart set count = count +1 where userId = '$userId' AND productId = '$value'");
-                    } else {
-                        $updateCart = $this->db->update("UPDATE cart set count = count + $count where userId = '$userId' AND productId = '$value'");
-                    }
-                    if ($updateCart == false) {
-                        return new Response(false, "Thêm sản phẩm thất bại!", "", "");
-                    } else {
-                        return new Response(true, "Đã thêm sản phẩm vào giỏ hàng thành công!", "", "");
-                    }
-                }
-
-        }
-
-    }
-    public function checkout($nameReceiver, $city, $province, $addressDetail, $phone, $note, $subtotal, $total, $fee)
-    {
-        $isLogin = Session::get("isLogin");
-        if ($isLogin != true) {
-            return new Response(true, "success", ["total" => 0, "totalPrice" => 0], "");
-        }
-        $userId = Session::get("id");
-        $newAddress = $this->db->insert("INSERT INTO quin.address (userId, nameReceiver, addressDetail, phone, city, province) VALUES
-            ('$userId','$nameReceiver','$addressDetail','$phone','$city','$province');
-        ");
-        if ($newAddress == false) {
-            return new Response(false, "Create new address fail!", "", "");
-        }
-        $getIdAddress = $this->db->select("SELECT LAST_INSERT_ID();");
-        $idAddress = $getIdAddress->fetchColumn();
-        // creeate invoice
-        $invoince = $this->db->insert("INSERT INTO invoice (userId,subTotal,total,addressId,note,fee) VALUES
-            ('$userId','$subtotal','$total','$idAddress','$note','$fee');
-        ");
-        if ($invoince == false) {
-            return new Response(false, "Create new invoice fail!", "", "");
-        }
-        $getIdInvoice = $this->db->select("SELECT LAST_INSERT_ID();");
-        $idInvoice = $getIdInvoice->fetchColumn();
-        // create invoicedetail
-        $invoiceDetail = $this->db->insert("INSERT INTO invoicedetail (invoinceId,productId,quantity)
-            SELECT  '$idInvoice' ,c.productId, c.count FROM cart AS c
-            WHERE c.userId = '$userId' AND c.is_check = '1'
-        ");
-        if ($invoiceDetail == false) {
-            return new Response(false, "Create new invoice detail fail!", "", "");
-        }
-        $cartinfo = self::getCartUser("checked");
-        foreach ($cartinfo->result as $key => $value) {
-            $rowsId[] = $value["id"];
-        }
-        $rowsId = implode(",", $rowsId);
-        $deleteCart = $this->db->delete("DELETE FROM cart WHERE id IN  ($rowsId)");
-        if ($deleteCart == false) {
-            return new Response(false, "Delete cart detail fail!", "", "");
-        }
-        return new Response(true, "Đặt hàng thành công!", "", "?mod=profile&act=orderhistory");
+        $this->db_name = DB_NAME;
     }
     //======= new =======
 
@@ -235,8 +58,8 @@ class Cart
                     if ($checkCart == false) {
                         return new Response(false, "Thêm sản phẩm thất bại!", "", "");
                     } else {
-                        if($quantity >= $carts[0]['quantity'] ){
-                            return new Response(false,'Cập nhật giỏ hàng thất bại',self::get_cart_user_db($user_id));
+                        if ($quantity >= $carts[0]['quantity']) {
+                            return new Response(false, 'Cập nhật giỏ hàng thất bại', self::get_cart_user_db($user_id));
                         }
                         $this->db->update("UPDATE cart set quantity = quantity - $quantity where user_id  = '$user_id' AND product_id = '$product_id'");
                         return new Response(true, "Cập nhật giỏ hàng thành công!", self::get_cart_user_db($user_id), "");
@@ -245,26 +68,31 @@ class Cart
                     if ($checkCart == false) {
                         return new Response(false, "Xóa sản phẩm thất bại!", "", "");
                     } else {
-                        $updateCart = $this->db->delete("DELETE FROM cart where user_id  = '$user_id' AND product_id = '$product_id'");
+                         $this->db->delete("DELETE FROM cart where user_id  = '$user_id' AND product_id = '$product_id'");
                         return new Response(true, "Cập nhật giỏ hàng thành công!", self::get_cart_user_db($user_id), "");
                     }
                 case 'check':
                     if ($checkCart == false) {
                         return new Response(false, "Check sản phẩm thất bại!", "", "");
                     } else {
-                        $updateCart = $this->db->delete("UPDATE cart SET is_check = '1' where user_id  = '$user_id' AND product_id = '$product_id'");
+                       $this->db->delete("UPDATE cart SET is_check = '1' where user_id  = '$user_id' AND product_id = '$product_id'");
                         return new Response(true, "Cập nhật giỏ hàng thành công!", self::get_cart_user_db($user_id), "");
                     }
                 case 'uncheck':
                     if ($checkCart == false) {
                         return new Response(false, "Uncheck sản phẩm thất bại!", "", "");
                     } else {
-                        $updateCart = $this->db->delete("UPDATE cart SET is_check = '0' where user_id  = '$user_id' AND product_id = '$product_id'");
+                       $this->db->delete("UPDATE cart SET is_check = '0' where user_id  = '$user_id' AND product_id = '$product_id'");
                         return new Response(true, "Cập nhật giỏ hàng thành công!", self::get_cart_user_db($user_id), "");
                     }
                 case 'plus':
+                    $classProduct = new Product();
+                    $remaining_product = $classProduct->get_remain_quantity($product_id);
+                    if ($quantity > $remaining_product) {
+                        return new Response(false, "Số lượng sản phẩm không đủ cho bạn mua");
+                    }
                     if ($checkCart == false) {
-                         $this->db->insert("INSERT INTO cart (user_id, product_id, quantity) values ('$user_id', '$product_id','$quantity')");
+                        $this->db->insert("INSERT INTO cart (user_id, product_id, quantity) values ('$user_id', '$product_id','$quantity')");
                         return new Response(true, "Đã thêm sản phẩm vào giỏ hàng thành công!", self::get_cart_user_db($user_id), "");
                     } else {
                         $updateCart = $this->db->update("UPDATE cart set quantity = quantity + $quantity where user_id  = '$user_id' AND product_id = '$product_id'");
@@ -272,7 +100,7 @@ class Cart
                     }
                 default:
                     return new Response(false, "Thêm sản phẩm thất bại!", "", "");
-                   
+
             }
 
             // is login==============================
@@ -333,7 +161,7 @@ class Cart
 
             foreach ($cart as $key => $value) {
                 $count += $value['quantity'];
-                $total += $value['quantity']*$value['price'];
+                $total += $value['quantity'] * $value['price'];
             }
             return new Response(true, "success", self::get_cart_user_db($user_id), '', ['total' => $total, 'count' => $count]);
         } else {
@@ -351,6 +179,122 @@ class Cart
         }
     }
     //======= new =======
+    public function get_cart_user_buy($shop_uuid)
+    {
+        if (Session::get('isLogin') == false) {
+            return new Response(false, "Vui lòng đăng nhập!");
+        }
+        $user_id = Session::get('id');
+        $shop_id = $this->db->select("SELECT id from shop where uuid = '$shop_uuid'")->fetchColumn();
+        if (empty ($shop_id))
+            return new Response(false, 'Không tồn tại sản phẩm nào trong giỏ hàng');
+        $value = $this->db->select("SELECT product.name,product.image_cover,product.price,product.brand,product.origin,product.slug,cart.quantity
+            FROM cart
+            INNER JOIN product
+            ON product.id = cart.product_id
+            WHERE cart.user_id = '$user_id'
+            AND cart.is_check = 1
+            AND product.shop_id = '$shop_id'
+        ")->fetchAll();
+        $total = $this->db->select("SELECT sum(cart.quantity) as count, sum(product.price*cart.quantity) as total
+            FROM cart
+            INNER JOIN product
+            ON product.id = cart.product_id
+            WHERE cart.user_id = '$user_id'
+            AND cart.is_check = 1
+            AND product.shop_id = '$shop_id'
+        ")->fetch();
+        ;
+        return new Response(true, 'success', $value, "", ['total' => $total['total'], 'count' => $total['count'], 'shop_id' => $shop_id]);
+    }
+    public function check_out(
+        $shop_uuid,
+        $order_uuid,
+        $sub_total,
+        $total,
+        $shipping_fee = 0,
+        $delivery_address_id,
+        $payment_method,
+        $voucher_id = "",
+        $note = "",
+        $payment_status = ''
+    ) {
+        $isLogin = Session::get("isLogin");
+        if ($isLogin != true) {
+            return new Response(false, "Vui lòng đăng nhập", "", "");
+        }
+        $user_id = Session::get("id");
+        $shop_id = $this->db->select("SELECT id from shop WHERE uuid = '$shop_uuid'")->fetchColumn();
+        // create order
+        if (empty ($voucher_id)) {
+            $this->db->insert("INSERT INTO $this->db_name.order ( uuid, shipping_fee, sub_total, total, note, payment_status, delivery_address_id,  payment_method, user_id, shop_id)
+            VALUES ('$order_uuid','$shipping_fee','$sub_total','$total','$note','$payment_status','$delivery_address_id','$payment_method','$user_id','$shop_id')
+        ");
+        } else {
+            $this->db->insert("INSERT INTO $this->db_name.order ( uuid, shipping_fee, sub_total, total, note, payment_status, delivery_address_id, voucher_id, payment_method, user_id, shop_id)
+            VALUES ('$order_uuid','$shipping_fee','$sub_total','$total','$note','$payment_status','$delivery_address_id','$voucher_id','$payment_method','$user_id','$shop_id')
+        ");
+
+        }
+
+        $order_id = $this->db->get_lastest_id();
+
+        // create order detail
+        $this->db->insert("INSERT INTO order_detail (order_id, price, quantity,product_id)
+            (SELECT '$order_id', product.price, cart.quantity, product.id
+            FROM cart
+            INNER JOIN product
+            ON cart.product_id = product.id
+            WHERE product.shop_id = '$shop_id' 
+            AND cart.user_id = '$user_id'
+            AND cart.is_check = 1)
+        ");
+
+        //  update quantity product
+        $this->db->update("UPDATE product 
+            INNER JOIN cart
+            ON cart.product_id = product.id
+            SET product.quantity_sold = product.quantity_sold + cart.quantity
+            WHERE product.id in (
+                SELECT  product_id 
+                FROM cart
+                WHERE user_id = '$user_id'
+                AND is_check = 1
+                ) 
+        ");
+        // delete cart user
+        $this->db->delete("DELETE cart FROM cart
+        INNER JOIN product
+        ON product.id = cart.product_id
+            WHERE cart.user_id = '$user_id'
+            AND cart.is_check = 1 AND product.shop_id = '$shop_id'
+        ");
+
+        // is voucher create or update
+        if (!empty ($voucher_id)) {
+            $check_user_voucher = $this->db->select("SELECT count(*) FROM user_voucher WHERE user_id = '$user_id' AND voucher_id = '$voucher_id'")->fetchColumn() ?? 0;
+            if ($check_user_voucher > 0) {
+                $this->db->update("UPDATE user_voucher SET is_used = 1, use_at = CURRENT_TIMESTAMP() ,updated_at = CURRENT_TIMESTAMP() 
+                    WHERE user_id ='$user_id' AND voucher_id = '$voucher_id'
+                ");
+            } else {
+                $this->db->insert("INSERT INTO user_voucher (user_id,voucher_id,is_used,use_at)
+                    VALUES ('$user_id','$voucher_id',1,CURRENT_TIMESTAMP())
+                ");
+            }
+        }
+        // notification
+        $this->db->insert("INSERT INTO $this->db_name.notification 
+            ($this->db_name.notification.type, $this->db_name.notification.message,
+            $this->db_name.notification.data,$this->db_name.notification.user_id,$this->db_name.notification.shop_id)
+            VALUES ('NEW_ORDER','Bạn đã đặt đơn hàng thành công! Mã đơn hàng $order_id đang chờ xác nhận.','$order_uuid','$user_id','$shop_id')
+        ");
+        ;
+        // send mail=====
+        
+
+        return new Response(true, 'Đặt hàng thành công!', ['order_uuid' => $order_uuid,'order_id'=>$order_id]);
+    }
 
 
 }

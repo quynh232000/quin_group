@@ -203,10 +203,16 @@
 
 .shop-voucher-btn {
     background-color: var(--bg-yellow);
-    padding: 5px 20px;
+    padding: 5px 14px;
     font-size: 1.4rem;
     border-radius: 5px;
     color: var(--white);
+    overflow: hidden;
+    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    max-width: 80px;
 }
 
 .shop-voucher-btn:hover {
@@ -397,3 +403,4 @@
 .g-nav-item_down button {
     /* min-width: 120px; */
 }
+/* new */

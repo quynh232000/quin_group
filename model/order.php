@@ -18,28 +18,7 @@ class Order
         $this->db = new Database();
         $this->tool = new Tool();
     }
-    // public function getAllOrder($type = "")
-    // {
-    //     $isLogin = Session::get("isLogin");
-    //     if ($isLogin != true) {
-    //         return new Response(false, "false", "", "");
-    //     }
-    //     $userId = Session::get("id");
-
-    //     $oders = $this->db->select("SELECT de.*, i.status,i.total,i.subTotal ,i.id as 'sku', p.namePro,p.image,p.price
-    //         FROM invoicedetail as de
-    //         INNER JOIN invoice as i
-    //         ON de.invoinceId = i.id
-    //         INNER JOIN product as p
-    //         ON de.productId = p.id
-    //         WHERE i.userId = '$userId'
-    //     ");
-    //     if ($oders == false) {
-    //         return new Response(false, "false", "", "");
-    //     }
-
-    //     return new Response(true, "success", $oders->fetchAll(), "");
-    // }
+   
     public function get_order_user($type = "")
     {
         $isLogin = Session::get("isLogin");
@@ -64,7 +43,7 @@ class Order
     }
 
 
-    public function getAllInvoince($status = "", $page = 1, $limit = 5)
+    public function get_all_order($status = "", $page = 1, $limit = 5)
 
     {
         $isLogin = Session::get("isLogin");
@@ -93,7 +72,7 @@ class Order
             WHERE 1
             $statusWhere
             $shop_id
-            ORDER BY o.created_at
+            ORDER BY o.created_at DESC
             LIMIT $currentPage, $limit
 
         ");
@@ -129,68 +108,7 @@ class Order
         }
         return new Response(true, "Cập nhật đơn hàng thành công!", "", "");
     }
-    // get detail ordder
-    public function getOrderDetail($id)
-    {
-
-        $listOrder = $this->db->select("SELECT i.* ,p.name, p.price,c.name as nameCate,p.image_cover
-        FROM order_detail as i
-        INNER JOIN product as p
-        ON p.id = i.product_id 
-        INNER JOIN category as c
-        ON c.id = p.category_id
-        WHERE i.order_id = '$id'
-        ");
-
-
-        $infoInvoince = $this->db->select("SELECT i.*, u.full_name, u.email, u.avatar, a.name_receiver, a.address_detail, a.phone_number, a.district,a.province
-         FROM $this->db_name.order as i 
-         INNER JOIN $this->db_name.user as u
-         ON u.id = i.user_id
-         INNER JOIN $this->db_name.delivery_address as a
-         ON a.id = i.delivery_address_id
-         WHERE i.id = '$id'
-        ");
-
-
-        return new Response(true, "success!", ['listpro' => $listOrder->fetchAll(), 'invoice' => $infoInvoince->fetchAll()], "");
-    }
-
-    // update status Order
-    // public function update_status_order($id, $type)
-    // {
-    //     if ($id == "" || $type == "") {
-    //         return new Response(false, "Missing parammeter", "", "");
-    //     }
-    //     $status = "";
-    //     $data ="";
-    //     switch ($type) {
-    //         case 'accept':
-    //             $status = 'Delivering';
-    //             $idEncode = base64_encode($id);
-    //             $data="?mod=verify&act=order&token=$idEncode";
-    //             $this->db->insert("INSERT INTO link_order_ship (order_id,link)values($id,'$data')");
-
-    //             break;
-    //         case 'cancel':
-    //             $status = 'Cancelled';
-    //             break;
-    //         case 'confirm_delivered':
-    //             $status ='To Rate';
-    //             $this->db->update("UPDATE link_order_ship SET is_expired = 1");
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    //     $resultUpdate = $this->db->update("UPDATE $this->db_name.order 
-    //         SET status = '$status' 
-    //         WHERE id = '$id'
-    //     ");
-    //     if ($resultUpdate == false) {
-    //         return new Response(false, "Something wrong from server!", "", "");
-    //     }
-    //     return new Response(true, "Cập nhật đơn hàng thành công!", $data, "");
-    // }
+   
     // get link order
     public function get_link_order($id)  {
         $link ="";
@@ -202,8 +120,6 @@ class Order
     public function check_link_order($id) {
         return $this->db->select("SELECT is_expired FROM link_order_ship")->fetchColumn();
     }
-
-
 
     public function get_order_detail($id){
         if($id =="")  new Response(false, "Missing parameter", "", "", "");
@@ -274,23 +190,6 @@ class Order
     // update status Order
     public function update_status_order($id, $status)
     {
-        // $isLogin = Session::get("isLogin");
-        // if ($isLogin != true) {
-        //     return new Response(false, "Vui lòng đăng nhập", "", "");
-        // }
-
-        // if ($id == "" || $status == "") {
-        //     return new Response(false, "Missing parammeter", "", "");
-        // }
-        // if ($status == 'Confirmed') {
-        //     $idEncode = base64_encode($id);
-        //     $link = "?mod=verify&act=order&token=$idEncode";
-        //     $this->db->insert("INSERT INTO link_order_ship (order_id,link)values($id,'$link')");
-        // }
-        // if($status =='Completed'){
-        //     $this->db->update("UPDATE link_order_ship SET is_expired = 1 WHERE order_id = '$id'");
-
-        // }
        $this->db->update("UPDATE $this->db_name.order as o 
        SET o.status = '$status'
        WHERE id = '$id'
@@ -298,14 +197,114 @@ class Order
         $arrMessage = [
             'Processing'=>"Đã nhận đơn hàng đợi xử lý!",
             'Confirmed'=>"Đã xác nhận đơn hàng thành công!",
-            "On_Delivery"=>"Đã nhân đơn hàng đến nơi vận chuyển!",
-            'Completed'=>"Đơn hoàn thành đơn hàng!",
+            "On_Delivery"=>"Đã nhận đơn hàng đến nơi vận chuyển!",
+            'Completed'=>"Đã hoàn thành đơn hàng!",
             "Cancelled"=>"Đã hủy đơn hàng thành công!"
         ];
         return new Response(true, $arrMessage[$status], "", "");
     }
+    // ===========new
+    public function check_order_uuid($order_uuid,$status)  {
+        if(Session::get('isLogin')==false){
+            return new Response(false,'Vui lòng đăng nhập!');
+        }
+        $order = $this->db->select("SELECT * FROM $this->db_name.order WHERE uuid = '$order_uuid' AND status = 'New'")->fetchAll();
+        if(count($order)>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    // get order detail
+    public function get_order_user_detail($order_uuid)  {
+        if(Session::get('isLogin')==false){
+            return new Response(false,'Vui lòng đăng nhập!');
+        }
+        $user_id = Session::get(('id'));
+        $order_info = $this->db->select("SELECT o.*,
+            shop.name shop_name, shop.uuid shop_uuid, shop.icon shop_icon,
+            voucher.discount_amount,
+            da.name_receiver address_name,da.phone_number address_phone, pr.name address_province,
+            di.name address_district, wa.name address_ward
+            FROM  $this->db_name.order as o
+            INNER JOIN shop 
+            ON shop.id = o.shop_id
+            LEFT JOIN voucher 
+            ON voucher.id = o.voucher_id
+            INNER JOIN delivery_address as da
+            ON da.id = o.delivery_address_id
+
+            INNER JOIN address_province as pr
+            ON da.province = pr.matp
+            INNER JOIN address_district as di
+            ON da.district = di.maqh
+            INNER JOIN address_ward as wa
+            ON da.address_detail = wa.xaid
+
+
+            WHERE o.uuid = '$order_uuid'
+            AND o.user_id = '$user_id'
+        ")->fetchAll();
+        if(count($order_info)>0){
+            $order_id = $order_info[0]['id'];
+            $list_order = $this->db->select("SELECT order_detail.*,product.image_cover, product.name,product.origin,product.brand
+                FROM order_detail
+                INNER JOIN product 
+                ON product.id = order_detail.product_id
+                WHERE order_detail.order_id = '$order_id'
+            ")->fetchAll();
+            return new Response(true,'success',['order_info'=>$order_info[0],'list_order'=>$list_order]);
+        }else{
+            return new Response(false,'fail');
+        }
+    }
+    // cacel order
+    public function cancel_order_user($order_uuid) {
+        if(Session::get('isLogin')==false){
+            return new Response(false,'Vui lòng đăng nhập!');
+        }
+        $user_id = Session::get(('id')); 
+        $this->db->update("UPDATE $this->db_name.order set status = 'Cancelled' WHERE uuid = '$order_uuid' AND user_id = '$user_id'");
+        return new Response(true,'Đã hủy đơn hàng!');
+    }
+    // get list order user
+    public function get_list_user_order($status="",$seach="",$page=1,$limit = 5) {
+        if(Session::get('isLogin')==false){
+            return new Response(false,'Vui lòng đăng nhập!');
+        }
+        $user_id = Session::get(('id'));
+        $currentPage = ($page-1)*$limit; 
+        $queryWhere ='';
+        if(!empty($status)){
+            if($status == 'Processing'){
+                $queryWhere .= !empty($status) ? " AND (o.status = '$status' OR o.status = 'Confirmed' OR o.status = 'New') ":"";
+
+            }else{
+                $queryWhere .= !empty($status) ? " AND o.status = '$status' ":"";
+            }
+        }
+        $queryWhere .= !empty($seach) ? " AND (o.id LIKE '%$seach%' OR shop.name LIKE '%$seach%' ) ":"";
+
+        $orders = $this->db->select("SELECT  o.* 
+                FROM $this->db_name.order as o
+                INNER JOIN shop
+                ON shop.id = o.shop_id
+                WHERE o.user_id = '$user_id'
+                $queryWhere
+                ORDER BY o.updated_at DESC
+                limit $currentPage,$limit
+            ")->fetchAll();
+        // total
+        $total = $this->db->select("SELECT  count(*) 
+                FROM $this->db_name.order as o
+                INNER JOIN shop
+                ON shop.id = o.shop_id
+                WHERE o.user_id = '$user_id'
+                $queryWhere
+            ")->fetchColumn();
+        return new Response(true,'success',$orders,'',$total);
+    }
    
 }
-
 
 ?>

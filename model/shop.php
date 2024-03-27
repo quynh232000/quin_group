@@ -296,6 +296,7 @@ select p.shop_id shop_id, c.name category_name from product p cross join categor
 
     public function get_category_menus_shop($id)
     {
+        $this->db->select("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
         $query = "select p.brand, p.category_id, c.parent_id, c.name from product p left join category c on p.category_id = c.id where p.shop_id = '$id' and c.is_deleted = 0 group by c.name order by  p.quantity_sold desc ";
         $result = $this->db->select($query)->fetchAll();
         // $this->test($result);
@@ -356,7 +357,7 @@ select p.shop_id shop_id, c.name category_name from product p cross join categor
         where p.shop_id = '$id_shop' 
         and p.category_id in ($list_id_post) 
          $queryWhere
-        order by select (p.quantity_sold) desc $type_price limit $currentPage,$limit";
+        order by p.quantity_sold desc $type_price limit $currentPage,$limit";
 
 
 

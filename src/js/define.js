@@ -112,7 +112,9 @@ function format_price(element_parent="") {
   element_parent = element_parent? element_parent+" ":"";
   const prices =document.querySelectorAll(element_parent+".fm-price")
   prices.forEach(item=>{
-    item.textContent =VND.format(item.textContent)
+    if(!isNaN(item.textContent)){
+      item.textContent =VND.format(item.textContent)
+    }
   })
   
   

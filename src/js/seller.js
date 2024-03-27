@@ -166,16 +166,11 @@ function select_address(el, type) {
     data = JSON.parse(data);
 
     let html = data.map(item=>{
-      if(type =='district'){
-        console.log(item.maqh);
-      }else{
-        console.log(item.xaid);
-      }
       return `
         <option value="${(type == 'district')? item.maqh+"" : item.xaid+""}">${item.name}</option>
       `
     })
-    html.unshift('option value="">--Chọn--</option>')
+    html =['option value="">--Chọn--</option>',...html]
     $('#'+type).html(html.join(''))
     
   });

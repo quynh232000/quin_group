@@ -45,6 +45,7 @@ if (isset($act)) {
                 $type = isset($_GET['type']) ? $_GET['type'] : "create";
                 $id = isset($_GET['idPro']) ? $_GET['idPro'] : "";
                 $resAddPro = $classPro->updateProduct(
+                    $_POST['type'],
                     $_POST['name'],
                     $_POST["description"],
                     $_POST["category_id"],
@@ -63,7 +64,7 @@ if (isset($act)) {
                 if ($resAddPro->status) {
                     echo '<div id="toast" mes-type="success" mes-title="Thành công!" mes-text="' . $resAddPro->message . '"></div>';
                 } else {
-                    echo '<div id="toast" mes-type="error" mes-title="Thành công!" mes-text="' . $resAddPro->message . '"></div>';
+                    echo '<div id="toast" mes-type="error" mes-title="Thất bại!" mes-text="' . $resAddPro->message . '"></div>';
                 }
             }
             if (isset($_GET['type']) && $_GET['idPro']) {
@@ -71,6 +72,8 @@ if (isset($act)) {
                 if (isset($infoPro) && $infoPro->status == true) {
                     $productInfo = $infoPro->result;
                     $viewTitle = $productInfo[0]['name'];
+                    // print_r($product_info);
+                    // return;
                 }
             }
             include_once 'view/inc/headerAdmin.php';
@@ -112,45 +115,7 @@ if (isset($act)) {
             include_once 'view/seller/manageproduct.php';
             include_once 'view/inc/footer.php';
             break;
-        case 'managecategory':
-            $viewTitle = 'Manage category';
-            $cate = new Category();
-            if (isset($_POST['create-cate-btn']) && $_POST['create-cate-btn']) {
-                $createCate = $cate->createNewCate($_POST['name'], $_FILES['image']);
-            }
-            if (
-                isset($_POST['create-cate-btn']) &&
-                $_POST['create-cate-btn'] &&
-                (isset($_GET['type']) && isset($_GET['idCate'])) &&
-                ($_GET['type']) && $_GET['idCate'] &&
-                $_GET['type'] == "edit"
-            ) {
-                $createCate = $cate->createNewCate($_POST['name'], $_FILES['image'], "update", $_GET['idCate']);
-            }
-            if ((isset($_GET['type']) && isset($_GET['idCate'])) && ($_GET['type']) && $_GET['idCate']) {
-                $type = $_GET['type'];
-                $idCate = $_GET['idCate'];
-                if ($type == 'delete') {
-                    $resultDeleteCate = $cate->deleteCate($idCate);
-                }
-                if ($type == 'edit') {
-                    $resultGetInfo = $cate->getInfoCate($idCate);
-                }
-            }
-            if (isset($resultDeleteCate)) {
-                if ($resultDeleteCate->status == true) {
-                    echo '<div id="toast" mes-type="success" mes-title="Thành công!" mes-text="' . $resultDeleteCate->message . '"></div>';
-                } else {
-                    echo '<div id="toast" mes-type="error" mes-title="Thất bại!" mes-text="' . $resultDeleteCate->message . '"></div>';
-
-                }
-            }
-            $allCategory = $cate->getAllCate();
-            include_once 'view/inc/headerAdmin.php';
-            include_once 'view/inc/sidebarAdmin.php';
-            include_once 'view/seller/managecategory.php';
-            include_once 'view/inc/footer.php';
-            break;
+        
         case 'manageorders':
             $limit = 20;
             $param = "";
@@ -172,7 +137,7 @@ if (isset($act)) {
             if (isset($_GET['page']) && $_GET['page']) {
                 $page = $_GET['page'];
             }
-            $resultOrder = $classOrder->getAllInvoince($status, $page, $limit);
+            $resultOrder = $classOrder->get_all_order($status, $page, $limit);
 
 
             $viewTitle = 'Manage orders';
@@ -181,78 +146,7 @@ if (isset($act)) {
             include_once 'view/seller/manageorders.php';
             include_once 'view/inc/footer.php';
             break;
-        case 'detailorder':
-            $classOrder = new Order();
-            $resultOrder = $classOrder->getAllInvoince();
-
-            if (isset($_GET['id']) && $_GET['id']) {
-                $getInvoiceDetail = $classOrder->getOrderDetail($_GET['id']);
-                if ($getInvoiceDetail->status == true) {
-                    $data = $getInvoiceDetail->result;
-                } else {
-                    // header('location: ?mod=admin&act=manageorders');
-                }
-            } else {
-                // header('location: ?mod=admin&act=manageorders');
-            }
-            $viewTitle = 'Manage orders';
-            include_once 'view/inc/headerAdmin.php';
-            include_once 'view/inc/sidebarAdmin.php';
-            include_once 'view/seller/orderdetail.php';
-            include_once 'view/inc/footer.php';
-            break;
-        case 'manageuser':
-            $classUser = new User();
-            $allUser = $classUser->getAllUser();
-            if (
-                isset($_GET['type']) &&
-                isset($_GET['userid']) &&
-                $_GET['type'] != ""
-            ) {
-                $type = $_GET['type'];
-                if ($type == 'edit') {
-                    $userInfo = $classUser->getUserById($_GET['userid']);
-
-                } else if ($type == 'delete') {
-                    $deleteUser = $classUser->deleteUser($_GET['userid']);
-                    if (isset($deleteUser)) {
-                        if ($deleteUser->status == true) {
-                            echo '<div id="toast" mes-type="success" mes-title="Thành công!" mes-text="' . 'Xóa tài khoản thành công' . '"></div>';
-
-                        } else {
-                            echo '<div id="toast" mes-type="error" mes-title="Thất bại!" mes-text="' . 'Bạn không có quyền với hàng động này!' . '"></div>';
-                        }
-                        echo ' <script>
-                                    setTimeout(function() {
-                                        window.location.href="?mod=admin&act=manageuser";
-                                    }, 2000);
-                                </script>';
-                    }
-                }
-            }
-
-            if (isset($_POST['fullName']) && $_POST['fullName'] && isset($_GET['userid'])) {
-                $updateUser = $classUser->updateUser($_POST["fullName"], $_FILES['avatar'], $_POST["phone"], $_POST["email"], $_POST["role"], $_GET['userid']);
-                if (isset($updateUser)) {
-                    if ($updateUser->status) {
-                        echo '<div id="toast" mes-type="success" mes-title="Thành công!" mes-text="' . $updateUser->message . '"></div>';
-                        echo ' <script>
-                                setTimeout(function() {
-                                    window.location.href="' . $updateUser->redirect . '";
-                                }, 2000);
-                            </script>';
-                    } else {
-                        echo '<div id="toast" mes-type="error" mes-title="Thất bại!" mes-text="' . $updateUser->message . '"></div>';
-                    }
-                }
-            }
-
-            $viewTitle = 'Quản lý user';
-            include_once 'view/inc/headerAdmin.php';
-            include_once 'view/inc/sidebarAdmin.php';
-            include_once 'view/seller/manageuser.php';
-            include_once 'view/inc/footer.php';
-            break;
+        
         case 'setting':
             $class_address = new Address();
             if (isset($_POST['name']) && $_POST['name']) {
