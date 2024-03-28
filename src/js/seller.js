@@ -73,18 +73,16 @@ function selectCategory(_this, id) {
           .map((item) => {
             if (item?.children?.length > 0) {
               return `
-                <div class="modal-cate-item" onclick="selectCategory(this,${
-                  item.id
+                <div class="modal-cate-item" onclick="selectCategory(this,${item.id
                 })"
                     idCate="${item.id}" checkLast="has" >
                     <p>
                         ${item.name}
                     </p>
-                    ${
-                      item?.children?.length > 0
-                        ? `<i class="fa-solid fa-chevron-right"></i>`
-                        : ""
-                    }
+                    ${item?.children?.length > 0
+                  ? `<i class="fa-solid fa-chevron-right"></i>`
+                  : ""
+                }
                 </div>
               `;
             } else {
@@ -122,61 +120,39 @@ function selectCategory(_this, id) {
   $(".modal-cate-selected").html(htmlCateSelect);
 
 }
-// accept order
-function update_status_order(id,status) {
-  console.log(status);
-  return
-  $.ajax({
-    url: `?mod=request&act=update_status_cate&id=${id}&type=accept`,
-  }).done((data) => {
-    data = JSON.parse(data);
-    if(data.status){
-      window.location.href ="?mod=seller&act=manageorders#order"+id;
-    }
-  });
-  
-}
-// cancel order
-function order_cancel(id) {
-  console.log(id);
-}
-// address
-function select_address(el,type) {
-  console.log(el.value);
-  console.log(type);
-  const id = el.value
 
-}
+
+
 // accept order
+
 function update_status_order(id,status) {
 
- 
   $.ajax({
-    url: `?mod=request&act=update_status_order&id=${id}&status=${status}` ,
+    url: `?mod=request&act=update_status_order&id=${id}&status=${status}`,
   }).done((data) => {
     data = JSON.parse(data);
     console.log(data);
     if (data) {
-      toastjs(data.message,data.status)
-      setTimeout(()=>{
+      toastjs(data.message, data.status)
+      setTimeout(() => {
         window.location.reload();
-      },2500)
+      }, 2500)
     }
   });
 }
 // update status order all
 function update_status_order_all(status) {
-  if(status){
+  if (status) {
     $.ajax({
-      url: `?mod=request&act=update_status_order_all&status=${status}` ,
+      url: `?mod=request&act=update_status_order_all&status=${status}`,
     }).done((data) => {
       data = JSON.parse(data);
       console.log(data);
       if (data) {
-        toastjs(data.message,data.status)
-        setTimeout(()=>{
+        toastjs(data.message, data.status)
+        setTimeout(() => {
           window.location.reload();
-        },2500)
+        }, 2500)
       }
     });
   }
@@ -184,10 +160,6 @@ function update_status_order_all(status) {
 
 // address
 function select_address(el, type) {
-  console.log(el.value);
-  console.log(type);
-  const id = el.value;
-
   $.ajax({
     url: `?mod=request&act=get_address&id=${el.value}&type=${type}`,
   }).done((data) => {
@@ -195,29 +167,16 @@ function select_address(el, type) {
 
     let html = data.map(item=>{
       return `
-        <option value="${type == 'province'? item.matp : item.maqh}">${item.name}</option>
+        <option value="${(type == 'district')? item.maqh+"" : item.xaid+""}">${item.name}</option>
       `
     })
-    html.unshift('option value="">--Chọn--</option>')
-    $('#'+type).html(html)
+    html =['option value="">--Chọn--</option>',...html]
+    $('#'+type).html(html.join(''))
     
-  });
-  
-
-    let html = data.map((item) => {
-      return `
-        <option value="${type == "province" ? item.matp : item.maqh}">${
-        item.name
-      }</option>
-      `;
-    });
-    html.unshift('option value="">--Chọn--</option>');
-    $("#" + type).html(html);
   });
 }
 // get param 
 function get_param(paramName) {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get(paramName);
-
 }

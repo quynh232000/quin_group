@@ -2,12 +2,16 @@
 // session_start();
 include_once "lib/session.php";
 // Session::checkSession();
+include_once "model/cart.php";
+
+$classCart = new Cart();
+$cart_user = $classCart->get_cart_user();
 include_once 'view/inc/header.php';
 ?>
 <link rel="stylesheet" href="./src/css/error.css">
 <section class="page_404">
-    <div class="container">
-        <div class="row">
+    <div class="">
+        <div class="">
             <div class="col-sm-12 ">
                 <div class="col-sm-10 col-sm-offset-1  text-center">
                     <div class="four_zero_four_bg">

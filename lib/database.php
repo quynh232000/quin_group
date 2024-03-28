@@ -5,14 +5,19 @@ include "./config/config.php";
 class Database
 {
 
-    //     public $host   = DB_HOST;
-    // public $user   = DB_USER;
-    // public $pass   = DB_PASS;
-    // public $dbname = DB_NAME;
-    public $host = "localhost:3308";
-    public $user = "root";
-    public $pass = "12345678";
-    public $dbname = "quingroup";
+    public $host   = DB_HOST;
+    public $user   = DB_USER;
+    public $pass   = DB_PASS;
+    public $dbname = DB_NAME;
+
+//  public $host = "localhost";
+    // public $user = "quingroup";
+    // public $pass = "Quingroup123.";
+    // public $dbname = "quingroup";
+
+    // public $user = "root";
+    // public $pass = "123456";
+    // public $dbname = "quingroup";
 
 
 
@@ -42,6 +47,7 @@ class Database
         $stmt = $this->link->prepare($query);
         $stmt->execute();
         // $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
         return $stmt;
     }
 
@@ -79,6 +85,9 @@ class Database
     public function delete($query)
     {
         return $this->link->exec($query);
+    }
+    public function get_lastest_id() {
+        return $this->link->lastInsertId();
     }
 }
 

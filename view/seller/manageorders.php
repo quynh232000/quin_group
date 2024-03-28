@@ -148,7 +148,7 @@
                                     <div class="s-orders-input">
                                         <input type="checkbox" class="order-input-check" orderid="<?= $value['id'] ?>">
                                         <div class="s-orders-view">
-                                            <a href="?mod=seller&act=detailorder&id=<?= $value['id'] ?>"
+                                            <a href="?mod=seller&act=detailorder&uuid=<?= $value['uuid'] ?>"
                                                 class="s-orders-view-wrapper">
                                                 <i class="fa-solid fa-eye"></i>
                                                 <span>View</span>
@@ -156,10 +156,10 @@
                                         </div>
                                     </div>
                                     <div class="s-orders-time">
-                                        <?= explode(" ", $value['created_at'])[0] ?>
+                                        <?=$value['created_at'] ?>
                                     </div>
 
-                                    <div class="s-orders-code">#000
+                                    <div class="s-orders-code">
                                         <?= $value['id'] ?>
                                     </div>
 

@@ -16,8 +16,7 @@
             <div class="s-profile-img">
 
                 <!-- <img style="margin-left:10px" src="https://rewind.com/wp-content/uploads/2021/06/RWD_Why-Is-My-Shopify-Store-Not-Working_Blog_v1_Header.png" -->
-                <img style="margin-left:10px" src="./assest/upload/<?= $shop_info->result['icon'] ?? '' ?>" alt=""
-                    id="imagePreview">
+                <img style="margin-left:10px" src="./assest/upload/<?= $shop_info->result['icon'] ?? '' ?>" alt="" id="imagePreview">
             </div>
             <input type="file" hidden id="img-shop" name="icon">
             <label class="s-profile-img-upload" for="img-shop">
@@ -28,11 +27,11 @@
                 const imageInput = document.getElementById('img-shop');
                 const imagePreview = document.getElementById('imagePreview');
 
-                imageInput.addEventListener('change', function () {
+                imageInput.addEventListener('change', function() {
                     const file = this.files[0];
                     if (file) {
                         const reader = new FileReader();
-                        reader.onload = function (e) {
+                        reader.onload = function(e) {
                             imagePreview.src = e.target.result;
                         }
                         reader.readAsDataURL(file);
@@ -66,8 +65,7 @@
             <div class="s-profile-group">
                 <div class="s-profile-label">Số điện thoại</div>
                 <div class="s-profile-input">
-                    <input type="text" placeholder="+84..." name="phone_number"
-                        value="<?= $shop_info->result['phone_number'] ?? '' ?>">
+                    <input type="text" placeholder="+84..." name="phone_number" value="<?= $shop_info->result['phone_number'] ?? '' ?>">
                 </div>
             </div>
             <div class="s-profile-group">
@@ -97,8 +95,6 @@
                             echo '<option value="">--Chọn</option>';
                         }
                         ?>
-
-
                     </select>
                 </div>
                 <!-- <input type="text" placeholder="Aa..." name="address"
@@ -129,54 +125,50 @@
             <div class="s-profile-group ">
                 <div class="s-profile-label">Kv miền Bắc</div>
                 <div class="s-profile-input shop-ship-group">
-                    <input type="number" placeholder="..." name="ship_north"
-                        value="<?= $shop_ship->result['ship_north'] ?? '' ?>">
+                    <input type="number" placeholder="..." name="ship_north" value="<?= $shop_ship->result['ship_north'] ?? '' ?>">
                 </div>
                 VND
-                <?php 
-                    if(isset($shop_ship->result['ship_north']) && ($shop_ship->result['ship_north'] ==0)){
-                        echo '<div class="shop-ship-free">Miễn phí vận chuyển</div>';
-                    }
+                <?php
+                if (isset($shop_ship->result['ship_north']) && ($shop_ship->result['ship_north'] == 0)) {
+                    echo '<div class="shop-ship-free">Miễn phí vận chuyển</div>';
+                }
                 ?>
             </div>
             <div class="s-profile-group ">
                 <div class="s-profile-label">Kv miền Trung Bắc</div>
                 <div class="s-profile-input shop-ship-group">
-                    <input type="number" placeholder="..." name="ship_mid_north"
-                        value="<?= $shop_ship->result['ship_mid_north'] ?? '' ?>">
+                    <input type="number" placeholder="..." name="ship_mid_north" value="<?= $shop_ship->result['ship_mid_north'] ?? '' ?>">
                 </div>
                 VND
-                <?php 
-                    if(isset($shop_ship->result['ship_mid_north']) && ($shop_ship->result['ship_mid_north'] ==0)){
-                        echo '<div class="shop-ship-free">Miễn phí vận chuyển</div>';
-                    }
+                <?php
+                if (isset($shop_ship->result['ship_mid_north']) && ($shop_ship->result['ship_mid_north'] == 0)) {
+                    echo '<div class="shop-ship-free">Miễn phí vận chuyển</div>';
+                }
                 ?>
             </div>
             <div class="s-profile-group ">
                 <div class="s-profile-label">Kv miền Trung Nam</div>
                 <div class="s-profile-input shop-ship-group">
-                    <input type="number" placeholder="..." name="ship_mid_south"
-                        value="<?= $shop_ship->result['ship_mid_south'] ?? '' ?>">
+                    <input type="number" placeholder="..." name="ship_mid_south" value="<?= $shop_ship->result['ship_mid_south'] ?? '' ?>">
                 </div>
                 VND
-                <?php 
-                    if(isset($shop_ship->result['ship_mid_south']) && ($shop_ship->result['ship_mid_south'] ==0)){
-                        echo '<div class="shop-ship-free">Miễn phí vận chuyển</div>';
-                    }
+                <?php
+                if (isset($shop_ship->result['ship_mid_south']) && ($shop_ship->result['ship_mid_south'] == 0)) {
+                    echo '<div class="shop-ship-free">Miễn phí vận chuyển</div>';
+                }
                 ?>
-                
+
             </div>
             <div class="s-profile-group ">
                 <div class="s-profile-label">Kv miền Nam</div>
                 <div class="s-profile-input shop-ship-group">
-                    <input type="number" placeholder="..." name="ship_south"
-                        value="<?= $shop_ship->result['ship_south'] ?? '' ?>">
+                    <input type="number" placeholder="..." name="ship_south" value="<?= $shop_ship->result['ship_south'] ?? '' ?>">
                 </div>
                 VND
-                <?php 
-                    if(isset($shop_ship->result['ship_south']) && ($shop_ship->result['ship_south'] ==0)){
-                        echo '<div class="shop-ship-free">Miễn phí vận chuyển</div>';
-                    }
+                <?php
+                if (isset($shop_ship->result['ship_south']) && ($shop_ship->result['ship_south'] == 0)) {
+                    echo '<div class="shop-ship-free">Miễn phí vận chuyển</div>';
+                }
                 ?>
             </div>
 

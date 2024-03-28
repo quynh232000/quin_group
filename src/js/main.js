@@ -190,7 +190,7 @@ function Validator(selector, options) {
             }
             return values;
           },
-          {});
+            {});
           options.onSubmit(formValues);
         }
       }
@@ -205,7 +205,7 @@ function formartPrice(number) {
   return VND.format(number);
 }
 
-// -----------------------------------------------------admdin------------------------------//
+// -----------------------------------------------------seller------------------------------//
 function handleCreateProduct() {
   let num = 0;
 
@@ -225,7 +225,7 @@ function handleCreateProduct() {
       console.log($(this).attr("checkLast"));
     });
   });
-  $(".modal-cate-item").click(function () {});
+  $(".modal-cate-item").click(function () { });
   //add attribute
   $(".create-btn-add-attibute").click(function () {
     const attrHtml = `<div class="attr-item">
@@ -324,20 +324,6 @@ $().ready(function () {
     handleCreateProduct();
   }
 
-  if ($(".delivery-main").length) {
-    $(".shop-delivery-top-add").click(function () {
-      $(".modal-delivery").css("display", "flex");
-    });
-    $(".m-deli-btn-close").click(function () {
-      $(".modal-delivery").css("display", "none");
-    });
-    $(".modal-delivery").click(function () {
-      $(".modal-delivery").css("display", "none");
-    });
-    $(".modal-delivery-wrapper").click(function (e) {
-      e.stopPropagation();
-    });
-  }
   if ($(".detail-img-item img").length) {
     $(".detail-img-item img").each(function () {
       $(this).mouseover(() => {
@@ -355,85 +341,6 @@ $().ready(function () {
       }
     }
   });
-  // add to cart
-  $(".product-btn").click(function () {
-    const id = $(this).attr("idpro");
-    const price = $(this).attr("data-price");
-    if (id) {
-      $.ajax({
-        url: "?mod=request&act=cart&type=addcart&idpro=" + id,
-      }).done((data) => {
-        data = JSON.parse(data);
-        toastjs(data.message, data.status);
-        if (data.status) {
-          let newCount = +$(".view-total-count").attr("view-total-count") + 1;
-          $(".view-total-count").attr("view-total-count", newCount);
-          $(".view-total-count").text(newCount + "");
-          let newPrice =
-            +price + +$(".view-total-cart").attr("view-total-cart");
-          $(".view-total-cart").attr("view-total-cart", newPrice);
-          $(".view-total-cart").text(formartPrice(newPrice));
-
-          setTimeout(() => {
-            location.href = "?mod=page&act=cart";
-          }, 2000);
-        }
-      });
-    }
-  });
-  // add to cart detail
-  $(".detail-btn-add").click(function () {
-    const count = $(".detail-input-quantity").val();
-    const price = $(this).attr("data-price");
-    const idpro = $(this).attr("idpro");
-    $.ajax({
-      url:
-        "?mod=request&act=cart&type=add" +
-        "&idpro=" +
-        idpro +
-        "&count=" +
-        count,
-    }).done((data) => {
-      data = JSON.parse(data);
-      toastjs(data.message, data.status);
-      if (data.status) {
-        const currentCountView =
-          +$(".view-total-count").attr("view-total-count");
-        const currentTotalView = +$(".view-total-cart").attr("view-total-cart");
-        $(".view-total-count").attr(
-          "view-total-count",
-          currentCountView + +count
-        );
-        $(".view-total-count").text(currentCountView + +count + "");
-        $(".view-total-cart").attr(
-          "view-total-cart",
-          currentTotalView + +price * +count
-        );
-        $(".view-total-cart").text(
-          formartPrice(+currentTotalView + +price * +count)
-        );
-      }
-    });
-  });
-  // update cart
-  $(".cart-btn-action").click(function () {
-    const type = $(this).attr("type-btn");
-    const item = $(this).closest(".cart-item");
-    const idpro = item.attr("idpro");
-    const pricepro = item.attr("pricepro");
-    const countpro = item.attr("countpro");
-    updateViewCart(item, type, countpro, pricepro, idpro);
-  });
-  // check box cart
-  $(".item-cart-checkbox").change(function () {
-    const item = $(this).closest(".cart-item");
-    const idpro = item.attr("idpro");
-    const pricepro = item.attr("pricepro");
-    const countpro = item.attr("countpro");
-    const type = $(this).is(":checked") ? "check" : "uncheck";
-    console.log(type);
-    updateViewCart(item, type, countpro, pricepro, idpro);
-  });
   $(".search-input-product").focus(function (e) {
     $(".header__search-history ").toggle();
   });
@@ -447,76 +354,11 @@ $().ready(function () {
     const files = $(this).prop("files");
     $(".cate-img-preview").attr("src", URL.createObjectURL(files[0]));
   });
-  // update order admin
-  $(".s-orders-option-item").click(function () {
-    const type = $(this).attr("type");
-    let listId = [];
-    $(".order-input-check").each(function () {
-      if ($(this).is(":checked")) {
-        const idorder = $(this).attr("orderid");
-        listId.push(idorder);
-      }
-    });
-    if (type && listId) {
-      const data = {
-        status: type,
-        listId: listId,
-      };
-      $.ajax({
-        url: "?mod=request&act=updateinvoice",
-        type: "POST",
-        data: JSON.stringify(data),
-        cache: false,
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-      }).done((data) => {
-        toastjs(data.message);
-        if (data.status) {
-          setTimeout(() => {
-            location.reload();
-          }, 2000);
-        }
-      });
-    }
-  });
+  
   // show more desciption
   $(".detail-des-btn-more").click(function () {
     $(".detail-description-body").css("height", "fit-content");
     $(".detail-des-btn-more-wrapper").css("display", "none");
-  });
-  // submit comment
-  $("#form-cmt").on("submit", function (e) {
-    e.preventDefault();
-    const productId = $('#form-cmt input[name="productId"]').val();
-    const content = $('#form-cmt textarea[name="content"]').val();
-    const data = {
-      productId,
-      content,
-    };
-    $.ajax({
-      url: "?mod=request&act=createcomment",
-      type: "POST",
-      data: JSON.stringify(data),
-      cache: false,
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-    }).done((res) => {
-      if (res.status == false) {
-        toastjs(res.message, false);
-      } else {
-        location.href =
-          "?mod=page&act=detail&id=" +
-          productId +
-          "&type=cmt-" +
-          res.result +
-          "#show-list-cmt";
-      }
-    });
-  });
-  // delete comment
-  $(".cmt-show-delete").click(function () {
-    const idCmt = $(this).attr("cmt-id");
-    console.log(12312, idCmt);
   });
   // show product suggesstion
   $(".suggestion-nav-item").click(function () {
@@ -538,9 +380,8 @@ $().ready(function () {
             return `
             <div class="product">
             <div class="product-wrapper">
-                <a href="?mod=page&act=detail&id=${
-                  item.id
-                }" class="product-info">
+                <a href="?mod=page&act=detail&id=${item.id
+              }" class="product-info">
                     <div class="product-sale-label">
                         <svg width="48" height="50" viewBox="0 0 48 50" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -568,17 +409,17 @@ $().ready(function () {
                             </defs>
                         </svg>
                         <span>-%
-                           ${item.salePercent}
+                           ${item.percent_sale}
                         </span>
                     </div>
                     <div class="product-img">
-                        <img src="./assest/upload/${item.image}" alt="">
+                        <img src="./assest/upload/${item.image_cover}" alt="">
                     </div>
                     <div class="product-brand">
                         ${item.brand}
                     </div>
                     <div class="product-name">
-                        ${item.namePro}
+                        ${item.name}
                     </div>
                     <div class="product-stars">
                         <i class="fa-solid fa-star"></i>
@@ -593,14 +434,16 @@ $().ready(function () {
                         ${item.price}
                         </div>
                         <del class="product-price-old fm-price">
-                        ${item.price * (1 + item.salePercent / 100)}
+                        ${item.price * (1 + item.percent_sale / 100)}
                            
                         </del>
                     </div>
                 </a>
-                <div class="product-btn" idpro="${item.id}" data-price= "${
+
+                <div onclick="update_cart_user('add','${item.id}',1)" class="product-btn" idpro="${item.id}" data-price= "${
               item.price
             }">
+
                     <i class="fa-solid fa-cart-plus"></i>
                     <span>Thêm giỏ hàng</span>
                 </div>
@@ -620,7 +463,10 @@ $().ready(function () {
         });
         const prices = document.querySelectorAll(".fm-price");
         prices.forEach((item) => {
-          item.textContent = VND.format(item.textContent);
+          if(!isNaN(item.textContent)){
+            item.textContent = VND.format(item.textContent);
+
+          }
         });
       }
     });
@@ -652,246 +498,43 @@ $().ready(function () {
       }
     });
   }
-  // =========================================================================================================================//
-  // ========================Seller===================//
-  // ================================================//
 
-  // get address
+  // btn add cart user in detail page
+  $('.detail_btn_add').click(function () {
+    const type = $(this).attr('data_type')
+    const id = $(this).attr('product_id')
+    const quantity = $('#input_quantity').val()
+    if(isNaN(quantity)){
+      toastjs("Số lượng phải là số",false)
+      return
+    }
+    if(quantity >20){
+      toastjs("Vui lòng liên hệ với cửa hàng để nhập giá sỉ!")
+      return
+    }
+    if(quantity <=0){
+      toastjs("Số lượng sản phẩm không hợp lệ. Vui lòng chọn lại!",false)
+      return
+    }
+    if(type =='add_cart'){
+      update_cart_user('plus',id,quantity)
+      return
+    }
+    if(type =='buy_now'){
+      update_cart_user('plus',id,quantity)
+      setTimeout(() => {
+        window.location.href = "?mod=page&act=cart"
+      }, 2500);
+    }
+  })
+  
   
 
-  // ================================================//
-  // =====================Seller=====================//
   // ==========================================================================================================================//
 });
 // =================funtions====================//
-// select category add product
-
-function buildCategoryTree(categories, parentId = 0) {
-  let branch = [];
-  categories.forEach((category) => {
-    if (category.parent_id == parentId) {
-      let children = buildCategoryTree(categories, category.id);
-      if (children.length > 0) {
-        category.children = children;
-      }
-      branch.push(category);
-    }
-  });
-
-  return branch;
-}
-function fetchCategory(id, callBack) {
-  $.ajax({
-    url: "?mod=request&act=get-all-category&idCate=" + id,
-  }).done((data) => {
-    data = JSON.parse(data);
-    renderCategory(data,callBack)
-  });
-}
-function renderCategory(data, callBack) {
-  if (data.length > 0) {
-    const html = data
-      .map((item) => {
-        return `
-            <div class="modal-cate-item"
-                idCate="${item.id}" checkLast="${
-          item?.children?.length > 0 ? "has" : "no"
-        }">
-                <p>
-                    ${item.name}
-                </p>
-                ${
-                  item?.children?.length > 0
-                    ? `<i class="fa-solid fa-chevron-right"></i>`
-                    : ""
-                }
-            </div>
-          `;
-      })
-      .join("");
-    $(this).closest(".modal-cate-group").after(`
-      <div class="modal-cate-group">
-          <div class="modal-cate-group-wrapper">
-            ${html}
-          </div>
-      </div>
-    `);
-  }
-  if (callBack) {
-    callBack();
-  }
-}
-function selectCategory() {
-  $(".modal-cate-item").each((index, element) => {
-    $(element).on("click", function () {
-      // ===
-      $(this).closest(".modal-cate-group").nextAll()?.remove();
-      $(this)
-        .closest(".modal-cate-group")
-        .find(".modal-cate-item")
-        ?.removeClass("active");
-      $(this).addClass("active");
-      const type = $(this).attr("checkLast")?.trim();
-      const id = $(this).attr("idCate");
-      if (type == "has") {
-        console.log(id);
-        // $(this).closest('.modal-cate-group').nextAll().remove()
-        $.ajax({
-          url: "?mod=request&act=get-all-category&idCate=" + id,
-        }).done((data) => {
-          data = JSON.parse(data);
-          if (data.length > 0) {
-            const html = data
-              .map((item) => {
-                return `
-                    <div class="modal-cate-item"
-                        idCate="${item.id}" checkLast="${
-                  item?.children?.length > 0 ? "has" : "no"
-                }">
-                        <p>
-                            ${item.name}
-                        </p>
-                        ${
-                          item?.children?.length > 0
-                            ? `<i class="fa-solid fa-chevron-right"></i>`
-                            : ""
-                        }
-                    </div>
-                  `;
-              })
-              .join("");
-            $(this).closest(".modal-cate-group").after(`
-              <div class="modal-cate-group" onclick="selectCategory(${id})">
-                  <div class="modal-cate-group-wrapper">
-                    ${html}
-                  </div>
-              </div>
-            `);
-          }
-          // selectCategory();
-        });
-      } else {
-        console.log("no ", id);
-      }
-      // ===
-    });
-  });
-  // $(".modal-cate-item").click(function () {
-
-  // });
-}
 function randomTime(min, max) {
   return Math.floor(Math.random() * max) + min;
-}
-function updateViewCart(_this, type, count, price, idpro) {
-  const currentSubtotal = _this.find(".cart-subtotal1").attr("data-subtotal");
-  const currentInputCount = _this.find(".cart-count-input").val();
-  const currentCountView = +$(".view-total-count").attr("view-total-count");
-  const currentTotalView = +$(".view-total-cart").attr("view-total-cart");
-
-  const deleteTotal = +count * +price;
-  switch (type) {
-    case "minus":
-      if (currentInputCount == 1) {
-        break;
-      }
-      ajaxUpdateCart(type, idpro);
-      $(".view-total-count").attr("view-total-count", currentCountView - 1);
-      $(".view-total-count").text(currentCountView - 1 + "");
-
-      $(".view-total-cart").attr("view-total-cart", currentTotalView - +price);
-      $(".view-total-cart").text(formartPrice(+currentTotalView - +price));
-      $(".cart-bottom-right-total").text(
-        formartPrice(+currentTotalView - +price)
-      );
-      // sub
-      _this
-        .find(".cart-subtotal1")
-        .attr("data-subtotal", +currentSubtotal - +price);
-      _this
-        .find(".cart-subtotal1")
-        .text(formartPrice(+currentSubtotal - +price));
-      _this.find(".cart-count-input").val(currentInputCount - 1);
-      _this.attr("countpro", +count - 1);
-
-      break;
-    case "delete":
-      ajaxUpdateCart(type, idpro);
-      $(".view-total-count").attr("view-total-count", currentCountView - count);
-      $(".view-total-count").text(currentCountView - count + "");
-      $(".view-total-cart").attr(
-        "view-total-cart",
-        currentTotalView - deleteTotal + ""
-      );
-      $(".view-total-cart").text(formartPrice(+currentTotalView - deleteTotal));
-      $(".cart-bottom-right-total").text(
-        formartPrice(+currentTotalView - deleteTotal)
-      );
-      // sub
-      _this.remove();
-      break;
-    case "check":
-      ajaxUpdateCart(type, idpro);
-      $(".view-total-count").attr(
-        "view-total-count",
-        currentCountView + +count
-      );
-      $(".view-total-count").text(currentCountView + +count + "");
-      $(".view-total-cart").attr(
-        "view-total-cart",
-        currentTotalView + deleteTotal + ""
-      );
-      $(".view-total-cart").text(formartPrice(+currentTotalView + deleteTotal));
-      $(".cart-bottom-right-total").text(
-        formartPrice(+currentTotalView + deleteTotal)
-      );
-
-      break;
-    case "uncheck":
-      ajaxUpdateCart(type, idpro);
-      $(".view-total-count").attr("view-total-count", currentCountView - count);
-      $(".view-total-count").text(currentCountView - +count + "");
-      $(".view-total-cart").attr(
-        "view-total-cart",
-        currentTotalView - deleteTotal + ""
-      );
-      $(".view-total-cart").text(formartPrice(+currentTotalView - deleteTotal));
-      $(".cart-bottom-right-total").text(
-        formartPrice(+currentTotalView - deleteTotal)
-      );
-      // sub
-      break;
-
-    default:
-      ajaxUpdateCart(type, idpro);
-      $(".view-total-count").attr("view-total-count", currentCountView + 1);
-      $(".view-total-count").text(currentCountView + 1 + "");
-      $(".view-total-cart").attr("view-total-cart", currentTotalView + +price);
-      $(".view-total-cart").text(formartPrice(+currentTotalView + +price));
-      $(".cart-bottom-right-total").text(
-        formartPrice(+currentTotalView + +price)
-      );
-      // sub
-      _this
-        .find(".cart-subtotal1")
-        .attr("data-subtotal", +currentSubtotal + +price);
-      _this
-        .find(".cart-subtotal1")
-        .text(formartPrice(+currentSubtotal + +price));
-      _this.find(".cart-count-input").val(+currentInputCount + 1);
-      _this.attr("countpro", +count + 1);
-
-      break;
-  }
-}
-function ajaxUpdateCart(type, idpro) {
-  $.ajax({
-    url: "?mod=request&act=cart&type=" + type + "&idpro=" + idpro,
-  }).done((data) => {
-    data = JSON.parse(data);
-
-    toastjs(data.message);
-  });
 }
 const toastEl = document.getElementById("toast");
 if (toastEl) {
@@ -964,10 +607,6 @@ function toastjs(text, type = true) {
   }, 3000);
 }
 
-function getData() {
-  console.log("Data Fetched");
-}
-
 // funstion debounse
 function debounce(func, delay) {
   let debounceTimer;
@@ -984,38 +623,69 @@ if (searchInput) {
     const keysearch = e.target.value;
     if (keysearch) {
       $.ajax({
-        url: "?mod=request&act=searchproduct&keysearch=" + keysearch,
+        url: "?mod=request&act=seach_home&keysearch=" + keysearch,
       }).done((res) => {
         res = JSON.parse(res);
-        // console.log(data)
-        if (res && res.status && res.result.length > 0) {
-          const data = res.result;
-          const html = data
+        const products = res.result.products;
+        if (res.status && (products.length>0)) {
+          const html = products
             .map((item) => {
               return `
                   <li class="header__search-history-item">
-                    <a href="?mod=page&act=detail&id=${item.id}" class="h-s-item" >
+                    <a href="?mod=page&act=detail&product=${item.slug}" class="h-s-item" >
                         <div class="h-s-img">
-                            <img src="./assest/upload/${item.image}" alt="">
+                            <img src="./assest/upload/${item.image_cover}" alt="">
                         </div>
                         <div class="h-s-info">
-                            <div class="h-s-name">${item.namePro}</div>
-                            <div class="h-s-brandd">${item.brand}</div>
+                            <div class="h-s-name">${item.name}</div>
+                            <div class="h-s-brandd">${item.brand} - ${item.origin}</div>
                         </div>
                     </a>
                 </li>
             `;
             })
             .join("");
-          $(".search-totel").text(data.length);
-          $(".header__search-history-list").html(html);
+          $(".search-totel").text(products.length);
+          $("#search_product_result").html(html);
         } else {
           $(".search-totel").text("0");
-          $(".header__search-history-list").html(
+          $("#search_product_result").html(
             `<div class="no-product">Không tìm thấy sản phẩm nào</div>`
+          );
+        }
+        // shop
+        const shops = res.result.shops;
+        if (res.status && (shops.length>0)) {
+          const html = shops
+            .map((item) => {
+              return `
+                  <li class="header__search-history-item">
+                    <a href="?mod=page&act=shop&uuid=${item.uuid}" class="h-s-item" >
+                        <div class="h-s-img" id="seearch_img-shop">
+                            <img src="./assest/upload/${item.icon}" alt="">
+                        </div>
+                        <div class="h-s-info">
+                            <div class="h-s-name" id="h-shop-name">${item.name}</div>
+                        </div>
+                    </a>
+                </li>
+            `;
+            })
+            .join("");
+          $(".search-totel").text(shops.length);
+          $("#search_shop_result").html(html);
+        } else {
+          $(".search-totel").text("0");
+          $("#search_shop_result").html(
+            `<div class="no-product">Không tìm thấy kết quả nào</div>`
           );
         }
       });
     }
   }, 1000);
 }
+
+
+
+
+

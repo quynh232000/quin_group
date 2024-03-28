@@ -20,7 +20,7 @@ class Category
     public function createNewCate($name, $file, $type = "", $id = "")
     {
         $name = $this->fm->validation($name);
-        if (empty($name)) {
+        if (empty ($name)) {
             $alert = "Name and file image must no be empty!";
             return $alert;
         } else {
@@ -78,28 +78,64 @@ class Category
 
     public function getAllCate($idCate = 0)
     {
-        $query = "SELECT c.*, COUNT(p.category_id) as count
-                from  category as c
-                LEFT JOIN product AS p
-                ON p.category_id = c.id
-                GROUP BY c.id
+        // $query = "SELECT c.*, COUNT(DISTINCT p.id) as count
+        //         from  category as c
+        //         LEFT JOIN product AS p
+        //         ON p.category_id = c.id
+        //         WHERE p.is_deleted = 0 AND p.status = 'Activated'
+        //         GROUP BY c.id
+        // ";
+        $query = "SELECT c.*, COUNT(DISTINCT p.id) as count
+        FROM  category as c
+        LEFT JOIN product AS p
+        ON p.category_id 
+        IN (WITH RECURSIVE CTE AS (
+                SELECT id
+                FROM category
+                WHERE id = c.id
+                UNION ALL
+                SELECT t.id
+                FROM category t
+                INNER JOIN CTE ON t.parent_id = CTE.id
+                )
+            SELECT * FROM CTE)
+            AND p.status = 'Activated'
+            AND p.is_deleted = 0
+        
+        GROUP BY c.id;
         ";
         $result = $this->db->select($query)->fetchAll();
-        // $tree = buildCategoryTree($categories);
-        // print_r($this->buildCategoryTree($result));
-        // echo json_encode($this->buildCategoryTree($result), JSON_PRETTY_PRINT);
-        // return;
-
-        return($this->buildCategoryTree($result, $idCate));
-
-
+        return ($this->buildCategoryTree($result, $idCate));
+    }
+    public function get_category_home()
+    {
+        $query = "SELECT c.*, COUNT(DISTINCT p.id) as count
+        FROM  category as c
+        LEFT JOIN product AS p
+        ON p.category_id 
+        IN (WITH RECURSIVE CTE AS (
+                SELECT id
+                FROM category
+                WHERE id = c.id
+                UNION ALL
+                SELECT t.id
+                FROM category t
+                INNER JOIN CTE ON t.parent_id = CTE.id
+                )
+            SELECT * FROM CTE)
+            AND p.status = 'Activated'
+            AND p.is_deleted = 0
+        WHERE c.parent_id =0 
+        GROUP BY c.id;
+        ";
+        $result = $this->db->select($query)->fetchAll();
+        return $result;
     }
 
-
-    public function getInfoCate($id)
+    public function getInfoCate($slug)
     {
-        if ($id) {
-            $result = $this->db->select("SELECT * FROM category WHERE id = '$id'");
+        if ($slug) {
+            $result = $this->db->select("SELECT * FROM category WHERE slug = '$slug'");
             $result = $result->fetchAll()[0];
             // return new Response(true, "Thành công!", $result, "", "");
             return $result;
@@ -117,7 +153,7 @@ class Category
         if ($role != "adminall") {
             return new Response(false, "Bạn không có quyền cho hành động này!", "", "");
         }
-        if (empty($id)) {
+        if (empty ($id)) {
             return "Idcategory cannot be empty";
         }
         $query = "DELETE FROM category WHERE id = '$id'";
@@ -127,6 +163,10 @@ class Category
         } else {
             return new Response(false, "Xóa danh mục thất bại!", "", "");
         }
+    }
+    public function get_cate_random()
+    {
+        return $this->db->select("SELECT * FROM category WHERE parent_id = 0 order by rand() limit 3")->fetchAll();
     }
 }
 

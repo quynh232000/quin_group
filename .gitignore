@@ -1,7 +1,7 @@
 
 upload/
 config/
+lib/
 lib/database.php
-
 view/ordership.php
 

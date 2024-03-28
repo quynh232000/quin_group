@@ -26,8 +26,9 @@ class Seller
             $name = Session::get('full_name');
             $icon = "shop_avatar.jpg";
             $user_id = Session::get('id');
-            $this->db->insert("INSERT INTO shop(name,icon,user_id)
-            VALUES('$name','$icon','$user_id')");
+            $uuid = $this->tool->GUID();
+            $this->db->insert("INSERT INTO shop(name,icon,user_id,uuid)
+            VALUES('$name','$icon','$user_id','$uuid')");
         }
     }
   
