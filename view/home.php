@@ -454,7 +454,7 @@
         <div class="wrapper suggestion-wrapper">
             <div class="home-title">Sản phẩm gợi ý</div>
             <div class="suggestion-nav">
-                <div class="suggestion-nav-left">
+                <!-- <div class="suggestion-nav-left">
                     <?php
                     foreach ($randomCate as $key => $value) {
                         echo '<div class="suggestion-nav-item ' . ($key == 0 ? "active" : "") . '" cateid="' . $value['slug'] . '">' . $value['name'] . '</div>';
@@ -466,7 +466,7 @@
                 <a href="?mod=page&act=collection" class="suggestion-nav-right sg-btn-more">
                     Xem thêm
                     <i class="fa-solid fa-chevron-right"></i>
-                </a>
+                </a> -->
             </div>
             <div class="suggest-list-products">
                 <?php

@@ -38,6 +38,7 @@ function getProductsByCate(data) {
                 }
             } else {
                 star = '<i style="color:gray" class="fa-regular fa-star"></i>'.repeat(5);
+                star += '<span>(0)</span>'
             }
 
             return `
@@ -85,7 +86,7 @@ function getProductsByCate(data) {
                                                 <div class="product-price-sale">đ${item.price}</div>
                                             </div>
                                             </a>
-                                            <div class="product-btn">
+                                            <div class="product-btn" onclick="update_cart_user('plus','${item.id}',1)">
                                                 <i class="fa-solid fa-cart-plus"></i>
                                                 <span>Thêm vào giỏ hàng</span>
                                             </div>
@@ -142,7 +143,6 @@ $('.cate_input').change(function (e) {
 
     $('.g-nav-left input:radio').each(
         function () {
-            console.log($(this));
             $(this).attr('checked', false);
 
         }

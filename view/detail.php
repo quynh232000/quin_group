@@ -78,15 +78,18 @@
                                 <?php
                                 if (Session::get('isLogin')) {
                                     if ($classLike->check_is_like_product($san_pham['product']['id'], Session::get('id'))) {
-                                        echo '<i class="fa-solid fa-heart" onclick="like_product('.$san_pham['product']['id'].','."'unlike'".')"></i>';
+                                        echo '<i class="fa-solid fa-heart" onclick="like_product(' . $san_pham['product']['id'] . ',' . "'unlike'" . ')"></i>';
                                     } else {
-                                        echo '<i class="fa-regular fa-heart" onclick="like_product('.$san_pham['product']['id'].','."'like'".')"></i>';
+                                        echo '<i class="fa-regular fa-heart" onclick="like_product(' . $san_pham['product']['id'] . ',' . "'like'" . ')"></i>';
                                     }
                                 }
                                 ?>
                             </div>
                             <div class="detail_like_count">Đã thích (
-                                0<span class="count_like_product" ><?= $classLike->dem_like_product($san_pham['product']['id']) ?></span> )</div>
+                                <span class="count_like_product">
+                                    <?= $classLike->dem_like_product($san_pham['product']['id']) ?>
+                                </span> )
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -287,7 +290,6 @@
                 </div>
                 <div class="detail-des-btn-more-wrapper">
                     <div class="detail-des-btn-more">
-
                         Xem thêm
                     </div>
                 </div>
@@ -298,7 +300,7 @@
             <div class="detail-review-wrapper">
                 <div class="detail-review-overiew">
                     <?php
-                    if (isset ($is_review) && ($is_review == true)) {
+                    if (isset($is_review) && ($is_review == true)) {
 
 
                         foreach ($danhsach_danhgia as $key => $value) {
@@ -316,7 +318,7 @@
                         <div class="detail-review-user-active__list">
                             <div class="detail-review-user-active__list-star" id="list_star">
                                 <?php
-                                if (isset ($my_review)) {
+                                if (isset($my_review)) {
                                     for ($i = 0; $i < 5; $i++) {
                                         if (($i + 1) <= $my_review['level']) {
                                             echo '<i data-level="' . ($i + 1) . '" class="fa-solid fa-star active"></i>';
@@ -335,24 +337,24 @@
 
                             </div>
                             <div class="detail-review-user-active__star-quantity">
-                                <?= isset ($my_review) ? $my_review['level'] : "" ?>
+                                <?= isset($my_review) ? $my_review['level'] : "" ?>
                                 <p>sao</p>
                             </div>
                         </div>
                         <form method="post" action="" class="detail-review-user-active__action">
                             <?php
-                            if (isset ($my_review)) {
+                            if (isset($my_review)) {
                                 echo '<input value="' . $my_review['id'] . '" type="text" name="id_review" hidden="">';
                             }
                             ?>
                             <input id="input_level" type="text"
-                                value="<?= isset ($my_review) ? $my_review['level'] : "" ?>" name="level" hidden="">
+                                value="<?= isset($my_review) ? $my_review['level'] : "" ?>" name="level" hidden="">
                             <input name="content" type="text" placeholder="Vui lòng đánh giá sản phẩm..."
                                 class="detail-review-user-active__input"
-                                value="<?= isset ($my_review) ? $my_review['content'] : "" ?>"></input>
+                                value="<?= isset($my_review) ? $my_review['content'] : "" ?>"></input>
                             <div class="detail-review-user-active__link">
                                 <input type="submit" class="detail-review-user-active__btn" name="reviewsubmit"
-                                    value="<?= isset ($my_review) ? "Cập nhật đánh giá" : "Gửi đánh giá" ?>"></input>
+                                    value="<?= isset($my_review) ? "Cập nhật đánh giá" : "Gửi đánh giá" ?>"></input>
                             </div>
                         </form>
 
@@ -446,54 +448,55 @@
                                 <?= $value['content'] ?>
                             </div>
                         </div>
-                        <?php
-                    }
+                        <?php ?>
+                        <!-- phân trang -->
+                        <div class="r-pagination-body pagination-body-edit">
+                            <div class="r-pagination">
+                                <?php $starurl = isset($_GET['star']) ? "&star=" . $_GET['star'] : "" ?>
+                                <!-- ==== -->
+                                <a href="?mod=page&act=detail&product=<?= $_GET['product'] ?><?= $starurl ?>&page=<?= isset($_GET['page']) ? $_GET['page'] > 1 ? $_GET['page'] - 1 : 1 : 1 ?>#listReviews"
+                                    class="<?php if (!isset($_GET['page']) || $_GET['page'] == 1)
+                                        echo "disabled"; ?> r-pagination-item previous-page">
+                                    <i class="fa-solid fa-angles-left"></i>
+                                </a>
+                                <?php if (isset($kq_danhsach_danhgia) && isset($kq_danhsach_danhgia->status)) {
+                                    for ($i = 1; $i < ceil($kq_danhsach_danhgia->total / $limit) + 1; $i++) {
+                                        $active = "";
+                                        if (isset($_GET['page']) && $_GET['page'] == $i) {
+                                            $active = "active";
+                                        } else {
+                                            if (!isset($_GET['page']) && $i == 1) {
+                                                $active = "active";
+                                            }
+                                        }
+                                        echo '<a href="?mod=page&act=detail&product=' . $_GET['product'] . $starurl . '&page=' . $i . '#listReviews" class="r-pagination-item ' . $active . ' ">' . $i . '</a>';
+                                    }
+                                } else {
+                                    echo "";
+                                }
+                                ?>
+                                <a href="?mod=page&act=detail&product=<?= $_GET['product'] ?><?= $starurl ?>&page=<?php
+                                    if (isset($_GET['page']) && ($_GET['page'] < ceil($kq_danhsach_danhgia->total / $limit))) {
+                                        echo $_GET['page'] + 1;
+                                    } else {
+                                        echo ceil($kq_danhsach_danhgia->total / $limit);
+                                    } ?>#listReviews" class="r-pagination-item next-page <?php
+                                     if (isset($_GET['page']) && (($_GET['page'] == ceil($kq_danhsach_danhgia->total / $limit)))) {
+                                         echo "disabled";
+                                     }
+                                     ?>"><i class="fa-solid fa-angles-right"></i></a>
+
+                                <!-- === -->
+
+                            </div>
+                        </div>
+                    <?php }
                 } else {
                     echo '<div class="no-review-product">Chưa có đánh giá sản phẩm nào!</div>';
                 }
                 ?>
 
-                <!-- phân trang -->
-                <div class="r-pagination-body pagination-body-edit">
-                    <div class="r-pagination">
-                        <?php $starurl = isset ($_GET['star']) ? "&star=" . $_GET['star'] : "" ?>
-                        <!-- ==== -->
-                        <a href="?mod=page&act=detail&product=<?= $_GET['product'] ?><?= $starurl ?>&page=<?= isset ($_GET['page']) ? $_GET['page'] > 1 ? $_GET['page'] - 1 : 1 : 1 ?>#listReviews"
-                            class="<?php if (!isset ($_GET['page']) || $_GET['page'] == 1)
-                                echo "disabled"; ?> r-pagination-item previous-page">
-                            <i class="fa-solid fa-angles-left"></i>
-                        </a>
-                        <?php if (isset ($kq_danhsach_danhgia) && isset ($kq_danhsach_danhgia->status)) {
-                            for ($i = 1; $i < ceil($kq_danhsach_danhgia->total / $limit) + 1; $i++) {
-                                $active = "";
-                                if (isset ($_GET['page']) && $_GET['page'] == $i) {
-                                    $active = "active";
-                                } else {
-                                    if (!isset ($_GET['page']) && $i == 1) {
-                                        $active = "active";
-                                    }
-                                }
-                                echo '<a href="?mod=page&act=detail&product=' . $_GET['product'] . $starurl . '&page=' . $i . '#listReviews" class="r-pagination-item ' . $active . ' ">' . $i . '</a>';
-                            }
-                        } else {
-                            echo "";
-                        }
-                        ?>
-                        <a href="?mod=page&act=detail&product=<?= $_GET['product'] ?><?= $starurl ?>&page=<?php
-                            if (isset ($_GET['page']) && ($_GET['page'] < ceil($kq_danhsach_danhgia->total / $limit))) {
-                                echo $_GET['page'] + 1;
-                            } else {
-                                echo ceil($kq_danhsach_danhgia->total / $limit);
-                            } ?>#listReviews" class="r-pagination-item next-page <?php
-                             if (isset ($_GET['page']) && (($_GET['page'] == ceil($kq_danhsach_danhgia->total / $limit)))) {
-                                 echo "disabled";
-                             }
-                             ?>"><i class="fa-solid fa-angles-right"></i></a>
 
-                        <!-- === -->
-
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -507,8 +510,8 @@
                         Sản phẩm gợi ý
                     </div>
                     <a href="?mod=page&act=collection" class="new-product-more">
-                        Xem thêm
-                        <i class="fa-solid fa-chevron-right"></i>
+                        <!-- Xem thêm
+                        <i class="fa-solid fa-chevron-right"></i> -->
                     </a>
                 </div>
                 <div class="new-product-body">
@@ -516,7 +519,7 @@
                         <img src="./assest/images/new pro big.svg" alt="">
                     </div>
                     <?php
-                    if (isset ($productSuggestion) && $productSuggestion->status && is_array($productSuggestion->result)) {
+                    if (isset($productSuggestion) && $productSuggestion->status && is_array($productSuggestion->result)) {
                         foreach ($productSuggestion->result as $key => $value) { ?>
 
                             <div class="product">

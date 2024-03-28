@@ -21,7 +21,7 @@ class Product
         $this->db_name = DB_NAME;
     }
     public function updateProduct(
-        $typePro ='New',
+        $typePro = 'New',
         $name = '',
         $description = '',
         $category_id = '',
@@ -36,23 +36,23 @@ class Product
         $id = ''
     ) {
         // validate
-        
-        if(empty($name)){
-            return new Response(false,'Vui lòng nhập tên sản phẩm!');
-        }elseif(empty($description)){
-            return new Response(false,'Vui lòng nhập mô tả sản phẩm!');
 
-        }elseif(empty($category_id)){
-            return new Response(false,'Vui lòng chọn danh mục cho sản phẩm!');
+        if (empty($name)) {
+            return new Response(false, 'Vui lòng nhập tên sản phẩm!');
+        } elseif (empty($description)) {
+            return new Response(false, 'Vui lòng nhập mô tả sản phẩm!');
 
-        }elseif(empty($quantity)){
-            return new Response(false,'Vui lòng nhập số lượng sản phẩm sản phẩm!');
+        } elseif (empty($category_id)) {
+            return new Response(false, 'Vui lòng chọn danh mục cho sản phẩm!');
 
-        }elseif(empty($origin)){
-            return new Response(false,'Vui lòng nhập nguồn gốc sản phẩm!');
+        } elseif (empty($quantity)) {
+            return new Response(false, 'Vui lòng nhập số lượng sản phẩm sản phẩm!');
 
-        }elseif(empty($brand)){
-            return new Response(false,'Vui lòng nhập thương hiệu sản phẩm!');
+        } elseif (empty($origin)) {
+            return new Response(false, 'Vui lòng nhập nguồn gốc sản phẩm!');
+
+        } elseif (empty($brand)) {
+            return new Response(false, 'Vui lòng nhập thương hiệu sản phẩm!');
 
         }
         // edit
@@ -88,7 +88,7 @@ class Product
             // get shop id
             $user_id = Session::get('id');
             $shop_id = $this->db->select("SELECT id FROM shop WHERE user_id ='$user_id'")->fetchColumn();
-            
+
             $slug = $this->tool->slug($name);
             $fileResult = $this->tool->uploadFile($image, "product/");
             $query = "INSERT INTO product (product.name, product.description, product.category_id,product.status,
@@ -125,7 +125,7 @@ class Product
             $querylistImg = "";
             for ($i = 0; $i < $totalFile; $i++) {
                 $fileDir = "./assest/upload/" . 'product/';
-                if (isset ($listImage['error'][$i]) && $listImage['error'][$i] == 0) {
+                if (isset($listImage['error'][$i]) && $listImage['error'][$i] == 0) {
                     $fileName = basename($listImage['name'][$i]);
                     if (!file_exists($fileDir)) {
                         mkdir($fileDir, 0, true);
@@ -151,13 +151,13 @@ class Product
     public function getAllProductSeller($page = 1, $limit = 10, $type = "", $search = "")
     {
         $isLogin = Session::get('isLogin');
-        if($isLogin ==false){
-            return new Response(false,'Vui lòng đăng nhập');
+        if ($isLogin == false) {
+            return new Response(false, 'Vui lòng đăng nhập');
         }
         if ($type) {
             $type = " AND pr.status = '$type'";
         }
-        if (!empty ($search))
+        if (!empty($search))
             $search = " AND pr.name LIKE '%$search%'";
         $user_id = Session::get('id');
         $shop_id = $this->db->select("SELECT id from shop where user_id = '$user_id'")->fetchColumn();
@@ -255,6 +255,63 @@ class Product
                  INNER JOIN category as cate on pr.category_id = cate.id  
                  WHERE pr.type = '$value' $idDelete  $isActive
                  limit $currentPage,$limit";
+                break;
+            case 'best_selling':
+                $sqlTotal = $this->db->select("SELECT count(*) from product as pr where 1 $idDelete $isActive ORDER BY pr.quantity_sold DESC");
+                $total = $sqlTotal->fetchColumn();
+                $query = "SELECT pr.id, pr.brand, pr.name ,pr.category_id, pr.quantity, pr.image_cover, pr.origin, pr.price, pr.percent_sale, pr.slug,
+                 cate.name as nameCategory from product as pr 
+                 INNER JOIN category as cate on pr.category_id = cate.id  
+                 WHERE 1 $idDelete  $isActive
+                 ORDER BY
+                 pr.quantity_sold DESC
+                 limit $currentPage,$limit";
+                break;
+            case 'suggestion':
+                // is login
+                if (Session::get('isLogin')==true) {
+                    $user_login = Session::get('id');
+                    $query = "SELECT pr.id, pr.brand, pr.name ,pr.category_id, pr.quantity, pr.image_cover, pr.origin, pr.price, pr.percent_sale, pr.slug,
+                        cate.name as nameCategory 
+                        FROM product as pr 
+                        INNER JOIN category as cate on pr.category_id = cate.id 
+                        WHERE pr.category_id in 
+                            (SELECT distinct p.category_id from order_detail as od
+                            INNER JOIN $this->db_name.order as o 
+                            ON od.order_id = o.id
+                            INNER JOIN product as p
+                            ON p.id = od.product_id
+                            WHERE o.user_id = '$user_login' AND o.status = 'Completed')
+                        $idDelete $isActive
+                        limit $limit
+                    ";
+                } else {
+                    if (isset($_SESSION['suggestion_ids']) && (count($_SESSION['suggestion_ids'])>0)) {
+                        // $suguestion_ids_convert = 2;
+                        if(count($_SESSION['suggestion_ids']) == 1){
+                            $suguestion_ids_convert = implode('',$_SESSION['suggestion_ids']);
+                        }else{
+                            $suguestion_ids_convert = implode(',', $_SESSION['suggestion_ids']);
+                        }
+                        $query = "SELECT pr.id, pr.brand, pr.name ,pr.category_id, pr.quantity, pr.image_cover, pr.origin, pr.price, pr.percent_sale, pr.slug,
+                        cate.name as nameCategory 
+                        FROM product as pr 
+                        INNER JOIN category as cate on pr.category_id = cate.id 
+                        WHERE pr.category_id in ($suguestion_ids_convert)
+                        $idDelete $isActive
+                        limit $limit
+                        ";
+                    } else {
+                        $query = "SELECT pr.id, pr.brand, pr.name ,pr.category_id, pr.quantity, pr.image_cover, pr.origin, pr.price, pr.percent_sale, pr.slug,
+                        cate.name as nameCategory from product as pr 
+                        INNER JOIN category as cate on pr.category_id = cate.id  
+                        WHERE 1 $idDelete  $isActive
+                        ORDER BY
+                        pr.quantity_sold DESC, RAND()
+                        limit $limit";
+                    }
+                }
+
                 break;
             default:
                 $sqlTotal = $this->db->select("SELECT count(pr.*) from product pr $idDelete $isActive ");
@@ -396,7 +453,7 @@ class Product
         if ($isLogin != true) {
             return new Response(true, "success", ["total" => 0, "totalPrice" => 0], "");
         }
-        if (empty ($id)) {
+        if (empty($id)) {
             return new Response(false, "Hành động không hợp lệ! Vui lòng thử lại!", "", "?mod=admin&act=manageproduct");
         }
 
@@ -429,8 +486,8 @@ class Product
         $shops = $this->db->select("SELECT uuid, name, icon FROM shop WHERE name like '%$search%'
             AND is_deleted = 0 limit 3
          ")->fetchAll();
-        
-        return new Response(true, "Successcully", ['products'=>$products,'shops'=>$shops], "");
+
+        return new Response(true, "Successcully", ['products' => $products, 'shops' => $shops], "");
 
     }
     public function dashboard()
@@ -536,7 +593,8 @@ class Product
         FROM product_review  r
         where r.product_id = '$product_id'")->fetchColumn();
     }
-    public function get_product_by_id($product_id) {
+    public function get_product_by_id($product_id)
+    {
         return $this->db->select("SELECT product.name,product.image_cover,product.price,product.percent_sale,product.slug,
         product.brand,product.quantity,product.origin,product.id,
          category.name as name_cate 
@@ -545,7 +603,8 @@ class Product
         ON category.id = product.category_id
         where product.id = '$product_id'")->fetch();
     }
-    public function get_remain_quantity($product_id){
+    public function get_remain_quantity($product_id)
+    {
         return $this->db->select("SELECT quantity - quantity_sold FROM product WHERE id = '$product_id'")->fetchColumn();
     }
     // =============================NHUNG============================================================================//

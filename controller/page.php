@@ -29,6 +29,7 @@ $classPayment = new Payment();
 $classOrder = new Order();
 $tool = new Tool();
 
+
 extract($_REQUEST);
 if (isset ($_GET['act']) && $_GET['act']) {
     switch ($_GET['act']) {
@@ -41,8 +42,12 @@ if (isset ($_GET['act']) && $_GET['act']) {
             $megaPro = $product->filterProduct("by_type", 'Flash Sale');
             $newPro = $product->filterProduct("by_type", "New", 8);
             $salePro = $product->filterProduct("by_type", 'Hot');
-            $bestPro = $product->filterProduct("random", "", 10);
-            $suggestionPro = $product->filterProduct("category", $randomCate[0]['slug']);
+            $bestPro = $product->filterProduct("best_selling", "", 10);
+
+            $suggestionPro = $product->filterProduct("suggestion",'',10);
+            if(count($suggestionPro->result)==0){
+                $suggestionPro = $product->filterProduct("best_selling", "", 10);
+            }
             include_once 'view/inc/header.php';
             include_once 'view/home.php';
             include_once 'view/inc/footer.php';
@@ -140,14 +145,27 @@ if (isset ($_GET['act']) && $_GET['act']) {
                         </script>';
                 }
             }
-            // Lây danh sách sản phẩm gợi ý
-            $productSuggestion = $classProduct->get_productSuggestion();
+            
             // lấy thông tin shop theo id product
             $kq_thong_tin_shop = $classShop->get_shop_by_id_product($san_pham['product']['id']);
             if ($kq_thong_tin_shop->status == true) {
                 $thong_tin_shop = $kq_thong_tin_shop->result;
             }
             // $kq_thong_tin_shop chứa các định dạng response như bên model
+            // thêm vào danh sách sản phẩm gơi ý
+            if(isset($_SESSION['suggestion_ids']) && $_SESSION['suggestion_ids']){
+                if(!in_array($san_pham['product']['category_id'],$_SESSION['suggestion_ids'])){
+                    $_SESSION['suggestion_ids'][] = $san_pham['product']['category_id'];
+                }
+            }else{
+                $_SESSION['suggestion_ids'][]= $san_pham['product']['category_id'];
+            }
+            // Lây danh sách sản phẩm gợi ý
+            $productSuggestion = $classProduct->filterProduct("suggestion",'',8);
+            if(count($productSuggestion->result)==0){
+                $productSuggestion = $classProduct->filterProduct("best_selling", "", 8);
+            }
+
 
             $viewTitle = $san_pham['product']['name'];
             include_once 'view/inc/header.php';
@@ -176,7 +194,7 @@ if (isset ($_GET['act']) && $_GET['act']) {
                 $currentPath .= isset ($voucher) ? '&voucher=' . $voucher : "";
                 $get_address = $classAddress->get_address_user_default();
                 if ($get_address->status == false) {
-                    header("Location: " . $get_address->redirect);
+                    header("Location: ?mod=profile&act=address&modal=show&type=create".$currentPath );
                 }
                 $address_info = $get_address->result;
                 // get list product info

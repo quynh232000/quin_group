@@ -10,29 +10,29 @@ include_once "model/address.php";
 include_once "model/shop.php";
 include_once "model/like_product.php";
 include_once "model/voucher.php";
+include_once "model/traffic.php";
 
 
 $classOrder = new Order();
 
 extract($_REQUEST);
-if (isset ($act)) {
+if (isset($act)) {
     switch ($act) {
-       
+
         case 'seach_home':
             $classProduct = new Product();
-            if (isset ($_GET['keysearch'])) {
+            if (isset($_GET['keysearch'])) {
                 $valueSearch = $classProduct->seach_home($_GET['keysearch']);
                 echo json_encode($valueSearch, JSON_PRETTY_PRINT);
                 return;
             }
             break;
         case 'fillterproduct':
-            if (isset ($_GET['id']) && $_GET['id']) {
+            if (isset($_GET['id']) && $_GET['id']) {
                 $classProduct = new Product();
                 $result = $classProduct->filterProduct('category', $_GET['id']);
                 echo json_encode($result, JSON_PRETTY_PRINT);
             }
-
             return;
         case 'get-all-category':
             $idCate = $_GET['idCate'] ?? 0;
@@ -42,7 +42,7 @@ if (isset ($act)) {
             echo json_encode($result, JSON_PRETTY_PRINT);
             return;
         case 'update_status_cate':
-            if (isset ($_GET['id']) && $_GET['id'] && isset ($_GET['type']) && $_GET['type']) {
+            if (isset($_GET['id']) && $_GET['id'] && isset($_GET['type']) && $_GET['type']) {
 
                 $result = $classOrder->update_status_order($_GET['id'], $_GET['type']);
             } else {
@@ -53,7 +53,7 @@ if (isset ($act)) {
             echo json_encode($result, JSON_PRETTY_PRINT);
             return;
         case 'get_address':
-            if (isset ($_GET['type']) && isset ($_GET['type'])) {
+            if (isset($_GET['type']) && isset($_GET['type'])) {
                 $classAddress = new Address();
                 switch ($_GET['type']) {
                     case 'province':
@@ -78,11 +78,11 @@ if (isset ($act)) {
             }
             return;
 
-            // update status order
+        // update status order
         case 'update_status_order':
-            if (isset ($_GET['id']) && $_GET['id'] && isset ($_GET['status']) && $_GET['status']) {
+            if (isset($_GET['id']) && $_GET['id'] && isset($_GET['status']) && $_GET['status']) {
 
-                $data = $classOrder->update_status_order($_GET['id'], $_GET['status'],);
+                $data = $classOrder->update_status_order($_GET['id'], $_GET['status'], );
                 echo json_encode($data, JSON_PRETTY_PRINT);
             } else {
                 echo json_encode(['status' => false, 'message' => "Missing parameter"], JSON_PRETTY_PRINT);
@@ -90,7 +90,7 @@ if (isset ($act)) {
             return;
         case 'update_status_order_all':
 
-            if (isset ($_GET['status']) && $_GET['status']) {
+            if (isset($_GET['status']) && $_GET['status']) {
 
 
                 $data = $classOrder->update_status_order_all($_GET['status']);
@@ -145,35 +145,44 @@ if (isset ($act)) {
             return;
         case "update_cart_user":
             $classCart = new Cart();
-            $quantity = isset ($_GET['quantity']) ? $_GET['quantity'] : "";
+            $quantity = isset($_GET['quantity']) ? $_GET['quantity'] : "";
             echo json_encode($classCart->update_cart_user($_GET['type'], $_GET['product_id'], $quantity), JSON_PRETTY_PRINT);
 
             return;
         case 'like_product':
             $classLike = new LikeProduct();
-            if(isset ($_GET['type']) && $_GET['type'] && isset ($_GET['product_id']) && $_GET['product_id'])
-            $type =  $_GET['type'] ;
-            $product_id =  $_GET['product_id'] ;
-            if($type == 'like'){
+            if (isset($_GET['type']) && $_GET['type'] && isset($_GET['product_id']) && $_GET['product_id'])
+                $type = $_GET['type'];
+            $product_id = $_GET['product_id'];
+            if ($type == 'like') {
                 echo json_encode($classLike->like_product($product_id), JSON_PRETTY_PRINT);
-            }else{
+            } else {
                 echo json_encode($classLike->unlike_product($product_id), JSON_PRETTY_PRINT);
             }
             return;
         case "check_code_voucher":
             $classVoucher = new Voucher();
-            if(isset($_GET['code'])&& isset($_GET['shop_id'])){
-                echo json_encode( $classVoucher->check_code_voucher($_GET['code'], $_GET['shop_id']), JSON_PRETTY_PRINT);
-            }else{
-                echo json_encode(['status'=>false,'message'=>"Missing parameter"], JSON_PRETTY_PRINT);
+            if (isset($_GET['code']) && isset($_GET['shop_id'])) {
+                echo json_encode($classVoucher->check_code_voucher($_GET['code'], $_GET['shop_id']), JSON_PRETTY_PRINT);
+            } else {
+                echo json_encode(['status' => false, 'message' => "Missing parameter"], JSON_PRETTY_PRINT);
             }
             return;
         case "get_voucher_user":
             $classVoucher = new Voucher();
-            $type = $_GET['type']??"";
-            $search = isset($_GET['search'])? $_GET['search']:"";
-            $shop_id = isset($_GET['shop_id'])?$_GET['shop_id']:"";
-            echo json_encode($classVoucher->get_voucher_user($type,$search, $shop_id), JSON_PRETTY_PRINT);
+            $type = $_GET['type'] ?? "";
+            $search = isset($_GET['search']) ? $_GET['search'] : "";
+            $shop_id = isset($_GET['shop_id']) ? $_GET['shop_id'] : "";
+            echo json_encode($classVoucher->get_voucher_user($type, $search, $shop_id), JSON_PRETTY_PRINT);
+            return;
+        case 'set_traffic':
+            $data = $_POST;
+            if (isset($data['ip']) && isset($data['location']) && isset($data['type'])) {
+                $classTraffic = new Traffic();
+                echo json_encode($classTraffic->set_traffic($data['ip'], $data['location'], $data['type']), JSON_PRETTY_PRINT);
+            } else {
+                echo json_encode(['status' => false, 'message' => "Missing"], JSON_PRETTY_PRINT);
+            }
             return;
         default:
             break;

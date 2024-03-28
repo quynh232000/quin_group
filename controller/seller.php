@@ -146,7 +146,22 @@ if (isset($act)) {
             include_once 'view/seller/manageorders.php';
             include_once 'view/inc/footer.php';
             break;
-        
+        case 'detailorder':
+            if(!(isset($_GET['uuid']) && $_GET['uuid'])){
+                header("Location: ?page=404");
+            }
+            $classOrder = new Order();
+            $result_order_detail = $classOrder-> get_order_user_detail($_GET['uuid']);
+            if($result_order_detail->status==false) header("Location: ?page=404");
+            $order = $result_order_detail->result;
+
+
+            $viewTitle = 'Chi tiết đơn hàng';
+            include_once 'view/inc/headerAdmin.php';
+            include_once 'view/inc/sidebarAdmin.php';
+            include_once 'view/seller/orderdetail.php';
+            include_once 'view/inc/footer.php';
+            break;
         case 'setting':
             $class_address = new Address();
             if (isset($_POST['name']) && $_POST['name']) {

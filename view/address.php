@@ -85,28 +85,41 @@
             </div>
             <!-- // <a href="?mod=profile&act=address&type=delete&id='.$value['id'].'" class="delete-btn">Xoá</a> -->
             <!-- Add modal -->
-            <div id="add-modal" style="display:<?= (isset ($modal) && ($modal == 'show')) ? "flex" : "none" ?>">
+            <div id="add-modal" style="display:<?= (isset($modal) && ($modal == 'show')) ? "flex" : "none" ?>">
                 <div class="add-modal-wrapper">
                     <div class="add-modal-body">
                         <div class="address-header">
                             <h1 class="address-tilte">
-                                <?= (isset ($type) && ($type == 'create')) ? "Địa chỉ mới" : "Cập nhật địa chỉ" ?>
+                                <?= (isset($type) && ($type == 'create')) ? "Địa chỉ mới" : "Cập nhật địa chỉ" ?>
                             </h1>
 
                         </div>
                         <div>
                             <form class="update-form form-submit-address" id="form-submit-address" method="POST"
                                 action="">
+                                <?php
+                                if (isset($_GET['shop']) && $_GET['shop']) { ?>
+                                    <input type="text" hidden name="shop" value="<?= $_GET['shop'] ?>">
+
+                                <?php }
+                                ?>
+                                <?php
+                                if (isset($_GET['voucher']) && $_GET['voucher']) { ?>
+                                <input type="text" hidden name="voucher" value="<?= $_GET['voucher'] ?>">
+
+                                <?php }
+                                ?>
+                                
                                 <div class="form-input-group">
                                     <label class="form-input-label" for="name">Tên người nhận</label><br>
                                     <input class="form-input" id="name" type="text" name="name_receiver"
-                                        value="<?= isset ($address_info) ? $address_info['name_receiver'] : "" ?>"
+                                        value="<?= isset($address_info) ? $address_info['name_receiver'] : "" ?>"
                                         placeholder="Aa.." required>
                                 </div>
                                 <div class="form-input-group">
                                     <label class="form-input-label" for="phone_number">Số điện thoại</label><br>
                                     <input class="form-input" id="phone_number" type="text" placeholder="+84 .."
-                                        value="<?= isset ($address_info) ? $address_info['phone_number'] : "" ?>"
+                                        value="<?= isset($address_info) ? $address_info['phone_number'] : "" ?>"
                                         name="phone_number" required>
                                 </div>
                                 <div class="form-input-group">

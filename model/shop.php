@@ -247,7 +247,7 @@ where shop_id = '$id' and product_id = '$pro_id'")->fetch();
         $column_name = "id, name, price, percent_sale, quantity, quantity_sold, status, is_show, type, image_cover, brand, origin, slug, reason, category_id, shop_id";
         if ($is_sale) {
             $query = <<<EOT
-            select $column_name from product where quantity > 0 and is_show = 1 and shop_id = '$id' order by percent_sale desc limit 6       
+            select $column_name from product where quantity > 0 and is_show = 1 and shop_id = '$id' order by percent_sale desc limit 5       
             EOT;
         } else {
             $query = <<<EOT

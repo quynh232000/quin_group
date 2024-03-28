@@ -221,7 +221,7 @@ class Order
             return new Response(false,'Vui lòng đăng nhập!');
         }
         $user_id = Session::get(('id'));
-        $order_info = $this->db->select("SELECT o.*,
+        $order_info = $this->db->select("SELECT o.*,u.email,
             shop.name shop_name, shop.uuid shop_uuid, shop.icon shop_icon,
             voucher.discount_amount,
             da.name_receiver address_name,da.phone_number address_phone, pr.name address_province,
@@ -233,6 +233,8 @@ class Order
             ON voucher.id = o.voucher_id
             INNER JOIN delivery_address as da
             ON da.id = o.delivery_address_id
+            INNER JOIN user as u
+            ON o.user_id = u.id
 
             INNER JOIN address_province as pr
             ON da.province = pr.matp
@@ -247,10 +249,12 @@ class Order
         ")->fetchAll();
         if(count($order_info)>0){
             $order_id = $order_info[0]['id'];
-            $list_order = $this->db->select("SELECT order_detail.*,product.image_cover, product.name,product.origin,product.brand
+            $list_order = $this->db->select("SELECT order_detail.*,product.image_cover, product.name,product.origin,product.brand,c.name as categoryName
                 FROM order_detail
                 INNER JOIN product 
                 ON product.id = order_detail.product_id
+                INNER JOIN category as c
+                ON product.category_id = c.id
                 WHERE order_detail.order_id = '$order_id'
             ")->fetchAll();
             return new Response(true,'success',['order_info'=>$order_info[0],'list_order'=>$list_order]);

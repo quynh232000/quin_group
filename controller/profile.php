@@ -20,16 +20,16 @@ $classVoucher = new Voucher();
 $classOrder = new Order();
 $classNotify = new Notification();
 extract($_REQUEST);
-if (isset ($act)) {
+if (isset($act)) {
     switch ($act) {
         case 'profile':
             if (Session::get('isLogin') == false) {
                 header("Location: ?mod=profile&act=login");
             }
             $viewTitle = 'Hồ sơ';
-            if (isset ($_POST['email']) && $_POST['email']) {
+            if (isset($_POST['email']) && $_POST['email']) {
                 $updateUser = $classUser->updateProfile($_POST["full_name"], $_FILES['avatar'], $_POST["phone_number"], $_POST["address"]);
-                if (isset ($updateUser)) {
+                if (isset($updateUser)) {
                     if ($updateUser->status) {
 
                         echo '<div id="toast" mes-type="success" mes-title="Thành công!" mes-text="' . $updateUser->message . '"></div>';
@@ -49,11 +49,11 @@ if (isset ($act)) {
             $class = new AdminLogin();
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $redirect = "";
-                if (isset ($_GET['redirect']) && $_GET['redirect'] == 'admin') {
+                if (isset($_GET['redirect']) && $_GET['redirect'] == 'admin') {
                     $redirect = "?mod=admin&act=dashboard";
-                } elseif (isset ($_GET['redirect']) && $_GET['redirect'] == 'seller') {
+                } elseif (isset($_GET['redirect']) && $_GET['redirect'] == 'seller') {
                     $redirect = "?mod=seller&act=dashboard";
-                } elseif (isset ($_GET['redirect']) && $_GET['redirect'] == 'cart') {
+                } elseif (isset($_GET['redirect']) && $_GET['redirect'] == 'cart') {
                     $redirect = "?mod=page&act=cart";
                 } else {
                     $redirect = "./";
@@ -90,15 +90,15 @@ if (isset ($act)) {
             $page = 1;
             $limit = 5;
             // get list order
-            if (isset ($_GET['status'])) {
+            if (isset($_GET['status'])) {
                 $status = $_GET['status'];
                 $urlFilter .= '&status=' . $status;
             }
-            if (isset ($_GET['search'])) {
+            if (isset($_GET['search'])) {
                 $search = $_GET['search'];
                 $urlFilter .= '&search=' . $search;
             }
-            if (isset ($_GET['page'])) {
+            if (isset($_GET['page'])) {
                 $page = $_GET['page'];
                 $urlFilter .= '&page=' . $page;
             }
@@ -108,7 +108,7 @@ if (isset ($act)) {
                 $total = $orders->total;
             }
             // cancel ỏder
-            if (isset ($_POST['submit_delete']) && $_POST['submit_delete']) {
+            if (isset($_POST['submit_delete']) && $_POST['submit_delete']) {
                 $cancel_order = $classOrder->cancel_order_user($_POST['order_uuid']);
                 if ($cancel_order->status) {
                     echo '<div id="toast" mes-type="error" mes-title="Thành công!" mes-text="' . $cancel_order->message . '"></div>';
@@ -128,7 +128,7 @@ if (isset ($act)) {
             break;
         case 'sercurity':
             $viewTitle = 'Đổi mật khẩu';
-            if (isset ($_POST['submit-change-pass']) && $_POST['submit-change-pass']) {
+            if (isset($_POST['submit-change-pass']) && $_POST['submit-change-pass']) {
                 $oldpassword = $_POST['oldpassword'];
                 $newpassword = $_POST['newpassword'];
                 $confirmpassword = $_POST['confirmpassword'];
@@ -165,7 +165,7 @@ if (isset ($act)) {
             break;
         case 'forgotpassword':
             $active = 'default';
-            if (isset ($_POST['email']) && $_POST['email'] != "") {
+            if (isset($_POST['email']) && $_POST['email'] != "") {
 
                 $email = $_POST['email'];
 
@@ -178,7 +178,7 @@ if (isset ($act)) {
                     header('location: ' . $checkemail->redirect);
                 }
             }
-            if (isset ($_GET['verifytoken']) && $_GET['verifytoken']) {
+            if (isset($_GET['verifytoken']) && $_GET['verifytoken']) {
                 $token = $_GET['verifytoken'];
                 $checkToken = $classUser->checkToken($token);
                 if ($checkToken->status == false) {
@@ -190,7 +190,7 @@ if (isset ($act)) {
                 }
             }
             // submit code
-            if (isset ($_POST['code']) && count($_POST['code']) == 4) {
+            if (isset($_POST['code']) && count($_POST['code']) == 4) {
                 $codes = $_POST['code'];
                 $code = implode("", $codes);
                 if (strlen($code) != 4) {
@@ -208,7 +208,7 @@ if (isset ($act)) {
                 }
             }
             // submit password
-            if (isset ($_POST['password']) && $_POST['password']) {
+            if (isset($_POST['password']) && $_POST['password']) {
                 $active = 'changepassword';
                 $pass = $_POST['password'];
                 $passConfirm = $_POST['passwordconfirm'];
@@ -240,40 +240,51 @@ if (isset ($act)) {
         case 'address':
             // get address info by id
             $id = $_GET['id'] ?? "";
-            if (isset ($type) && ($type == 'update') && isset ($id) && $id) {
+            if (isset($type) && ($type == 'update') && isset($id) && $id) {
                 $address = $classAddress->get_address_by_id($id);
                 if ($address->status == true) {
                     $address_info = $address->result;
                 }
             }
             // update address
-            if (isset ($type) && (($type == 'delete') || ($type == 'set_default')) && isset ($id) && $id) {
+            if (isset($type) && (($type == 'delete') || ($type == 'set_default')) && isset($id) && $id) {
                 $update_address = $classAddress->update_address_user($type, $id);
             }
             $type = $_GET['type'] ?? "";
-            if (isset ($_POST['submit_address']) && $_POST['submit_address']) {
-
-
+            if (isset($_POST['submit_address']) && $_POST['submit_address']) {
                 $name_receiver = $_POST['name_receiver'] ?? "";
                 $phone_number = $_POST['phone_number'] ?? "";
                 $province = $_POST['province'] ?? "";
                 $district = $_POST['district'] ?? "";
                 $address_detail = $_POST['address_detail'] ?? "";
                 $is_default = $_POST['is_default'] ?? "";
-
                 $update_address = $classAddress->update_address_user($type, $id, $name_receiver, $phone_number, $province, $district, $address_detail, $is_default);
             }
-            if (isset ($update_address)) {
+            if (isset($update_address)) {
                 if ($update_address->status) {
                     echo '<div id="toast" mes-type="success" mes-title="Thành công!" mes-text="' . $update_address->message . '"></div>';
+                    $redirect = isset($_POST['shop'])?"?mod=page&act=checkout&shop=".$_POST['shop']:"";
+                    $redirect = isset($_POST['voucher'])? $redirect."&voucher=".$_POST['voucher']:$redirect;
+                    if(empty($redirect)){
+                        echo ' <script>
+                                setTimeout(function() {
+                                    window.location.href="?mod=profile&act=address";
+                                }, 2500);
+                            </script>';
+
+                    }else{
+                        echo ' <script>
+                                setTimeout(function() {
+                                    window.location.href="'.$redirect.'";
+                                }, 2500);
+                            </script>';
+                    }
+
+
                 } else {
-                    echo '<div id="toast" mes-type="error" mes-title="Thành công!" mes-text="' . $update_address->message . '"></div>';
+                    echo '<div id="toast" mes-type="error" mes-title="Thất bại!" mes-text="' . $update_address->message . '"></div>';
                 }
-                echo ' <script>
-                            setTimeout(function() {
-                                window.location.href="?mod=profile&act=address";
-                            }, 2500);
-                        </script>';
+
             }
             // get all address
             $all_address = $classAddress->get_all_address_user();
@@ -286,10 +297,10 @@ if (isset ($act)) {
         case "voucher":
             $viewTitle = "Quản lý Voucher";
             $type = 'all';
-            if (isset ($_GET['type']) && $_GET['type'])
+            if (isset($_GET['type']) && $_GET['type'])
                 $type = $_GET['type'];
             $all_voucher = $classVoucher->get_voucher_user($type);
-            if (isset ($_POST['btn_submit_search']) && $_POST['btn_submit_search']) {
+            if (isset($_POST['btn_submit_search']) && $_POST['btn_submit_search']) {
                 $all_voucher = $classVoucher->get_voucher_user($type, $_POST['search_voucher']);
             }
             include_once 'view/inc/header.php';
@@ -302,7 +313,7 @@ if (isset ($act)) {
             $urlFilter = "?mod=profile&act=notification";
             $limit = 5;
             $page = 1;
-            if (isset ($_GET['page'])) {
+            if (isset($_GET['page'])) {
                 $page = $_GET['page'];
                 $urlFilter .= '&page=' . $page;
 
@@ -318,7 +329,7 @@ if (isset ($act)) {
             include_once 'view/inc/footer.php';
             break;
         case "order_detail":
-            if (isset ($_GET['order']) && $_GET['order']) {
+            if (isset($_GET['order']) && $_GET['order']) {
                 $result = $classOrder->get_order_user_detail($_GET['order']);
                 if ($result->status) {
                     $data = $result->result;
@@ -329,7 +340,7 @@ if (isset ($act)) {
                 header("Location: ?page=404");
             }
             // cancel order
-            if (isset ($_POST['submit_delete']) && $_POST['submit_delete']) {
+            if (isset($_POST['submit_delete']) && $_POST['submit_delete']) {
                 $cancel_order = $classOrder->cancel_order_user($_POST['order_uuid']);
                 if ($cancel_order->status) {
                     echo '<div id="toast" mes-type="error" mes-title="Thành công!" mes-text="' . $cancel_order->message . '"></div>';

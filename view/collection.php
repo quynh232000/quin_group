@@ -29,8 +29,8 @@
                     ?>
                 </div>
                 <a href="?mod=page&act=collection" class="suggestion-nav-right">
-                    Xem tất cả
-                    <i class="fa-solid fa-chevron-right"></i>
+                    <!-- Xem tất cả
+                    <i class="fa-solid fa-chevron-right"></i> -->
                 </a>
             </div>
             <!-- <div class="c-mall-body">
