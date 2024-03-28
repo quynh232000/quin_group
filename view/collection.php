@@ -29,8 +29,8 @@
                     ?>
                 </div>
                 <a href="?mod=page&act=collection" class="suggestion-nav-right">
-                    Xem tất cả
-                    <i class="fa-solid fa-chevron-right"></i>
+                    <!-- Xem tất cả
+                    <i class="fa-solid fa-chevron-right"></i> -->
                 </a>
             </div>
             <!-- <div class="c-mall-body">
@@ -114,7 +114,8 @@
                         <?php
                         if (isset ($allCategory)) {
                             foreach ($allCategory as $key => $value) { ?>
-                                <div class="cate-filter-item <?= ($value['slug'] == $_GET['category']) ? "active" : "" ?>">
+                                <div
+                                    class="cate-filter-item <?= (isset ($_GET['category']) && ($value['slug'] == $_GET['category'])) ? "active" : "" ?>">
                                     <a class="cate-item-link" href="?mod=page&act=collection&category=<?= $value['slug'] ?>">
                                         <div class="cate-item-wrapper">
                                             <input type="radio" <?= isset ($_GET['category']) ? ($_GET['category'] == $value['slug'] ? "checked" : "") : "" ?> />
@@ -132,7 +133,7 @@
                                         <?php
                                         if (isset ($value['children']) && $value['children']) {
                                             foreach ($value['children'] as $key => $item) {
-                                                echo '<a class="' . (($item['slug'] == $_GET['category']) ? "active" : "") . '" href="?mod=page&act=collection&category=' . $item['slug'] . '">' . $item['name'] .' ( '.$item['count'].' )'. '</a>';
+                                                echo '<a class="' . ((isset ($_GET['category']) && ($item['slug'] == $_GET['category'])) ? "active" : "") . '" href="?mod=page&act=collection&category=' . $item['slug'] . '">' . $item['name'] . ' ( ' . $item['count'] . ' )' . '</a>';
                                             }
                                         }
                                         ?>
@@ -152,83 +153,85 @@
                 </div>
 
                 <div class="g-left-top">
-
-                    <!-- <form method="GET" action="?mod=page&act=collection&category=<?=$_GET['category']?>" class="g-left-top-body"> -->
-                    <form  class="g-left-top-body">
+                    <form class="g-left-top-body">
                         <div class="g-left-top-title"></div>
                         <div class="g-left-top-item">
                             <span>THEO GIÁ</span>
                         </div>
                         <div class="g-left-price-body">
-                            <input type="hidden" name="mod" value="<?=$mod?>">
-                            <input type="hidden" name="act" value="<?=$act?>">
-                            <input type="hidden" name="category" value="<?=$category?>">
-                            <input type="number" name="min_price" value="<?=$min_price?>" placeholder="đ Từ" min="0"/>
+                            <input type="hidden" name="mod" value="<?= $mod ?>">
+                            <input type="hidden" name="act" value="<?= $act ?>">
+                            <input  type="hidden" name="category" value="<?= $category ?>">
+                            <input id="min-price" type="number" name="min_price" value="<?= $min_price ?>" placeholder="đ Từ"
+                            min="0" />
                             <p>-</p>
-                            <input type="number" name="max_price" value="<?=$max_price?>" placeholder="đ Đến" min="0"/>
+                            <input id="max-price" type="number" name="max_price" value="<?= $max_price ?>" placeholder="đ Đến"
+                            min="0" />
                         </div>
+                        <span id="ms-input-price" style="color:red"></span>
 
                         <button type="submit" class="g-left-btn">Áp dụng</button>
                     </form>
+                    <script>
+                        $('#max-price').on('change',function(e) {
+                            if($(this).val() <= $('#min-price').val()){
+                                $("#ms-input-price").text("Vui lòng nhập giá lơn hơn")
+                            }else{
+                                $("#ms-input-price").text("")
+                            }
+                        })
+                    </script>
                 </div>
             </div>
             <div class="g-right">
                 <div class="g-nav">
                     <div class="g-nav-left">
+                        <?php
+                        $urlFilter = "?mod=page&act=collection&category=$category";
+                        $urlFilter .= (isset ($min_price) && $min_price) ? "&min_price=" . $min_price : "";
+                        $urlFilter .= (isset ($max_price) && $max_price) ? "&max_price=" . $max_price : "";
+                        ?>
                         <div class="c-nav-hhiden">
                             <i class="fa-solid fa-bars"></i>
                         </div>
-                        <div class="g-nav-title">Lọc theo</div>
-                        <?php 
-                        $urlFilter = "?mod=page&act=collection&category=$category";
-                        $urlFilter .= (isset($min_price)&& $min_price) ? "&min_price=".$min_price:"";
-                        $urlFilter .= (isset($max_price)&& $max_price) ? "&max_price=".$max_price:"";
-                        ?>
-                        <a href="<?=$urlFilter?>&type=New" class="g-nav-item <?= ($type =='New')?"active":""?>">
+                        <div class="g-nav-title">Sắp xếp</div>
+                        <a href="<?= $urlFilter ?>&type=New" class="g-nav-item <?= ($type == 'New') ? "active" : "" ?>">
                             <span>Mới nhất</span>
                         </a>
-                        <a href="<?=$urlFilter?>&type=Flash Sale" class="g-nav-item <?= ($type =='Flash Sale')?"active":""?>">
+                        <a href="<?= $urlFilter ?>&type=Flash Sale"
+                            class="g-nav-item <?= ($type == 'Flash Sale') ? "active" : "" ?>">
                             <span>Flash sale</span>
                         </a>
-                        <a href="<?=$urlFilter?>&type=Hot" class="g-nav-item <?= ($type =='Hot')?"active":""?>">
+                        <a href="<?= $urlFilter ?>&type=Hot" class="g-nav-item <?= ($type == 'Hot') ? "active" : "" ?>">
                             <span>Bán chạy</span>
                         </a>
 
                     </div>
                     <div class="g-nav-right">
-
-                        <!-- <div class="g-nav-page">
-                            <span class="g-nav-current">
-                                <?= $_GET['page'] ?? '1' ?>
-                            </span>
-                            <span>/</span>
-                            <span class="g-nav-total">
-                                <?= ceil($collectionPro->total / 8) ?>
-                            </span>
-                        </div> -->
                         <div class="g-nav-btn-group">
 
                             <!-- pagination -->
                             <?php
+                            $urlFilter .= "&type=" . $type;
                             $totalPage = ceil($collectionPro->total / 8);
                             $page = $_GET['page'] ?? 1;
                             $cate = isset ($_GET['category']) ? "&category=" . $_GET['category'] : "";
                             // previous
                             
-                            echo '<a href="' . ($page > 1 ? "?mod=page&act=collection$cate&page=" . ($page - 1) : "#") . '" class="g-nav-btn ' . ($page == 1 ? "disabled" : "") . '">
+                            echo '<a href="' . ($page > 1 ? "$urlFilter&page=" . ($page - 1) : "#") . '" class="g-nav-btn ' . ($page == 1 ? "disabled" : "") . '">
                                         <i class="fa-solid fa-angle-left"></i>
                                     </a>';
                             // for number
                             for ($i = 0; $i < $totalPage; $i++) {
                                 $active = $page == ($i + 1) ? "active" : "";
 
-                                $link = "?mod=page&act=collection$cate&page=" . ($i + 1);
+                                $link = "$urlFilter&page=" . ($i + 1);
                                 echo '<a href="' . $link . '" class="g-nav-btn ' . $active . '">
                                        ' . ($i + 1) . '
                                     </a>';
                             }
                             // next
-                            echo '<a href="' . ($page < $totalPage ? "?mod=page&act=collection$cate&page=" . ($page + 1) : "#") . '" class="g-nav-btn ' . ($page == $totalPage ? "disabled" : "") . '">
+                            echo '<a href="' . ($page < $totalPage ? "$urlFilter&page=" . ($page + 1) : "#") . '" class="g-nav-btn ' . ($page == $totalPage ? "disabled" : "") . '">
                                         <i class="fa-solid fa-angle-right"></i>
                                     </a>';
                             ?>
@@ -315,7 +318,7 @@
                                             </del>
                                         </div>
                                     </a>
-                                    <div class="product-btn" idpro="<?= $value['id'] ?>" data-price="<?= $value['price'] ?>">
+                                    <div onclick="update_cart_user('plus','<?=$value['id']?>',1)" class="product-btn" idpro="<?= $value['id'] ?>" data-price="<?= $value['price'] ?>">
                                         <i class="fa-solid fa-cart-plus"></i>
                                         <span>Thêm giỏ hàng</span>
                                     </div>
@@ -324,7 +327,7 @@
 
                         <?php }
                     } else {
-                        echo '<div class="no-data">No product found!</div>';
+                        echo '<div class="no-data">Không tìm thấy sản phẩm nào!</div>';
                     } ?>
 
 

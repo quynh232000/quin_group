@@ -16,7 +16,7 @@
                 <div class="l-footer-child">
                     <i class="fa-solid fa-location-dot"></i>
                     <div class="l-footer-child-info">
-                       Cv phần mềm Quang Trung, Q.12, HCM, VN
+                        Cv phần mềm Quang Trung, Q.12, HCM, VN
                     </div>
                 </div>
                 <div class="l-footer-child">
@@ -43,26 +43,26 @@
                 <a href="#" class="l-footer-child">
                     Tin tức
                 </a>
-               
+
             </div>
             <div class="l-footer-item">
                 <div class="l-footer-title">
                     Cộng đồng
                 </div>
                 <div class="l-list-community" style="display:flex">
-                    <a href="#" class="l-footer-child">
+                    <a href="https://www.facebook.com/quynh232000/" class="l-footer-child">
                         <i class="fa-brands fa-facebook"></i>
                     </a>
-                    <a href="#" class="l-footer-child">
+                    <a href="https://mr-quynh.com/" class="l-footer-child">
                         <i class="fa-brands fa-instagram"></i>
                     </a>
-                    <a href="#" class="l-footer-child">
+                    <a href="https://mr-quynh.com/" class="l-footer-child">
                         <i class="fa-brands fa-twitter"></i>
                     </a>
-                    <a href="#" class="l-footer-child">
+                    <a href="https://mr-quynh.com/" class="l-footer-child">
                         <i class="fa-brands fa-google"></i>
                     </a>
-                    <a href="#" class="l-footer-child">
+                    <a href="https://mr-quynh.com/" class="l-footer-child">
                         <i class="fa-brands fa-youtube"></i>
                     </a>
                 </div>
@@ -71,7 +71,7 @@
 
         </div>
         <div class="footer-copy">
-            Copyright © 2023 Mr Quynh
+            Copyright © 2024 <a href="https://www.facebook.com/quynh232000/">Mr Quynh</a>
         </div>
     </div>
 </footer>
@@ -84,17 +84,41 @@
 
 <script>
     const VND = new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
+        style: "currency",
+        currency: "VND",
     });
-    const prices =document.querySelectorAll(".fm-price")
-    prices.forEach(item=>{
-      item.textContent =VND.format(item.textContent)
+    const prices = document.querySelectorAll(".fm-price")
+    prices.forEach(item => {
+        if(!isNaN(item.textContent)){
+            item.textContent = VND.format(item.textContent)
+
+        }
     })
+</script>
+<script>
+fetch('https://api64.ipify.org?format=json')
+  .then(response => response.json())
+  .then(data => {
+    var clientIP = data.ip;
+    jQuery.get("http://ipinfo.io/" + clientIP, function(response) {
+        $.ajax({
+            url:"?mod=request&act=set_traffic",
+            type:"POST",
+            cache:false,
+            data:{
+                ip:response.ip,
+                location:response.loc,
+                type:response.city,
+            }
+        }).done(res=>{
+        })
+    }, "jsonp");
+  });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 <script src="./src/js/main.js" type="module"></script>
 <script src="./src/js/slider.js"></script>
+<script src="./src/js/vinh.js"></script>
 
 </body>
 

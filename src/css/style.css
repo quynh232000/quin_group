@@ -1196,3 +1196,29 @@ a.header-search-info {
 .navllink-cate{
     min-width: 100px;
 }
+/* new */
+#seearch_img-shop img{
+    border-radius: 50%;
+    object-fit: cover;
+}
+#seearch_img-shop {
+    border-radius: 50%;
+    object-fit: cover;
+}
+#h-shop-name{
+    color: gray;
+}
+.header_noti_count{
+    position: relative;
+}
+.noti_count{
+    position: absolute;
+    background-color: var(--danger);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    font-size: 1rem;
+    text-align: center;
+    top: -8px;
+    right: -10px;
+}

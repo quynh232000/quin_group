@@ -1,45 +1,6 @@
 <?php
-// echo "<pre>";
-// $htmlTreeView = '';
-// foreach ($arrayOfCategories  as $key => $value) {
-//     if (isset($value["children"]) && !empty($value["children"])) {
-
-//         $htmlTreeView .= '<ul class="tree-ul">
-//                             <li class="tree-li parent">
-//                                 <details>
-//                                     <summary>' . $value["name"] . '</summary>
-
-
-//                         ';
-
-//         foreach ($value["children"] as $key => $child) {
-//             $htmlTreeView .= '<ul class="tree-ul">
-//                                             <li class="tree-li parent">
-//                                                 <details>
-//                                                     <summary>' . $child["name"] . '</summary>
-
-
-
-//                                                 </details>
-//                                             </li>
-//                                         </ul>
-//                                         ';
-//         }
-//     } else {
-//         $htmlTreeView .= '<ul class="tree-ul">
-//                             <li class="tree-li">' . $value["name"] . '</li>
-//                         </ul>';
-//     }
-
-//     $htmlTreeView .= '          </details>
-//                             </li>
-//                         </ul>';
-// }
-
 ///////////////////////////////////////////
-
 $htmlTreeView = '';
-
 foreach ($arrayOfCategories as $category) {
     $htmlTreeView .= generateCategoryHTML($category);
 }
@@ -99,103 +60,7 @@ function generateCategoryHTML($category)
 
 <body>
     <div>
-        <!-- <ul class="tree-ul">
-        <li class="tree-li parent">
-            <details>
-                <summary>Nhat</summary>
-                <ul class="tree-ul">
-                    <li class="tree-li">ok</li>
-                    <li class="tree-li">so mot</li>
-                    <li class="tree-li parent">
-                        <details>
-                            <summary>mot so</summary>
-                            <ul class="tree-ul">
-                                <li class="tree-li parent">
-                                    <details>
-                                        <summary>mot so</summary>
-                                        <ul class="tree-ul">
-                                            <li class="tree-li">ok</li>
-                                            <li class="tree-li">so mot</li>
-                                            <li class="tree-li">mot so</li>
-                                            <li class="tree-li">mot so</li>
-                                            <li class="tree-li">mot so</li>
-                                            <li class="tree-li">mot so</li>
-                                            <li class="tree-li">mot so</li>
-                                        </ul>
-                                    </details>
-                                </li>
-                                <li class="tree-li parent">
-                                    <details>
-                                        <summary>mot so</summary>
-                                        <ul class="tree-ul">
-                                            <li class="tree-li">ok</li>
-                                            <li class="tree-li">so mot</li>
-                                            <li class="tree-li">mot so</li>
-                                            <li class="tree-li">mot so</li>
-                                            <li class="tree-li">mot so</li>
-                                            <li class="tree-li">mot so</li>
-                                            <li class="tree-li">mot so</li>
-                                        </ul>
-                                    </details>
-                                </li>
-                                <li class="tree-li parent">
-                                    <details>
-                                        <summary>mot so</summary>
-                                        <ul class="tree-ul">
-                                            <li class="tree-li">ok</li>
-                                            <li class="tree-li">so mot</li>
-                                            <li class="tree-li">mot so</li>
-                                            <li class="tree-li">mot so</li>
-                                            <li class="tree-li">mot so</li>
-                                            <li class="tree-li">mot so</li>
-                                            <li class="tree-li">mot so</li>
-                                        </ul>
-                                    </details>
-                                </li>
-                            </ul>
-                        </details>
-                    </li>
-                </ul>
-            </details>
-        </li>
-        <li class="tree-li parent">
-            <details>
-                <summary>SG</summary>
-                <ul class="tree-ul">
-                    <li class="tree-li parent">
-                        <details>
-                            <summary>mot so</summary>
-                            <ul class="tree-ul">
-                                <li class="tree-li">ok</li>
-                                <li class="tree-li">so mot</li>
-                                <li class="tree-li">mot so</li>
-                            </ul>
-                        </details>
-                    </li>
-                    <li class="tree-li parent">
-                        <details>
-                            <summary>mot so</summary>
-                            <ul class="tree-ul">
-                                <li class="tree-li">ok</li>
-                                <li class="tree-li">so mot</li>
-                                <li class="tree-li">mot so</li>
-                                <li class="tree-li">mot so</li>
-                                <li class="tree-li">mot so</li>
-                                <li class="tree-li">mot so</li>
-                                <li class="tree-li">mot so</li>
-                            </ul>
-                        </details>
-                    </li>
-                    <li class="tree-li">mot so</li>
-                </ul>
-            </details>
-        </li>
-        <li class="tree-li">DN</li>
-    </ul> -->
         <?= $htmlTreeView ?>
-
-
-
         <!-- modal  -->
         <div class="popup-container popup-create">
             <div class="popup-box">

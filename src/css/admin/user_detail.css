@@ -1,0 +1,11 @@
+.datepicker .datepicker-days tr td.active~td,
+.datepicker .datepicker-days tr td.active {
+    color: #af1623 !important;
+    background: transparent !important;
+}
+
+.datepicker .datepicker-days tr:hover td {
+    color: #000;
+    background: #e5e2e3;
+    border-radius: 0;
+}

@@ -48,7 +48,7 @@ class ProductAdmin
                         WHERE
                             u.role = 'Seller' $status $pagination";
 
-        return $this->db->selectMultiple($query);
+        return $this->db->selectMany($query);
     }
 
     public function updateProduct($status, $idProduct, $reason = "")

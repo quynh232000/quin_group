@@ -195,7 +195,7 @@
                                                         </del>
                                                     </div>
                                                 </a>
-                                                <div idpro="<?= $value['id'] ?>" data-price="<?= $value['price'] ?>"
+                                                <div onclick="update_cart_user('plus','<?=$value['id']?>',1)" idpro="<?= $value['id'] ?>" data-price="<?= $value['price'] ?>"
                                                     class="product-btn">
                                                     <i class="fa-solid fa-cart-plus"></i>
                                                     <span>Thêm giỏ hàng</span>
@@ -227,7 +227,7 @@
                     <div class="new-product-title">
                         Sản phẩm mới
                     </div>
-                    <a href="?mod=page&act=collection" class="new-product-more">
+                    <a href="?mod=page&act=collection&type=New" class="new-product-more">
                         Xem thêm
                         <i class="fa-solid fa-chevron-right"></i>
                     </a>
@@ -314,7 +314,7 @@
                                             </del>
                                         </div>
                                     </a>
-                                    <div class="product-btn" idpro="<?= $value['id'] ?>" data-price="<?= $value['price'] ?>">
+                                    <div onclick="update_cart_user('plus','<?=$value['id']?>',1)" class="product-btn"  idpro="<?= $value['id'] ?>" data-price="<?= $value['price'] ?>">
                                         <i class="fa-solid fa-cart-plus"></i>
                                         <span>Thêm giỏ hàng</span>
                                     </div>
@@ -425,7 +425,7 @@
                                                 </del>
                                             </div>
                                         </a>
-                                        <div class="product-btn" idpro="<?= $value['id'] ?>"
+                                        <div onclick="update_cart_user('plus','<?=$value['id']?>',1)" class="product-btn" idpro="<?= $value['id'] ?>"
                                             data-price="<?= $value['price'] ?>">
                                             <i class="fa-solid fa-cart-plus"></i>
                                             <span>Thêm giỏ hàng</span>
@@ -440,7 +440,7 @@
                     </div>
                     <div class="best-selling-btn-body">
                         <div class="best-selling-content">
-                            <a href="?mod=page&act=collection" class="best-selling-btn">
+                            <a href="?mod=page&act=collection&Type=Flash%20Sale" class="best-selling-btn">
                                 Xem thêm
                             </a>
                         </div>
@@ -454,19 +454,19 @@
         <div class="wrapper suggestion-wrapper">
             <div class="home-title">Sản phẩm gợi ý</div>
             <div class="suggestion-nav">
-                <div class="suggestion-nav-left">
+                <!-- <div class="suggestion-nav-left">
                     <?php
                     foreach ($randomCate as $key => $value) {
-                        echo '<div class="suggestion-nav-item '.($key ==0?"active":"").'" cateid="'.$value['slug'].'">'.$value['name'].'</div>';
+                        echo '<div class="suggestion-nav-item ' . ($key == 0 ? "active" : "") . '" cateid="' . $value['slug'] . '">' . $value['name'] . '</div>';
                     }
                     ?>
-                    
+
 
                 </div>
                 <a href="?mod=page&act=collection" class="suggestion-nav-right sg-btn-more">
                     Xem thêm
                     <i class="fa-solid fa-chevron-right"></i>
-                </a>
+                </a> -->
             </div>
             <div class="suggest-list-products">
                 <?php
@@ -545,7 +545,7 @@
                                         </del>
                                     </div>
                                 </a>
-                                <div class="product-btn" idpro="<?= $value['id'] ?>" data-price="<?= $value['price'] ?>">
+                                <div onclick="update_cart_user('plus','<?=$value['id']?>',1)" class="product-btn" idpro="<?= $value['id'] ?>" data-price="<?= $value['price'] ?>">
                                     <i class="fa-solid fa-cart-plus"></i>
                                     <span>Thêm giỏ hàng</span>
                                 </div>
@@ -560,40 +560,40 @@
             <a href="?mod=page&act=collection" class="sugestion-btn-more">
                 <div class="suggestion-btn-more-body ">Xem thêm</div>
             </a>
-            <div class="more-info">
+            <div class="more-info more-info-edit">
                 <div class="more-info-item">
                     <div class="more-infor-wrapper">
                         <div class="more-info-img"><img src="./assest/images/xe 1.svg" alt=""></div>
-                        <div class="more-info-text1">Free Delivery</div>
-                        <div class="more-info-text2">Free shipping on all order</div>
+                        <div class="more-info-text1">Giao hàng miễn phí</div>
+                        <div class="more-info-text2">Miễn phí vận chuyển các tỉnh</div>
                     </div>
                 </div>
                 <div class="more-info-item">
                     <div class="more-infor-wrapper">
                         <div class="more-info-img"><img src="./assest/images/save 1.svg" alt=""></div>
-                        <div class="more-info-text1">Big Saving Shop</div>
-                        <div class="more-info-text2">save Big Every Day</div>
+                        <div class="more-info-text1">Mua hàng tiết kiệm</div>
+                        <div class="more-info-text2">Chương trình Flash Sale mỗi ngày</div>
                     </div>
                 </div>
                 <div class="more-info-item">
                     <div class="more-infor-wrapper">
                         <div class="more-info-img"><img src="./assest/images/online.svg"></div>
-                        <div class="more-info-text1">Online Support 24/7</div>
-                        <div class="more-info-text2">Support online 24 hours a day</div>
+                        <div class="more-info-text1">Hỗ trợ 24/7</div>
+                        <div class="more-info-text2">Hỗ trợ giải đáp thắc mắc 24/7</div>
                     </div>
                 </div>
                 <div class="more-info-item">
                     <div class="more-infor-wrapper">
                         <div class="more-info-img"><img src="./assest/images/money.svg" alt=""></div>
-                        <div class="more-info-text1">Money Back Return</div>
-                        <div class="more-info-text2">Back guarantee under 7 day</div>
+                        <div class="more-info-text1">Chính sách hoàn tiền đơn hàng</div>
+                        <div class="more-info-text2">Hoàn trả đơn hàng trong 7 ngày</div>
                     </div>
                 </div>
                 <div class="more-info-item">
                     <div class="more-infor-wrapper">
                         <div class="more-info-img"><img src="./assest/images/member.svg" alt=""></div>
-                        <div class="more-info-text1">Member Discount</div>
-                        <div class="more-info-text2">Onevery order over $120.000</div>
+                        <div class="more-info-text1">Chính sách thành viên</div>
+                        <div class="more-info-text2">Deal Sale cho khách hàng thành viên</div>
                     </div>
                 </div>
             </div>
@@ -621,7 +621,7 @@
                                     Tạo tài khoản
                                 </div>
                                 <div class="new-item-text2">
-                                    You can create a completely free account using either your Gmail or phone number.
+                                    Tạo tài khoản và bắt đầu trở thành nhà bán hàng với QuinShop
                                 </div>
                             </div>
                         </div>
@@ -632,10 +632,10 @@
                             </div>
                             <div class="new-item-content">
                                 <div class="new-item-text1">
-                                    Create Your Free Account
+                                    Iphone mới ra mắt
                                 </div>
                                 <div class="new-item-text2">
-                                    You can create a completely free account using either your Gmail or phone number.
+                                   Chọn ngay ưu đãi để sở hữu Iphone mới nhất .
                                 </div>
                             </div>
                         </div>
@@ -646,10 +646,10 @@
                             </div>
                             <div class="new-item-content">
                                 <div class="new-item-text1">
-                                    Create Your Free Account
+                                    Appe watch thế hệ mới
                                 </div>
                                 <div class="new-item-text2">
-                                    You can create a completely free account using either your Gmail or phone number.
+                                    Tính năng mới nhất từ apple Watch
                                 </div>
                             </div>
                         </div>
@@ -664,13 +664,13 @@
 
         <div class="signup-wrapper">
             <div class="sign-up-left">
-                <div class="sign-up-left-big">Sign up for Newsletter</div>
-                <div class="sign-up-left-small">...and reveive $20 coupon for first shopping and free delivery.</div>
+                <div class="sign-up-left-big">Đăng kí để nhận nhiều Voucher ưu đãi</div>
+                <div class="sign-up-left-small">...tặng mã giảm giá khi giới thiệu với vạn bè.</div>
             </div>
             <div class="sign-up-left">
-                <div class="bottom-btn-signup">
-                    Get Started
-                </div>
+                <a href="?mod=profile&act=register" class="bottom-btn-signup">
+                    Đăng kí ngay
+                </a>
             </div>
         </div>
     </div>

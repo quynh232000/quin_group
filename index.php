@@ -1,6 +1,10 @@
 <?php
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 session_start();
 include_once "./lib/session.php";
+$ip = $_SERVER['REMOTE_ADDR'];
+
 
 
 extract($_REQUEST);
@@ -18,15 +22,18 @@ if (isset($mod)) {
         case 'admin':
             include_once 'controller/admin.php';
             break;
-        case 'request':
-            include_once 'controller/request.php';
+        case 'admin':
+            include_once 'controller/admin.php';
+            break;
+        case 'requestAdmin':
+            include_once 'controller/requestAdmin.php';
             break;
         case 'redirect-google':
             include_once 'model/redirect-google.php';
             break;
-            case 'verify':
-                include_once 'controller/verify.php';
-                break;
+        case 'verify':
+            include_once 'controller/verify.php';
+            break;
 
         default:
             header("Location: ?page=404");

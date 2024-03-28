@@ -5,12 +5,17 @@ $classAdmin = new Adminlogin();
 $classAdmin->check_permistion();
 include_once 'model/admin/manage_category.php';
 include_once 'model/admin/manage_product.php';
+include_once 'model/admin/manage_order/manage_order.php';
+include_once 'model/admin/manage_user/manage_user.php';
+include_once 'model/admin/manage_user/user_detail.php';
 $categoryAdmin = new CategoryAdmin();
 $productAdmin = new ProductAdmin();
+$orderAdmin = new OrderAdmin();
+$userAdmin = new UserAdmin();
+$userDetailAdmin = new UserDetailAdmin();
 extract($_REQUEST);
 if (isset($act) && $act) {
     switch ($act) {
-
             //dashboard
         case "dashboard":
             include_once "view/admin/component/header.php";
@@ -20,19 +25,14 @@ if (isset($act) && $act) {
 
             //category
         case "mn_settings_cat":
-
-
             if (isset($_POST["submit"]) && $_POST["submit"]) {
-
                 $id_parent = $_POST["id_parent"];
                 $name_category = $_POST["name_category"];
                 $icon = $_FILES["icon"];
                 $type = $_POST["type"];
                 $createCategory = $categoryAdmin->manageCategory($name_category, $icon, $id_parent, $type);
-                // header("location: ?mod=admin&act=mn_settings_cat");
             }
             $arrayOfCategories = $categoryAdmin->getAllCate();
-            // return;
             include_once "view/admin/component/header.php";
             include_once "view/admin/pages/manage_category/settings_category.php";
             include_once "view/admin/component/scripts.php";
@@ -40,23 +40,6 @@ if (isset($act) && $act) {
         case "mn_deleted_cat":
             include_once "view/admin/component/header.php";
             include_once "view/admin/pages/manage_category/deleted_category.php";
-            include_once "view/admin/component/scripts.php";
-            break;
-
-            //user
-        case "mn_all_user":
-            include_once "view/admin/component/header.php";
-            include_once "view/admin/pages/manage_user/all_user.php";
-            include_once "view/admin/component/scripts.php";
-            break;
-        case "mn_addNew_user":
-            include_once "view/admin/component/header.php";
-            include_once "view/admin/pages/manage_user/addNew_user.php";
-            include_once "view/admin/component/scripts.php";
-            break;
-        case "mn_deleted_user":
-            include_once "view/admin/component/header.php";
-            include_once "view/admin/pages/manage_user/deleted_user.php";
             include_once "view/admin/component/scripts.php";
             break;
 
@@ -71,11 +54,9 @@ if (isset($act) && $act) {
                 $page = $_GET["page"];
                 $productPagination = $productAdmin->getProducts($status, 10, ($page));
             } else {
-                echo "Page is not found";
+                header("location: ?page=404");
+                exit;
             }
-
-            // print_r($products);
-            // return;
 
             if (isset($_POST["approve"]) && $_POST["approve"]) {
                 $idProduct = $_POST["id_product"];
@@ -98,84 +79,53 @@ if (isset($act) && $act) {
             include_once "view/admin/pages/manage_order/all_order.php";
             include_once "view/admin/component/scripts.php";
             break;
-        case "mn_processcing_order":
-            include_once "view/admin/component/header.php";
-            include_once "view/admin/pages/manage_order/processing_order.php";
-            include_once "view/admin/component/scripts.php";
-            break;
-        case "mn_delivered_order":
-            include_once "view/admin/component/header.php";
-            include_once "view/admin/pages/manage_order/delivered_order.php";
-            include_once "view/admin/component/scripts.php";
-            break;
         case "mn_returned_order":
             include_once "view/admin/component/header.php";
             include_once "view/admin/pages/manage_order/returned_order.php";
             include_once "view/admin/component/scripts.php";
             break;
-        case "mn_statistic_order":
+
+            //voucher ??
+
+            //user
+        case "mn_all_user":
+            $role = "";
+            $roles = ["All", "Member", "Seller", "Admin", "AdminAll"];
+            if (isset($_GET["role"]) && in_array($_GET["role"], $roles)) {
+                $role = $_GET["role"];
+                $countPageUser = $userAdmin->countPages($role);
+                $countPage = ceil($countPageUser["total"] / 5);
+                if (isset($_GET["page"]) && ($_GET["page"] <= $countPage && !empty($_GET["page"]))) {
+                    $page = $_GET["page"];
+                    $users = $userAdmin->selectUsers($role, 5, $page);
+                } else {
+                    header("location: ?page=404");
+                    exit;
+                }
+            } else {
+                header("location: ?page=404");
+                exit;
+            }
+
             include_once "view/admin/component/header.php";
-            include_once "view/admin/pages/manage_order/statistic_order.php";
+            include_once "view/admin/pages/manage_user/all_user.php";
             include_once "view/admin/component/scripts.php";
             break;
 
+        case "mn_user_detail":
+            if (isset($_GET["uid"]) && $_GET["uid"]) {
+                $user = $userDetailAdmin->getInfoUser($_GET["uid"]);
+            } else {
+                $user = false;
+            }
 
-            //products
-        case "mn_statistic_order":
-            include_once "view/admin/component/header.php";
-            include_once "view/admin/pages/manage_order/statistic_order.php";
-            include_once "view/admin/component/scripts.php";
-            break;
-        case "mn_statistic_order":
-            include_once "view/admin/component/header.php";
-            include_once "view/admin/pages/manage_order/statistic_order.php";
-            include_once "view/admin/component/scripts.php";
-            break;
-        case "mn_statistic_order":
-            include_once "view/admin/component/header.php";
-            include_once "view/admin/pages/manage_order/statistic_order.php";
-            include_once "view/admin/component/scripts.php";
-            break;
-        case "mn_statistic_order":
-            include_once "view/admin/component/header.php";
-            include_once "view/admin/pages/manage_order/statistic_order.php";
-            include_once "view/admin/component/scripts.php";
-            break;
-        case "mn_statistic_order":
-            include_once "view/admin/component/header.php";
-            include_once "view/admin/pages/manage_order/statistic_order.php";
-            include_once "view/admin/component/scripts.php";
-            break;
-        case "mn_statistic_order":
-            include_once "view/admin/component/header.php";
-            include_once "view/admin/pages/manage_order/statistic_order.php";
-            include_once "view/admin/component/scripts.php";
-            break;
-        case "mn_statistic_order":
-            include_once "view/admin/component/header.php";
-            include_once "view/admin/pages/manage_order/statistic_order.php";
-            include_once "view/admin/component/scripts.php";
-            break;
+            if (isset($_GET["search"]) && $_GET["search"]) {
+                $uid = $userDetailAdmin->searchUserByEmail($_GET["search"]);
+                header("location: ?mod=admin&act=mn_user_detail&uid=" . $uid["id"] . "");
+            }
 
-            //seller
-        case "mn_all_seller":
             include_once "view/admin/component/header.php";
-            include_once "view/admin/pages/manage_order/statistic_order.php";
-            include_once "view/admin/component/scripts.php";
-            break;
-        case "mn_addNew_seller":
-            include_once "view/admin/component/header.php";
-            include_once "view/admin/pages/manage_order/statistic_order.php";
-            include_once "view/admin/component/scripts.php";
-            break;
-        case "mn_deleted_seller":
-            include_once "view/admin/component/header.php";
-            include_once "view/admin/pages/manage_order/statistic_order.php";
-            include_once "view/admin/component/scripts.php";
-            break;
-        case "mn_statistic_revenue":
-            include_once "view/admin/component/header.php";
-            include_once "view/admin/pages/manage_order/statistic_order.php";
+            include_once "view/admin/pages/manage_user/detail_user.php";
             include_once "view/admin/component/scripts.php";
             break;
 

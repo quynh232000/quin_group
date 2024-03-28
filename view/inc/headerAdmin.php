@@ -15,6 +15,7 @@ if (empty($viewTitle)) {
 
 <head>
     <meta charset="UTF-8">
+    <meta property="og:image" content="./assest/images/logo-no-text.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="./assest/images/logo-no-text.png">
     <title>QUIN -
@@ -39,6 +40,7 @@ if (empty($viewTitle)) {
     <link rel="stylesheet" href="src/css/shopmanageorder.css">
     <link rel="stylesheet" href="src/css/shopdelivery.css">
     <link rel="stylesheet" href="./src/css/profile.css">
+    <!-- <link rel="stylesheet" href="./src/css/nhung.css"> -->
     <!-- <link rel="stylesheet" href="./src/js/define.js"> -->
     <script src="./src/js/seller.js"></script>
 

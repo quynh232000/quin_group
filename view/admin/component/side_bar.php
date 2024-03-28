@@ -3,16 +3,23 @@
 
     <li class="nav-item">
       <a class="nav-link" href="?mod=admin&act=dashboard">
-        <i class="mdi mdi-grid-large menu-icon"></i>
+        <i class="menu-icon mdi mdi-floor-plan"></i>
         <span class="menu-title">Dashboard</span>
       </a>
     </li>
 
+    <!-- <li class="nav-item nav-category">Quản lí danh mục</li>
+    <li class="nav-item">
+      <a class="nav-link" href="?mod=admin&act=mn_settings_cat">
+        <i class="mdi mdi-grid-large menu-icon"></i>
+        <span class="menu-title">Danh mục</span>
+      </a>
+    </li> -->
 
     <li class="nav-item nav-category">Quản lí danh mục</li>
     <li class="nav-item">
       <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-        <i class="menu-icon mdi mdi-floor-plan"></i>
+        <i class="mdi mdi-grid-large menu-icon"></i>
         <span class="menu-title">Danh mục</span>
         <i class="menu-arrow"></i>
       </a>
@@ -81,10 +88,7 @@
       </div>
     </li>
 
-
     <li class="nav-item nav-category">Quản lí User</li>
-
-
     <li class="nav-item">
       <a class="nav-link" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
         <i class="menu-icon mdi mdi-account-circle-outline"></i>
@@ -93,28 +97,8 @@
       </a>
       <div class="collapse" id="form-elements">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item"><a class="nav-link" href="?mod=admin&act=mn_all_user">Tất cả user</a></li>
-          <li class="nav-item"><a class="nav-link" href="?mod=admin&act=mn_addNew_user">Thêm user</a></li>
-          <li class="nav-item"><a class="nav-link" href="?mod=admin&act=mn_deleted_user">User đã xóa</a></li>
-        </ul>
-      </div>
-    </li>
-
-
-
-    <li class="nav-item nav-category">Quản lí seller</li>
-    <li class="nav-item">
-      <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-        <i class="menu-icon mdi mdi-wallet-travel"></i>
-        <span class="menu-title">Seller</span>
-        <i class="menu-arrow"></i>
-      </a>
-      <div class="collapse" id="auth">
-        <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="?mod=admin&act=mn_all_seller">Tất cả Seller </a></li>
-          <li class="nav-item"> <a class="nav-link" href="?mod=admin&act=mn_addNew_seller"> Thêm mới seller </a></li>
-          <li class="nav-item"> <a class="nav-link" href="?mod=admin&act=mn_deleted_seller"> Seller đã xóa </a></li>
-          <li class="nav-item"> <a class="nav-link" href="?mod=admin&act=mn_statistic_revenue"> Thống kê doanh thu </a></li>
+          <li class="nav-item"><a class="nav-link" href="?mod=admin&act=mn_all_user&role=All&page=1">Tất cả user</a></li>
+          <li class="nav-item"><a class="nav-link" href="?mod=admin&act=mn_user_detail">Chi tiết User</a></li>
         </ul>
       </div>
     </li>

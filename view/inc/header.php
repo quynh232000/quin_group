@@ -1,6 +1,7 @@
 <?php
-
-if (empty($viewTitle)) {
+include_once 'model/notification.php';
+$noti_header = new Notification();
+if (empty ($viewTitle)) {
     $viewTitle = "HOME";
 }
 ?>
@@ -11,6 +12,7 @@ if (empty($viewTitle)) {
 
 <head>
     <meta charset="UTF-8">
+    <meta property="og:image" content="./assest/images/logo-no-text.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="./assest/images/logo-no-text.png">
     <title>QUIN-
@@ -38,11 +40,15 @@ if (empty($viewTitle)) {
     <link rel="stylesheet" href="./src/css/shopcustom.css">
     <link rel="stylesheet" href="./src/css/shopdashboard.css">
     <link rel="stylesheet" href="./src/css/orderhistory.css">
+    <script src="./src/js/seller.js"></script>
+    <script src="./src/js/define.js"></script>
 
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
 
     <!-- swiper -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    <script src="./src/js/define.js"></script>
+    <script src="./src/js/shop.js"></script>
 </head>
 
 <body>
@@ -81,7 +87,7 @@ if (empty($viewTitle)) {
                             Quản trị
                         </a>
                         <div class="sidebar-bottom">
-                           
+
 
 
                             <a href="?mod=page&act=home&action=logout" class="sidebar-item action">
@@ -126,10 +132,10 @@ if (empty($viewTitle)) {
                         <div class="m-header-top-space"></div>
                         <a href="?mod=admin&act=dashboard" class="header-top-item">
                             <div class="header-top-item-body">
-                            <i class="fa-solid fa-user-tie"></i>
+                                <i class="fa-solid fa-user-tie"></i>
                             </div>
                             <div class="header-top-item-title">
-                               Quản trị
+                                Quản trị
                             </div>
                         </a>
                     </div>
@@ -137,20 +143,32 @@ if (empty($viewTitle)) {
                         <i class="fa-solid fa-gear"></i>
                     </div>
                     <div class="header-top-right">
-                        <a href="./" class="header-top-item">
-                            <div class="header-top-item-body">
-                                <i class="fa-regular fa-bell"></i>
+                        <?php
+                        if (Session::get('isLogin')) {
+                            $count_noti = $noti_header->count_noti_not_read(); ?>
+                            <a href="?mod=profile&act=notification" class="header-top-item header_noti_count">
+                                <div class="header-top-item-body">
+                                    <?php
+                                    if ($count_noti > 0)
+                                        if ($count_noti > 9) {
+                                            echo '<div class="noti_count">9+</div>';
+                                        } else {
+                                            echo '<div class="noti_count">' . $count_noti . '</div>';
+                                        }
+                                    ?>
+                                    <i class="fa-regular fa-bell"></i>
+                                </div>
+                                <div class="header-top-item-title">
+                                    Thông báo
+                                </div>
+                            </a>
+                        <?php }
 
+                        ?>
 
-                            </div>
-                            <div class="header-top-item-title">
-                                Thông báo
-                            </div>
-                        </a>
                         <a href="?mod=seller&act=dashboard" class="header-top-item">
                             <div class="header-top-item-body">
-                                <i class="fa-regular fa-circle-question"></i>
-
+                                <i class="fa-solid fa-shop"></i>
                             </div>
                             <div class="header-top-item-title">
                                 Người bán hàng
@@ -190,15 +208,21 @@ if (empty($viewTitle)) {
                             </div>
                             <input type="text" class="search-input-product" placeholder="Tìm kiếm sản phẩm...">
                             <div class="header__search-history">
-                                <h3 class="header__search-history-header">Kết quả tìm kiếm</h3>
-                                <ul class="header__search-history-list">
-
-                                    <div class="no-product">Không có sản phẩm nào</div>
-
-                                </ul>
-                                <div class="h-s-bottom">
-                                    <span><strong class="search-totel">0</strong> Sản phẩm</span>
-                                    <span>Xem thêm</span>
+                                <div class="search_group">
+                                    <h3 class="header__search-history-header">Tìm kiếm Shop</h3>
+                                    <ul class="header__search-history-list" id="search_shop_result">
+                                        <div class="no-product">Không tìm thấy kết quả nào</div>
+                                    </ul>
+                                </div>
+                                <div class="search_group">
+                                    <h3 class="header__search-history-header">Tìm kiếm sản phẩm</h3>
+                                    <ul class="header__search-history-list " id="search_product_result">
+                                        <div class="no-product">Không có sản phẩm nào</div>
+                                    </ul>
+                                    <div class="h-s-bottom">
+                                        <span><strong class="search-totel">0</strong> Sản phẩm</span>
+                                        <span>Xem thêm</span>
+                                    </div>
                                 </div>
                             </div>
                             <i class="fa-solid fa-magnifying-glass"></i>
@@ -247,7 +271,7 @@ if (empty($viewTitle)) {
                                         <span>Hồ sơ</span>
                                     </a>
                                     <?php
-                                    if (isset($_GET['action']) && $_GET["action"] == 'logout') {
+                                    if (isset ($_GET['action']) && $_GET["action"] == 'logout') {
                                         echo Session::destroy();
                                     }
                                     ?>
@@ -286,23 +310,19 @@ if (empty($viewTitle)) {
                         <div class="header-search-item header-cart">
                             <div class="header-search-item-icon icon-cart">
                                 <i class="fa-solid fa-cart-plus"></i>
-                                <div class="cart-count view-total-count"
-                                    view-total-count="<?= ($getCartInfo->result['total']) ?>">
-                                    <?php
-                                    if (empty(($getCartInfo->result['total']))) {
-                                        echo "0";
 
-                                    } else {
-                                        echo $getCartInfo->result['total'];
-                                    }
-                                    ?>
+                                <div id="cart-count" class="cart-count view-total-count" view-total-count="">
+                                    <?= $cart_user->total['count'] ?>
+
                                 </div>
                             </div>
                             <a href="?mod=page&act=cart" class="header-search-info">
                                 <span>Giỏ hàng</span>
-                                <div class="header-search-text-s fm-price view-total-cart"
-                                    view-total-cart=" <?= ($getCartInfo->result['totalPrice']) ?>">
-                                    <?= ($getCartInfo->result['totalPrice']) ?>
+
+                                <div id="cart-total" class="header-search-text-s fm-price view-total-cart"
+                                    view-total-cart="">
+                                    <?= $cart_user->total['total'] ?>
+
                                 </div>
                             </a>
                             <!-- no cart :: header__cart-list--no-cart -->
@@ -311,34 +331,41 @@ if (empty($viewTitle)) {
 
 
                                 <p class="header__cart-heading">Sản phẩm đã thêm</p>
-                                <ul class="header__cart-list-item">
+                                <ul class="header__cart-list-item" id="list_product_cart">
                                     <?php
-                                    if ($cartResult->status && count($cartResult->result) > 0) {
-                                        foreach ($cartResult->result as $key => $value) { ?>
+                                    if ($cart_user->status && count($cart_user->result) > 0) {
+                                        foreach ($cart_user->result as $key => $value) {
+                                            $product_info = $value['product_info'];
+                                            ?>
                                             <li class="header__cart-item">
-                                                <img src="./assest/upload/<?= $value['image'] ?>" alt=""
+
+                                                <img src="./assest/upload/<?= $value['product_info']['image_cover'] ?>" alt=""
                                                     class="header__cart-img">
+
                                                 <div class="header__cart-item-info">
                                                     <div class="header__cart-item-head">
-                                                        <h5 class="header__cart-item-name">
-                                                            <?= $value['namePro'] ?>
-                                                        </h5>
+                                                        <a href="?mod=page&act=detail&product=<?= $value['product_info']['slug'] ?>"
+                                                            class="header__cart-item-name">
+                                                            <?= $product_info['name'] ?>
+                                                        </a>
                                                         <div class="header__cart-item-price-wrap">
                                                             <span class="header__cart-item-price fm-price">
-                                                                <?= $value['price'] ?>
+                                                                <?= $product_info['price'] ?>
                                                             </span>
                                                             <span class="header__cart-item-multiple">x</span>
                                                             <span class="header__cart-item-qnt">
-                                                                <?= $value['count'] ?>
+                                                                <?= $value['quantity'] ?>
                                                             </span>
                                                         </div>
                                                     </div>
                                                     <div class="header__cart-item-body">
                                                         <span class="header__cart-item-description">
-                                                            <?= $value['brand'] ?> -
-                                                            <?= $value['origin'] ?>
+                                                            <?= $product_info['brand'] ?> -
+                                                            <?= $product_info['origin'] ?>
                                                         </span>
-                                                        <span class="header__cart-item-remmove">Delete</span>
+                                                        <span
+                                                            onclick="update_cart_user('delete',<?= $product_info['id'] ?>,1,true)"
+                                                            class="header__cart-item-remmove">Delete</span>
                                                     </div>
                                                 </div>
                                             </li>

@@ -5,20 +5,19 @@ include "./config/config.php";
 class Database
 {
 
-    //     public $host   = DB_HOST;
-    // public $user   = DB_USER;
-    // public $pass   = DB_PASS;
-    // public $dbname = DB_NAME;
+    public $host   = DB_HOST;
+    public $user   = DB_USER;
+    public $pass   = DB_PASS;
+    public $dbname = DB_NAME;
 
+//  public $host = "localhost";
+    // public $user = "quingroup";
+    // public $pass = "Quingroup123.";
+    // public $dbname = "quingroup";
 
-    public $host = "localhost";
-    public $user = "root";
-    public $pass = "123456";
-
-    // public $dbname = "quinshop";
-
-
-    public $dbname = "quingroup";
+    // public $user = "root";
+    // public $pass = "123456";
+    // public $dbname = "quingroup";
 
 
 
@@ -49,18 +48,21 @@ class Database
         $stmt->execute();
         // $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
-
         return $stmt;
     }
 
-    public function selectMultiple($query) {
+    public function selectMany($query)
+    {
         $stmt = $this->link->prepare($query);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
-    public function selectOne($query) {
+    public function selectOne($query)
+    {
         $stmt = $this->link->prepare($query);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->execute();
         return $stmt->fetch();
     }
@@ -69,6 +71,7 @@ class Database
     {
         return $this->link->exec($query);
     }
+    
     public function update($query)
     {
         $stmt = $this->link->prepare($query);
@@ -78,11 +81,13 @@ class Database
         } else {
             return false;
         }
-
     }
     public function delete($query)
     {
         return $this->link->exec($query);
+    }
+    public function get_lastest_id() {
+        return $this->link->lastInsertId();
     }
 }
 
