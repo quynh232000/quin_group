@@ -325,3 +325,39 @@
     padding: 0 20px;
     transition: 3s ease-in-out;
 }
+/* new */
+.cart .shop-voucher-item{
+    width: 50%;
+}
+.cart .shop-voucher-body{
+    flex-wrap: wrap;
+}
+.cart_right-item{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.cart-bottom-right{
+    flex-direction: column;
+}
+.cart_right-item_voucher{
+    width: 100%;
+}
+.cart-bottom-right-title.total{
+    font-weight: 600;
+}
+.cart_right-item.total{
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+}
+.cart_result_check-code{
+    color: green;
+    font-weight: 600;
+    padding: 10px;
+}
+.cart_result_check-code.error{
+    color: red;
+}
+.cart-shop-name{
+    text-transform: uppercase;
+}

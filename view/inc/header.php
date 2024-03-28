@@ -1,6 +1,7 @@
 <?php
-
-if (empty($viewTitle)) {
+include_once 'model/notification.php';
+$noti_header = new Notification();
+if (empty ($viewTitle)) {
     $viewTitle = "HOME";
 }
 ?>
@@ -20,9 +21,13 @@ if (empty($viewTitle)) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./src/css/base.css">
     <link rel="stylesheet" href="./src/css/style.css">
     <link rel="stylesheet" href="./src/css/home.css">
@@ -138,20 +143,32 @@ if (empty($viewTitle)) {
                         <i class="fa-solid fa-gear"></i>
                     </div>
                     <div class="header-top-right">
-                        <a href="./" class="header-top-item">
-                            <div class="header-top-item-body">
-                                <i class="fa-regular fa-bell"></i>
+                        <?php
+                        if (Session::get('isLogin')) {
+                            $count_noti = $noti_header->count_noti_not_read(); ?>
+                            <a href="?mod=profile&act=notification" class="header-top-item header_noti_count">
+                                <div class="header-top-item-body">
+                                    <?php
+                                    if ($count_noti > 0)
+                                        if ($count_noti > 9) {
+                                            echo '<div class="noti_count">9+</div>';
+                                        } else {
+                                            echo '<div class="noti_count">' . $count_noti . '</div>';
+                                        }
+                                    ?>
+                                    <i class="fa-regular fa-bell"></i>
+                                </div>
+                                <div class="header-top-item-title">
+                                    Thông báo
+                                </div>
+                            </a>
+                        <?php }
 
+                        ?>
 
-                            </div>
-                            <div class="header-top-item-title">
-                                Thông báo
-                            </div>
-                        </a>
                         <a href="?mod=seller&act=dashboard" class="header-top-item">
                             <div class="header-top-item-body">
-                                <i class="fa-regular fa-circle-question"></i>
-
+                                <i class="fa-solid fa-shop"></i>
                             </div>
                             <div class="header-top-item-title">
                                 Người bán hàng
@@ -191,15 +208,21 @@ if (empty($viewTitle)) {
                             </div>
                             <input type="text" class="search-input-product" placeholder="Tìm kiếm sản phẩm...">
                             <div class="header__search-history">
-                                <h3 class="header__search-history-header">Kết quả tìm kiếm</h3>
-                                <ul class="header__search-history-list">
-
-                                    <div class="no-product">Không có sản phẩm nào</div>
-
-                                </ul>
-                                <div class="h-s-bottom">
-                                    <span><strong class="search-totel">0</strong> Sản phẩm</span>
-                                    <span>Xem thêm</span>
+                                <div class="search_group">
+                                    <h3 class="header__search-history-header">Tìm kiếm Shop</h3>
+                                    <ul class="header__search-history-list" id="search_shop_result">
+                                        <div class="no-product">Không tìm thấy kết quả nào</div>
+                                    </ul>
+                                </div>
+                                <div class="search_group">
+                                    <h3 class="header__search-history-header">Tìm kiếm sản phẩm</h3>
+                                    <ul class="header__search-history-list " id="search_product_result">
+                                        <div class="no-product">Không có sản phẩm nào</div>
+                                    </ul>
+                                    <div class="h-s-bottom">
+                                        <span><strong class="search-totel">0</strong> Sản phẩm</span>
+                                        <span>Xem thêm</span>
+                                    </div>
                                 </div>
                             </div>
                             <i class="fa-solid fa-magnifying-glass"></i>
@@ -226,7 +249,8 @@ if (empty($viewTitle)) {
                             <!-- login -->
                             <div class="header-search-item header-search-account">
                                 <div class="header-search-item-icon">
-                                    <img src="<?php echo "./assest/upload/" . Session::get("avatar"); ?>" class="img-user" alt="">
+                                    <img src="<?php echo "./assest/upload/" . Session::get("avatar"); ?>" class="img-user"
+                                        alt="">
                                 </div>
                                 <!-- if (str_contains(Session::get("avatar"), "http")) {
                                         echo Session::get('avatar');
@@ -247,7 +271,7 @@ if (empty($viewTitle)) {
                                         <span>Hồ sơ</span>
                                     </a>
                                     <?php
-                                    if (isset($_GET['action']) && $_GET["action"] == 'logout') {
+                                    if (isset ($_GET['action']) && $_GET["action"] == 'logout') {
                                         echo Session::destroy();
                                     }
                                     ?>
@@ -287,9 +311,8 @@ if (empty($viewTitle)) {
                             <div class="header-search-item-icon icon-cart">
                                 <i class="fa-solid fa-cart-plus"></i>
 
-                                <div id="cart-count" class="cart-count view-total-count"
-                                    view-total-count="">
-                                    <?=$cart_user->total['count']?>
+                                <div id="cart-count" class="cart-count view-total-count" view-total-count="">
+                                    <?= $cart_user->total['count'] ?>
 
                                 </div>
                             </div>
@@ -298,7 +321,7 @@ if (empty($viewTitle)) {
 
                                 <div id="cart-total" class="header-search-text-s fm-price view-total-cart"
                                     view-total-cart="">
-                                    <?=$cart_user->total['total']?>
+                                    <?= $cart_user->total['total'] ?>
 
                                 </div>
                             </a>
@@ -311,7 +334,7 @@ if (empty($viewTitle)) {
                                 <ul class="header__cart-list-item" id="list_product_cart">
                                     <?php
                                     if ($cart_user->status && count($cart_user->result) > 0) {
-                                        foreach ($cart_user->result as $key => $value) { 
+                                        foreach ($cart_user->result as $key => $value) {
                                             $product_info = $value['product_info'];
                                             ?>
                                             <li class="header__cart-item">
@@ -321,9 +344,10 @@ if (empty($viewTitle)) {
 
                                                 <div class="header__cart-item-info">
                                                     <div class="header__cart-item-head">
-                                                        <h5 class="header__cart-item-name">
+                                                        <a href="?mod=page&act=detail&product=<?= $value['product_info']['slug'] ?>"
+                                                            class="header__cart-item-name">
                                                             <?= $product_info['name'] ?>
-                                                        </h5>
+                                                        </a>
                                                         <div class="header__cart-item-price-wrap">
                                                             <span class="header__cart-item-price fm-price">
                                                                 <?= $product_info['price'] ?>
@@ -339,12 +363,14 @@ if (empty($viewTitle)) {
                                                             <?= $product_info['brand'] ?> -
                                                             <?= $product_info['origin'] ?>
                                                         </span>
-                                                        <span onclick="update_cart_user('delete',<?=$product_info['id']?>)" class="header__cart-item-remmove">Delete</span>
+                                                        <span
+                                                            onclick="update_cart_user('delete',<?= $product_info['id'] ?>,1,true)"
+                                                            class="header__cart-item-remmove">Delete</span>
                                                     </div>
                                                 </div>
                                             </li>
 
-                                    <?php }
+                                        <?php }
                                     }
                                     ?>
                                 </ul>

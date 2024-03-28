@@ -203,10 +203,16 @@
 
 .shop-voucher-btn {
     background-color: var(--bg-yellow);
-    padding: 5px 20px;
+    padding: 5px 14px;
     font-size: 1.4rem;
     border-radius: 5px;
     color: var(--white);
+    overflow: hidden;
+    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    max-width: 80px;
 }
 
 .shop-voucher-btn:hover {
@@ -396,4 +402,47 @@
 /* VINH */
 .g-nav-item_down button {
     /* min-width: 120px; */
+}
+/* new */
+.s_btn_sort{
+    font-size: 1.4rem !important;
+    display: flex;
+    align-items: center;
+    outline: none !important;
+    justify-content: center;
+    gap: 6px;
+    min-width: 120px;
+}
+.s_btn_sort svg{
+    width: 12px;
+}
+.g-nav-item_down{
+    background-color: var(--primary);
+    color: white;
+    padding: 10px 14px;
+    border-radius: 6px;
+}
+div#dropdown3 {
+    width: 100%;
+    max-height: 220px;
+    overflow-y: scroll;
+}
+label.cate_input.text-2xl{
+    font-size: 1.6rem;
+    font-weight: 600;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+label.cate_input.text-2xl input{
+    width: 14px;
+    height: 14px;
+}
+.product-stars {
+    align-items: center;
+    line-height: 1.8rem;
+}
+.shop-best-sale-product .product{
+    width: 20%;
 }

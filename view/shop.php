@@ -1,5 +1,7 @@
-<link rel="stylesheet" href="../src/css/shop.css">
-<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="./src/css/shop.css">
+<link rel="stylesheet" href="./src/css/tailwind/tailwind-all.min.css">
+
+<!-- <script src="https://cdn.tailwindcss.com"></script> -->
 <!-- main -->
 <main class="collection">
     <div class="wrapper">
@@ -62,7 +64,7 @@
                     <div class="shop-item">
                         <i style="color:gray" class="fa-regular fa-star"></i>
                         <div class="shop-item-title">Đánh giá:</div>
-                        <div class="shop-item-info"><?= $shop_rating['stars'] ?> (<?= $shop_rating['votes'] ?> lượt đánh giá)</div>
+                        <div class="shop-item-info"><?= round($shop_rating['stars'],2) ?> (<?= $shop_rating['votes'] ?> lượt đánh giá)</div>
                     </div>
                     <div class="shop-item">
                         <i class="fa-solid fa-user-check"></i>
@@ -126,8 +128,8 @@
                                 SẢN PHẨM BÁN CHẠY
                             </div>
                             <a href="?mod=page&act=collection" class="new-product-more">
-                                Xem thêm
-                                <i class="fa-solid fa-chevron-right"></i>
+                                <!-- Xem thêm -->
+                                <!-- <i class="fa-solid fa-chevron-right"></i> -->
                             </a>
                         </div>
                         <div class="new-product-body">
@@ -143,6 +145,7 @@
                                 $brand = $product['brand'];
                                 $slug = $product['slug'];
                                 // $name = substr($product['name'], 0, 50);
+                                $id = $product['id'];
                                 $name = $product['name'];
                                 $img = $product['image_cover'];
                                 $rating = $shop->get_rating_product($shop_info['id'], $product['id']);
@@ -151,7 +154,7 @@
                                 $html_no_stars = str_repeat('<i style="color:gray" class="fa-regular fa-star"></i>', 5);
                                 $html_render_stars = $stars ? $html_stars : $html_no_stars;
                                 // $shop->test($html_stars);
-                                $votes = $rating['votes'] ? "(" . $rating['votes'] . ")" : "";
+                                $votes = $rating['votes'] ? "(" . $rating['votes'] . ")" : "(0)";
                                 $price = $product['price'];
                                 $percent_sale = $product['percent_sale'];
                                 $price_sale = $price * (100 - $percent_sale) / 100;
@@ -202,7 +205,7 @@
                                                 <del class="product-price-old">đ$price_format</del>
                                             </div>
                                         </a>
-                                        <div class="product-btn">
+                                        <div class="product-btn" onclick="update_cart_user('plus','$id',1)">
                                             <i class="fa-solid fa-cart-plus"></i>
                                             <span>Thêm giỏ hàng</span>
                                         </div>
@@ -250,8 +253,8 @@
                             SẢN PHẨM GIÁ SỐC
                         </div>
                         <a href="?mod=page&act=collection" class="new-product-more">
-                            Xem thêm
-                            <i class="fa-solid fa-chevron-right"></i>
+                            <!-- Xem thêm
+                            <i class="fa-solid fa-chevron-right"></i> -->
                         </a>
                     </div>
                     <div class="shop-best-seling-body">
@@ -263,6 +266,7 @@
                         foreach ($shop_sale_products as $product) {
                             $slug = $product['slug'];
                             $brand = $product['brand'];
+                            $id = $product['id'];
                             // $name = substr($product['name'], 0, 50);
                             $name = $product['name'];
                             $img = $product['image_cover'];
@@ -272,7 +276,7 @@
                             $html_no_stars = str_repeat('<i style="color:gray" class="fa-regular fa-star"></i>', 5);
                             $html_render_stars = $stars ? $html_stars : $html_no_stars;
                             // $shop->test($html_stars);
-                            $votes = $rating['votes'] ? "(" . $rating['votes'] . ")" : "";
+                            $votes = $rating['votes'] ? "(" . $rating['votes'] . ")" : "(0)";
                             /* <?= $stars ? $html_stars : $html_no_stars ?> */
                             $price = $product['price'];
                             $percent_sale = $product['percent_sale'];
@@ -324,7 +328,7 @@
                                                 <div class="product-price-sale">đ$price_sale_format</div>
                                             </div>
                                         </a>
-                                        <div class="product-btn">
+                                        <div class="product-btn" onclick="update_cart_user('plus','$id',1)">
                                             <i class="fa-solid fa-cart-plus"></i>
                                             <span>Thêm giỏ hàng</span>
                                         </div>
@@ -355,7 +359,7 @@
                             $menu_tmp = [];
                             // --
                             foreach ($shop_category_menus as $category) {
-                                if ((int) $category['parent_id'] == (int) $parent_id) {
+                                if ( $category['parent_id'] ==  $parent_id) {
                                     $menu_tmp[] = $category;
                                 }
                             }
@@ -392,36 +396,10 @@
                         </div>
                         <div class="g-nav-title ">Lọc theo</div>
 
-                        <!-- Sort by price sort  -->
-                        <div class=" g-nav-item_down">
-                            <button id="dropdownCheckboxButton" onclick="toggleDropdown('#dropdown2')" data-dropdown-toggle="dropdownDefaultCheckbox" class="text-2xl text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg  px-6 py-4 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                                <div class="price_sort">Giá</div><svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
-                                </svg>
-                            </button>
-
-                            <!-- Dropdown menu -->
-                            <div id="dropdown2" class="radio dropdown absolute right-0 z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
-                                <ul class=" space-y-3 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownCheckboxButton" id="type_radio_1">
-
-                                    <li>
-                                        <div class="flex items-center p-2">
-                                            <input id="checkbox-item-a" type="radio" name="input_type_2" value="price-asc" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                            <label for="checkbox-item-a" class="ms-2 text-2xl font-medium text-gray-900 dark:text-gray-300">Tăng dần</label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="flex items-center p-2">
-                                            <input id="checkbox-item-b" type="radio" name="input_type_2" value="price-desc" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                            <label for="checkbox-item-b" class="ms-2 text-2xl font-medium text-gray-900 dark:text-gray-300">Giảm dần</label>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                     
                         <!-- Sort by brand  -->
                         <div class=" g-nav-item_down">
-                            <button id="dropdownCheckboxButton" onclick="toggleDropdown('#dropdown3')" data-dropdown-toggle="dropdownDefaultCheckbox" class="text-2xl text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg  px-6 py-4 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                            <button id="dropdownCheckboxButton" onclick="toggleDropdown('#dropdown3')" data-dropdown-toggle="dropdownDefaultCheckbox" class="s_btn_sort " type="button">
                                 <div class="brand_sort">Thương hiệu</div><svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
                                 </svg>
@@ -451,13 +429,13 @@
                         </div>
                         <!-- Sort by type  -->
                         <div class=" g-nav-item_down">
-                            <button id="dropdownCheckboxButton" onclick="toggleDropdown('#dropdown1')" data-dropdown-toggle="dropdownDefaultCheckbox" class="text-2xl text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg  px-6 py-4 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">Sắp xếp: <div class="sort_sort px-2"> Theo loại</div><svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <button id="dropdownCheckboxButton" onclick="toggleDropdown('#dropdown1')" data-dropdown-toggle="dropdownDefaultCheckbox" class="s_btn_sort" type="button">Sắp xếp: <div class="sort_sort px-2"> Theo loại</div><svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
                                 </svg>
                             </button>
 
                             <!-- Dropdown menu -->
-                            <div id="dropdown1" class="radio dropdown absolute right-0 z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
+                            <div id="dropdown1" class="radio dropdown absolute right-0 z-10 hidden w-100 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
                                 <ul class=" space-y-3 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownCheckboxButton" id="type_radio_3">
                                     <li>
                                         <div class="flex items-center p-2">
@@ -486,9 +464,7 @@
                     </div>
                     <div class="g-nav-right">
                         <div class="g-nav-page">
-                            <span class="g-nav-current">1</span>
-                            <span>/</span>
-                            <span class="g-nav-total">9</span>
+                           
                         </div>
                         <div class="g-nav-btn-group">
                             <button class="g-nav-btn chevrons_page disabled" type="previous">
@@ -521,6 +497,7 @@
 
                             $brand = $product['brand'];
                             // $name = substr($product['name'], 0, 50);
+                            $id = $product['id'];
                             $name = $product['name'];
                             $image_cover = $product['image_cover'];
                             $rating = $shop->get_rating_product($shop_info['id'], $product['id']);
@@ -529,7 +506,7 @@
                             $html_no_stars = str_repeat('<i style="color:gray" class="fa-regular fa-star"></i>', 5);
                             $html_render_stars = $stars ? $html_stars : $html_no_stars;
                             // $shop->test($html_stars);
-                            $votes = $rating['votes'] ? "(" . $rating['votes'] . ")" : "";
+                            $votes = $rating['votes'] ? "(" . $rating['votes'] . ")" : "(0)";
                             /* <?= $stars ? $html_stars : $html_no_stars ?> */
                             $price = $product['price'];
                             $percent_sale = $product['percent_sale'];
@@ -582,7 +559,7 @@
                                                 <div class="product-price-sale">đ$price_sale_format</div>
                                             </div>
                                         </a>
-                                        <div class="product-btn">
+                                        <div class="product-btn" onclick="update_cart_user('plus','$id',1)">
                                             <i class="fa-solid fa-cart-plus"></i>
                                             <span>Thêm giỏ hàng</span>
                                         </div>
@@ -599,43 +576,43 @@
                 </div>
             </div>
         </div>
-        <div class="more-info">
-            <div class="more-info-item">
-                <div class="more-infor-wrapper">
-                    <div class="more-info-img"><img src="./assest/images/xe 1.svg" alt=""></div>
-                    <div class="more-info-text1">Free Delivery</div>
-                    <div class="more-info-text2">Free shipping on all order</div>
+        <div class="more-info more-info-edit">
+                <div class="more-info-item">
+                    <div class="more-infor-wrapper">
+                        <div class="more-info-img"><img src="./assest/images/xe 1.svg" alt=""></div>
+                        <div class="more-info-text1">Giao hàng miễn phí</div>
+                        <div class="more-info-text2">Miễn phí vận chuyển các tỉnh</div>
+                    </div>
+                </div>
+                <div class="more-info-item">
+                    <div class="more-infor-wrapper">
+                        <div class="more-info-img"><img src="./assest/images/save 1.svg" alt=""></div>
+                        <div class="more-info-text1">Mua hàng tiết kiệm</div>
+                        <div class="more-info-text2">Chương trình Flash Sale mỗi ngày</div>
+                    </div>
+                </div>
+                <div class="more-info-item">
+                    <div class="more-infor-wrapper">
+                        <div class="more-info-img"><img src="./assest/images/online.svg"></div>
+                        <div class="more-info-text1">Hỗ trợ 24/7</div>
+                        <div class="more-info-text2">Hỗ trợ giải đáp thắc mắc 24/7</div>
+                    </div>
+                </div>
+                <div class="more-info-item">
+                    <div class="more-infor-wrapper">
+                        <div class="more-info-img"><img src="./assest/images/money.svg" alt=""></div>
+                        <div class="more-info-text1">Chính sách hoàn tiền đơn hàng</div>
+                        <div class="more-info-text2">Hoàn trả đơn hàng trong 7 ngày</div>
+                    </div>
+                </div>
+                <div class="more-info-item">
+                    <div class="more-infor-wrapper">
+                        <div class="more-info-img"><img src="./assest/images/member.svg" alt=""></div>
+                        <div class="more-info-text1">Chính sách thành viên</div>
+                        <div class="more-info-text2">Deal Sale cho khách hàng thành viên</div>
+                    </div>
                 </div>
             </div>
-            <div class="more-info-item">
-                <div class="more-infor-wrapper">
-                    <div class="more-info-img"><img src="./assest/images/save 1.svg" alt=""></div>
-                    <div class="more-info-text1">Big Saving Shop</div>
-                    <div class="more-info-text2">save Big Every Day</div>
-                </div>
-            </div>
-            <div class="more-info-item">
-                <div class="more-infor-wrapper">
-                    <div class="more-info-img"><img src="./assest/images/online.svg"></div>
-                    <div class="more-info-text1">Online Support 24/7</div>
-                    <div class="more-info-text2">Support online 24 hours a day</div>
-                </div>
-            </div>
-            <div class="more-info-item">
-                <div class="more-infor-wrapper">
-                    <div class="more-info-img"><img src="./assest/images/money.svg" alt=""></div>
-                    <div class="more-info-text1">Money Back Return</div>
-                    <div class="more-info-text2">Back guarantee under 7 day</div>
-                </div>
-            </div>
-            <div class="more-info-item">
-                <div class="more-infor-wrapper">
-                    <div class="more-info-img"><img src="./assest/images/member.svg" alt=""></div>
-                    <div class="more-info-text1">Member Discount</div>
-                    <div class="more-info-text2">Onevery order over $120.000</div>
-                </div>
-            </div>
-        </div>
     </div>
 </main>
 

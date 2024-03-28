@@ -2,15 +2,15 @@
 
 <div class="shop-main invoicePreview">
     <?php
-    if (isset($data)) {
-        $invoiceInfo = $data['invoice'][0];
-        $list = $data['listpro']; ?>
+    if (isset($order)) {
+        $order_info = $order['order_info'];
+        $list = $order['list_order']?>
 
         <div class="panel">
             <div class="de-top">
                 <div class="de-title">Chi tiết đơn hàng</div>
                 <div class="shrink-0">
-                    <img src="assest/images/UNIDI_LOGO-FINAL 2.svg" alt="image" class="de-logo">
+                    <img src="assest/upload/<?=$order_info['shop_icon']?>" alt="image" class="de-logo">
                 </div>
             </div>
             <div class="de-info">
@@ -20,38 +20,32 @@
                         <div class="de-info-item-group">
                             <span>Họ tên:</span>
                             <strong>
-                                <?= $invoiceInfo['name_receiver'] ?>
+                                <?= $order_info['address_name'] ?>
                             </strong>
                         </div>
                         <div class="de-info-item-group">
                             <span>Email:</span>
                             <strong>
-                                <?= $invoiceInfo['email'] ?>
+                                <?= $order_info['email'] ?>
                             </strong>
                         </div>
                         <div class="de-info-item-group">
                             <span>Phone:</span>
                             <strong class="">
-                                <?= $invoiceInfo['phone_number'] ?>
+                                <?= $order_info['address_phone']?>
                             </strong>
                         </div>
                         <div class="de-info-item-group">
                             <span>Địa chỉ:</span>
                             <strong class="">
-                                <?= $invoiceInfo['province'] ?> -
-                                <?= $invoiceInfo['district'] ?> 
+                                <?= $order_info['address_ward']." - ".$order_info['address_district']." - ".$order_info['address_province'] ?>
                             </strong>
                         </div>
-                        <div class="de-info-item-group">
-                            <span>Địa chỉ chi tiết:</span>
-                            <strong class="">
-                                <?= $invoiceInfo['address_detail'] ?>
-                            </strong>
-                        </div>
+                       
                         <div class="de-info-item-group">
                             <span>Ghi chú:</span>
                             <strong class="">
-                                <?= $invoiceInfo['note']??"-" ?>
+                                <?= $order_info['note']??"-" ?>
                             </strong>
                         </div>
                     </div>
@@ -62,29 +56,29 @@
                         <div class="de-info-item-group">
                             <span>Đơn hàng:</span>
                             <strong>#
-                                <?= $invoiceInfo['id'] ?>
+                                <?= $order_info['id'] ?>
                             </strong>
                         </div>
                         <div class="de-info-item-group">
                             <span>Ngày:</span>
                             <strong>
-                                <?= $invoiceInfo['created_at'] ?>
+                                <?= $order_info['created_at'] ?>
                             </strong>
                         </div>
                         <div class="de-info-item-group">
                             <span>Phí ship:</span>
-                            <strong class="fm-price">30000</strong>
+                            <strong class="fm-price"><?=$order_info['shipping_fee']?></strong>
                         </div>
                         <div class="de-info-item-group">
                             <span>Tạm tính:</span>
                             <strong class="fm-price">
-                                <?= $invoiceInfo['sub_total'] ?>
+                                <?=$order_info['sub_total'] ?>
                             </strong>
                         </div>
                         <div class="de-info-item-group de-group-total">
                             <span>Tổng tiền:</span>
                             <strong class="fm-price">
-                                <?= $invoiceInfo['total'] ?>
+                                <?= $order_info['total'] ?>
                             </strong>
                         </div>
                     </div>
@@ -128,14 +122,14 @@
                                 <div class="de-pro"><?=$value['quantity'] ?></div>
                             </td>
                             <td>
-                                <div class="de-pro"><?=$value['nameCate'] ?>
+                                <div class="de-pro"><?=$value['categoryName'] ?>
                             </div>
                             </td>
                             <td>
                                 <div class="de-pro fm-price"><?=$value['quantity']*$value['price'] ?></div>
                             </td>
                             <td>
-                                <div class="de-pro de-pro-status"><?=$invoiceInfo['status'] ?></div>
+                                <div class="de-pro de-pro-status"><?=$order_info['status'] ?></div>
                             </td>
                         </tr>
                     <?php }

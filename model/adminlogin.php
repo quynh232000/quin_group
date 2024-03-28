@@ -182,7 +182,7 @@ class Adminlogin
         return ["status" => true, "message" => "Đăng kí thành công!", "result" => [], "redirect" => "./"];
 
     }
-    public function updateProfile($fullName, $image, $phone, $email)
+    public function updateProfile($fullName, $image, $phone,$address)
     {
         $isLogin = Session::get("isLogin");
         if ($isLogin != true) {
@@ -193,8 +193,8 @@ class Adminlogin
         if ($checkUser == false) {
             return new Response(false, "Thất bại!", "", "?mod=profile&act=login");
         }
-        if (empty ($fullName) || empty ($email)) {
-            return new Response(false, "Họ tên và Email không được để trống thông tin!", "", "");
+        if (empty ($fullName) || empty ($address) || empty($phone)) {
+            return new Response(false, "Không được để trống thông tin!", "", "");
         }
         // update user
         $queryUpdate = "";
@@ -202,10 +202,10 @@ class Adminlogin
         if ($fileResult) {
             $queryUpdate .= "u.avatar = '$fileResult',";
         }
-        $queryUpdate .= "u.fullName = '$fullName',";
-        $queryUpdate .= "u.phone = '$phone',";
-        $queryUpdate .= "u.email = '$email',";
-        $queryUpdate .= "u.updatedAt = NOW()";
+        $queryUpdate .= "u.full_name = '$fullName',";
+        $queryUpdate .= "u.phone_number = '$phone',";
+        $queryUpdate .= "u.address = '$address',";
+        $queryUpdate .= "u.updated_at = CURRENT_TIMESTAMP";
         $updateUser = $this->db->update("UPDATE user u
             SET $queryUpdate
             WHERE u.id = '$userId'
@@ -213,12 +213,12 @@ class Adminlogin
         if ($updateUser == false) {
             return new Response(false, "Cập nhật thông tin tài khoản thất bại", "", "", "");
         }
-        Session::set('fullName', $fullName);
-        Session::set('email', $email);
+        Session::set('full_name', $fullName);
+        Session::set('phone_number', $phone);
+        Session::set('address', $address);
         if ($fileResult) {
             Session::set('avatar', $fileResult);
         }
-        Session::set('phone', $phone);
         return new Response(true, "Cập nhật thông tin thành công", "", "", "");
 
     }

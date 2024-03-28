@@ -89,8 +89,31 @@
     });
     const prices = document.querySelectorAll(".fm-price")
     prices.forEach(item => {
-        item.textContent = VND.format(item.textContent)
+        if(!isNaN(item.textContent)){
+            item.textContent = VND.format(item.textContent)
+
+        }
     })
+</script>
+<script>
+fetch('https://api64.ipify.org?format=json')
+  .then(response => response.json())
+  .then(data => {
+    var clientIP = data.ip;
+    jQuery.get("http://ipinfo.io/" + clientIP, function(response) {
+        $.ajax({
+            url:"?mod=request&act=set_traffic",
+            type:"POST",
+            cache:false,
+            data:{
+                ip:response.ip,
+                location:response.loc,
+                type:response.city,
+            }
+        }).done(res=>{
+        })
+    }, "jsonp");
+  });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 <script src="./src/js/main.js" type="module"></script>

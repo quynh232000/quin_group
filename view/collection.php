@@ -29,8 +29,8 @@
                     ?>
                 </div>
                 <a href="?mod=page&act=collection" class="suggestion-nav-right">
-                    Xem tất cả
-                    <i class="fa-solid fa-chevron-right"></i>
+                    <!-- Xem tất cả
+                    <i class="fa-solid fa-chevron-right"></i> -->
                 </a>
             </div>
             <!-- <div class="c-mall-body">
@@ -153,8 +153,6 @@
                 </div>
 
                 <div class="g-left-top">
-
-                    <!-- <form method="GET" action="?mod=page&act=collection&category=<?= $_GET['category'] ?>" class="g-left-top-body"> -->
                     <form class="g-left-top-body">
                         <div class="g-left-top-title"></div>
                         <div class="g-left-top-item">
@@ -182,15 +180,6 @@
                                 $("#ms-input-price").text("")
                             }
                         })
-                        // $('#min-price').on('change',function(e) {
-                        //     if($(this).val() >= $('#max-price').val()){
-                        //         $("#ms-input-price").text("Vui lòng nhập giá nhỏ hơn")
-                        //         console.log("nho");
-                        //     }else{
-                        //         console.log("ok");
-                        //         $("#ms-input-price").text("")
-                        //     }
-                        // })
                     </script>
                 </div>
             </div>
@@ -205,7 +194,7 @@
                         <div class="c-nav-hhiden">
                             <i class="fa-solid fa-bars"></i>
                         </div>
-                        <div class="g-nav-title">Lọc theo</div>
+                        <div class="g-nav-title">Sắp xếp</div>
                         <a href="<?= $urlFilter ?>&type=New" class="g-nav-item <?= ($type == 'New') ? "active" : "" ?>">
                             <span>Mới nhất</span>
                         </a>
@@ -219,16 +208,6 @@
 
                     </div>
                     <div class="g-nav-right">
-
-                        <!-- <div class="g-nav-page">
-                            <span class="g-nav-current">
-                                <?= $_GET['page'] ?? '1' ?>
-                            </span>
-                            <span>/</span>
-                            <span class="g-nav-total">
-                                <?= ceil($collectionPro->total / 8) ?>
-                            </span>
-                        </div> -->
                         <div class="g-nav-btn-group">
 
                             <!-- pagination -->
