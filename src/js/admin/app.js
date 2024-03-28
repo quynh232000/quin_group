@@ -1,10 +1,4 @@
 
-// modal 
-// const showPopup = document.querySelectorAll(".btn-clickable")
-// const popupCreate = document.querySelector(".popup-create")
-// const popupUpdate = document.querySelector(".popup-update")
-// const popupDelete = document.querySelector(".popup-delete")
-
 const popupContainers = document.querySelectorAll(".popup-container")
 const closeModals = document.querySelectorAll(".popup-close-btn")
 
@@ -15,8 +9,25 @@ closeModals.forEach((closeModal, index) => {
     }
 })
 
+async function requestDataToServer(data) {
+    try {
+        const res = await $.ajax({
+            type: "POST",
+            url: `?mod=requestAdmin&act=edit-user`,
+            data: JSON.stringify(data),
+            processData: false,
+            contentType: false,
+            caches: false
+        })
+        return JSON.parse(res)
+    } catch (err) {
+        console.error(err)
+        throw err
+    }
+}
 
-$(".btn-clickable").click(function () {
+
+$(".btn-clickable").click(async function () {
     const datatype = $(this).attr("data-type")
     const dataname = $(this).attr("data-value")
     const idCategory = $(this).attr("data-category-id")
@@ -28,6 +39,17 @@ $(".btn-clickable").click(function () {
     const reason = $(this).attr("data-reason")
     const shopowner = $(this).attr("data-onwer")
     $(".popup-container").addClass("active")
+
+    //
+    const userId = $(this).attr("data-user-id")
+    let dataUser
+    try {
+        const data = await requestDataToServer({ UID: userId })
+        dataUser = data
+    } catch (err) {
+        console.log(err)
+    }
+
 
     switch (datatype) {
         case "create":
@@ -88,58 +110,85 @@ $(".btn-clickable").click(function () {
             )
             $(".popup-close-btn").removeClass("btn-light").addClass("btn-primary").text("OK");
             break;
+        case "edit":
+            const arrayRoles = ["Member", "Seller", "Admin", "AdminAll"]
+
+            let html = dataUser.map((el, index) => {
+                let htmlRole = arrayRoles.map(item => {
+                    if (item !== el.user_role) {
+                        return `<option value="${item}">${item}</option>`
+                    } else {
+                        return ''
+                    }
+                }).join("")
+                return `<div class="form-group">
+                            <label for="exampleInputName1">Name</label>
+                            <input name="name" type="text" class="form-control input-name" id="exampleInputName1" placeholder="${el.user_fullname}">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail3">Email address</label>
+                            <input name="email" type="email" class="form-control input-email" id="exampleInputEmail3" placeholder="${el.user_email}">
+                        </div>
+                        <div class="form-group">
+                            <input value="${el.user_id}" name="userId" type="hidden" class="form-control input-email" id="exampleInputEmail4" placeholder="Email">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail3">Phone number</label>
+                            <input name="phone" type="text" class="form-control input-email" id="exampleInputEmail3" placeholder="${el.user_phone}">
+                        </div>
+                        <div class="form-group">
+                        <label for="exampleInputPassword4">Đổi mật khẩu</label>
+                        <input type="password" name="password" class="form-control input-password" id="exampleInputPassword4" placeholder="change your password">
+                      </div>
+                        <div class="form-group">
+                            <label for="role">Role: <span style="color: red;">${el.user_role}*</span></label>
+                            <select name="role" class="form-control option-role" id="role">
+                                <option value="">--All--</option>
+                                ${htmlRole}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div>
+                                <label>Change your avatar</label>
+                                <input type="file" name="img" class="user-img" style="margin-bottom: 8px;">
+                                <img width="120px" src="assest/upload/${el.user_avatar}" alt="">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="exampleInputCity1">City</label>
+                            <input type="text" name="address" class="form-control user-address" id="exampleInputCity1" placeholder="${el.user_address}">
+                        </div>`
+            })
+            $(".form-render-user").html(html)
+
+            $("#form-edit-user").submit(function (e) {
+                e.preventDefault()
+                const formData = new FormData($(this)[0])
+                $.ajax({
+                    type: "POST",
+                    url: `?mod=requestAdmin&act=update-user`,
+                    data: formData,
+                    processData: false,
+                    contentType: false
+                }).done(res => {
+                    let data = JSON.parse(res)
+                    if (data.status && data.role !== "") {
+                        setTimeout(() => {
+                            window.location.href = "?mod=admin&act=mn_all_user&role=" + data.role + "&page=1"
+                        }, 800);
+                    } else {
+                        setTimeout(() => {
+                            location.reload()
+                        }, 800);
+                    }
+                })
+            })
+
+            break;
     }
     $("#id_parent").val(idCategory)
     $("#id_type").val(datatype)
     $("#id_product").val(idProduct)
 })
 
-
-
-// handle button event
-
-// const createButtons = document.querySelectorAll('.create-btn')
-// const updateButtons = document.querySelectorAll('.update-btn')
-// const deleteButtons = document.querySelectorAll('.delete-btn')
-// const submitbtn = document.querySelector('.submitbtn')
-
-// createButtons.forEach(function (button) {
-//     button.addEventListener('click', function (event) {
-//         const categoryID = button.dataset.categoryId;
-//         console.log('Create button clicked for category ID:', categoryID);
-//         submitbtn.onclick = (e) => {
-//             e.preventDefault()
-//             requestAPI(categoryID)
-//         }
-//     })
-// })
-
-// updateButtons.forEach(function (button) {
-//     button.addEventListener('click', function (event) {
-//         const categoryID = button.dataset.categoryId;
-//         console.log('Update button clicked for category ID:', categoryID);
-//     });
-// });
-
-// deleteButtons.forEach(function (button) {
-//     button.addEventListener('click', function (event) {
-//         const categoryID = button.dataset.categoryId;
-//         console.log('Delete button clicked for category ID:', categoryID);
-//     });
-// });
-
-// function requestAPI(parent_id) {
-//     $.ajax({
-//         type: "POST",
-//         url: "?mod=pages&act=crea-cat",
-//         data: JSON.stringify({
-//             parent_id: parent_id
-//         }),
-//         success: function (res) {
-//             const json_data = JSON.parse(res)
-//             console.log(json_data);
-//         }, error: function (err) {
-//             console.log(err)
-//         }
-//     })
-// }

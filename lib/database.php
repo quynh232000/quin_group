@@ -48,18 +48,21 @@ class Database
         $stmt->execute();
         // $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
-
         return $stmt;
     }
 
-    public function selectMultiple($query) {
+    public function selectMany($query)
+    {
         $stmt = $this->link->prepare($query);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
-    public function selectOne($query) {
+    public function selectOne($query)
+    {
         $stmt = $this->link->prepare($query);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->execute();
         return $stmt->fetch();
     }
@@ -68,6 +71,7 @@ class Database
     {
         return $this->link->exec($query);
     }
+    
     public function update($query)
     {
         $stmt = $this->link->prepare($query);
@@ -77,7 +81,6 @@ class Database
         } else {
             return false;
         }
-
     }
     public function delete($query)
     {

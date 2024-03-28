@@ -15,6 +15,18 @@
   <link rel="stylesheet" href="view/admin/component/treeview/style.css">
   <!-- end modal  -->
 
+  <!-- user detail  -->
+  <link rel="stylesheet" href="src/css/admin/user_detail.css">
+
+  <!-- skeleton loading  -->
+  <link rel="stylesheet" href="view/admin/component/skeleton-loading/style.css">
+  <!-- end skeleton loading  -->
+
+  <!-- table expandable -->
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <!-- end table expandable -->
 
   <!-- plugins:css -->
   <link rel="stylesheet" href="view/admin/vendors/feather/feather.css">
@@ -149,12 +161,12 @@
         </li>
         <li class="nav-item dropdown d-none d-lg-block user-dropdown">
           <a class="nav-link" id="UserDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-            <img class="img-xs rounded-circle" src="<?='assest/upload/'.Session::get('avatar') ?>" alt="Profile image"> </a>
+            <img class="img-xs rounded-circle" src="<?= 'assest/upload/' . Session::get('avatar') ?>" alt="Profile image"> </a>
           <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
             <div class="dropdown-header text-center">
-              <img class="img-md rounded-circle" style="width:32px;height:32px" src="<?='assest/upload/'.Session::get('avatar') ?>" alt="Profile image">
-              <p class="mb-1 mt-3 font-weight-semibold"><?=Session::get('full_name') ?></p>
-              <p class="fw-light text-muted mb-0"><?=Session::get('email') ?></p>
+              <img class="img-md rounded-circle" style="width:32px;height:32px" src="<?= 'assest/upload/' . Session::get('avatar') ?>" alt="Profile image">
+              <p class="mb-1 mt-3 font-weight-semibold"><?= Session::get('full_name') ?></p>
+              <p class="fw-light text-muted mb-0"><?= Session::get('email') ?></p>
             </div>
             <a href="?mod=profile&act=profile" class="dropdown-item"><i class="dropdown-item-icon mdi mdi-account-outline text-primary me-2"></i> My Profile <span class="badge badge-pill badge-danger">1</span></a>
             <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-message-text-outline text-primary me-2"></i> Messages</a>
